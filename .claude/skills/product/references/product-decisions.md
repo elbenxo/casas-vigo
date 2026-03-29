@@ -17,7 +17,7 @@ Last updated: 2026-03-29
 
 ---
 
-## Web Publica (repo: web_casas)
+## Web Publica (carpeta: web/)
 
 - **Stack**: Astro + Tailwind CSS, GitHub Pages
 - **Rol**: Escaparate con disponibilidad por fechas. NO reservas directas.
@@ -31,7 +31,7 @@ Last updated: 2026-03-29
 
 ---
 
-## Agentes (repo: casasvigo)
+## Agentes (carpeta: agents/)
 
 ### Agente Pre-venta
 - **Canales**: WhatsApp principal, extensible a Telegram y otros
@@ -62,7 +62,7 @@ Last updated: 2026-03-29
 
 ---
 
-## App Local / Dashboard (repo: Vigo_room_manager)
+## App Local / Dashboard (carpeta: dashboard/)
 
 - **Decision**: Opcion C - Hibrido
   - Dashboard local de **solo lectura**: ingresos, costes, estado habitaciones, informes
