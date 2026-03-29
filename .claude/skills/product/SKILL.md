@@ -14,13 +14,14 @@ This skill contains the canonical product definition. Read the references before
 
 ## Quick summary
 
-Casas Vigo is a flat/room management system for 5 rental properties (27 rooms) in Vigo, Spain. Three components:
+Casas Vigo is a flat/room management system for 5 rental properties (27 rooms) in Vigo, Spain. Three components + MCP:
 
 1. **Web** (`web/`) — Static escaparate with availability by dates, SEO + GEO optimized. Astro + Tailwind, GitHub Pages.
-2. **Agents** (`agents/`) — Pre-venta (WhatsApp/Telegram, info, calendar, contracts) + Post-venta (invoices, communications to tenants).
-3. **Dashboard** (`dashboard/`) — Local read-only view of income, costs, occupancy.
+2. **Agents** (`agents/`) — Pre-venta (WhatsApp, info, calendar, contracts) + Post-venta (invoices, communications to tenants). Core API (Express :3000) + SQLite as single data layer.
+3. **Dashboard** (`dashboard/`) — Local read+write view of income, costs, occupancy, config. Served by the same Express.
+4. **MCP Server** — Claude Code tools for natural-language management by the owner.
 
-Shared data lives in `data/`. The owner controls everything via WhatsApp to the agents.
+All data access goes through the Core API (REST). Owner controls via 3 channels: WhatsApp, Dashboard, Claude Code (MCP).
 
 ## Monorepo structure
 
@@ -43,8 +44,10 @@ Always check `references/product-decisions.md` first. Key constraints:
 - Budget: free or minimum cost
 - No SaaS, no multi-user
 - No backend for the web (static only)
-- Owner controls via WhatsApp, not via app UI
-- Agents respond 9:00-13:00, 7 days/week
+- Owner controls via WhatsApp, Dashboard, or Claude Code (MCP)
+- Agents respond 8:00-23:00, 7 days/week
+- All data access via Core API REST (no direct SQLite access)
+- Single Node.js process, runs as Windows Service (NSSM)
 
 ## Language
 

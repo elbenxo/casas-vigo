@@ -14,17 +14,38 @@ Repo setup, CI/CD, shared data, deployment.
 ## In Progress
 _(none)_
 
+## Completed (architecture)
+- [x] Define system architecture — 2026-03-29
+- [x] Create architecture.md reference document — 2026-03-29
+- [x] Research agent frameworks (Claude Agent SDK, OpenClaw, LangChain, CrewAI) — 2026-03-29
+- [x] Research Windows service options (NSSM, Shawl) — 2026-03-29
+- [x] Research hibernate/sleep handling — 2026-03-29
+
 ## Pending
 
 ### CI/CD
 - [ ] Reconfigure GitHub Pages to deploy from web/ subfolder — high
 - [ ] Test web deployment from monorepo — high
 
-### Data
-- [ ] Define JSON schema for income records (data/income.json) — medium
-- [ ] Define JSON schema for cost records (data/costs.json) — medium
-- [ ] Script to update availability.json and trigger web rebuild — medium
+### Core API (puerto 3000)
+- [ ] Create Express server with SQLite (better-sqlite3, WAL mode) — high
+- [ ] Implement REST endpoints: flats, rooms, contacts — high
+- [ ] Implement REST endpoints: income, costs, receipts — high
+- [ ] Implement REST endpoints: messages, appointments, config — medium
+- [ ] Implement /health endpoint — high
+- [ ] Seed database with 5 flats, 27 rooms from property-data — high
 
-### Documentation
-- [ ] Write architecture.md in docs/ — medium
-- [ ] Update product-decisions.md with monorepo structure — low
+### MCP Server
+- [ ] Create casasvigo-mcp server (stdio, wrappea API REST) — medium
+- [ ] Register in .mcp.json — medium
+
+### Windows Service & Lifecycle
+- [ ] Script install-service.js (NSSM setup) — medium
+- [ ] Implement sleep/wake handler (sleeptime package) — medium
+- [ ] Implement watchdog (health check cada 30s) — medium
+
+### Data (replaced by SQLite)
+- [x] ~~Define JSON schema for income/costs~~ — replaced by SQLite schema in architecture
+- [ ] Script sync-availability.js (API → availability.json) — medium
+- [ ] Script deploy-web.js (sync + git push) — medium
+- [ ] Script backup-db.js (DB → Google Drive) — low
