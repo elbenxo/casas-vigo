@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx @browsermcp/mcp@latest:*)",
+      "mcp__browsermcp__browser_snapshot",
+      "mcp__browsermcp__browser_navigate",
+      "WebSearch",
+      "WebFetch(domain:www.puntacanatravelblog.com)",
+      "mcp__browsermcp__browser_click",
+      "mcp__browsermcp__browser_screenshot",
+      "WebFetch(domain:github.com)",
+      "Bash(gh api:*)",
+      "Bash(gh repo view:*)",
+      "Bash(curl:*)",
+      "Bash(node:*)",
+      "mcp__browsermcp__browser_wait"
+    ]
+  }
+}

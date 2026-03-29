@@ -1,0 +1,18 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import FlatCard from '../../../components/FlatCard.astro';
+import { t } from '../../../i18n/translations';
+import { flats } from '../../../data/flats';
+
+const lang = 'en';
+---
+
+<Layout title={t(lang, 'flats.title')} lang={lang}>
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <h1 class="font-display text-4xl font-bold text-gray-900">{t(lang, 'flats.title')}</h1>
+    <p class="mt-2 text-gray-600 text-lg">{t(lang, 'flats.subtitle')}</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+      {flats.map(flat => <FlatCard flat={flat} lang={lang} />)}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,83 @@
+---
+import { t, getLangFromUrl, getLocalePath, languages, type Lang } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/^\/web_casas/, '').replace(/^\/(en|gl)/, '') || '/';
+---
+
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16">
+      <a href={getLocalePath(lang, '/')} class="font-display text-xl font-bold text-primary-800">
+        Casas Vigo
+      </a>
+
+      <div class="hidden md:flex items-center gap-6">
+        <a href={getLocalePath(lang, '/')} class="text-gray-600 hover:text-primary-700 transition-colors font-medium">
+          {t(lang, 'nav.home')}
+        </a>
+        <a href={getLocalePath(lang, '/pisos/')} class="text-gray-600 hover:text-primary-700 transition-colors font-medium">
+          {t(lang, 'nav.flats')}
+        </a>
+        <a href={getLocalePath(lang, '/vigo/')} class="text-gray-600 hover:text-primary-700 transition-colors font-medium">
+          {t(lang, 'nav.vigo')}
+        </a>
+        <a href={getLocalePath(lang, '/contacto/')} class="text-gray-600 hover:text-primary-700 transition-colors font-medium">
+          {t(lang, 'nav.contact')}
+        </a>
+
+        <div class="flex items-center gap-1 ml-4 border-l pl-4 border-gray-200">
+          {Object.entries(languages).map(([code, label]) => (
+            <a
+              href={getLocalePath(code as Lang, currentPath)}
+              class:list={[
+                'px-2 py-1 rounded text-sm font-medium transition-colors',
+                code === lang ? 'bg-primary-100 text-primary-700' : 'text-gray-500 hover:text-primary-600',
+              ]}
+            >
+              {code.toUpperCase()}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-600" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+    <div class="px-4 py-3 space-y-2">
+      <a href={getLocalePath(lang, '/')} class="block py-2 text-gray-600 hover:text-primary-700">{t(lang, 'nav.home')}</a>
+      <a href={getLocalePath(lang, '/pisos/')} class="block py-2 text-gray-600 hover:text-primary-700">{t(lang, 'nav.flats')}</a>
+      <a href={getLocalePath(lang, '/vigo/')} class="block py-2 text-gray-600 hover:text-primary-700">{t(lang, 'nav.vigo')}</a>
+      <a href={getLocalePath(lang, '/contacto/')} class="block py-2 text-gray-600 hover:text-primary-700">{t(lang, 'nav.contact')}</a>
+      <div class="flex gap-2 pt-2 border-t border-gray-100">
+        {Object.entries(languages).map(([code, label]) => (
+          <a
+            href={getLocalePath(code as Lang, currentPath)}
+            class:list={[
+              'px-3 py-1 rounded text-sm font-medium',
+              code === lang ? 'bg-primary-100 text-primary-700' : 'text-gray-500',
+            ]}
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(keybindings-help)",
+      "Bash(find /e/Claude/FlatManagementSystem/Claw -type f -name *.json -o -name *.md -o -name *.py -o -name *.js -o -name *.ts -o -name *.bat -o -name *.sh)"
+    ]
+  }
+}
