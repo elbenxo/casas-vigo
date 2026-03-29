@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://elbenxo.github.io/casas-vigo/sitemap-index.xml

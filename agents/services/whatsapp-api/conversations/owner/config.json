@@ -1,0 +1,7 @@
+{
+  "name": "Owner",
+  "phone": "OWNER_PHONE",
+  "chatId": "OWNER_PHONE@c.us",
+  "enabled": true,
+  "intervalMinutes": 2
+}

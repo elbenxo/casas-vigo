@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingresos — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Ingresos</h2>
+        <p class="text-slate-500 text-sm mt-1">Registro de pagos de alquiler</p>
+      </div>
+      <button onclick="abrirModal('modal-add')" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Nuevo ingreso
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 mb-6">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div>
+          <label class="block text-xs text-slate-500 mb-1">Mes</label>
+          <select id="f-mes" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-500 mb-1">Ano</label>
+          <select id="f-ano" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-500 mb-1">Piso</label>
+          <select id="f-piso" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+        </div>
+        <div class="flex items-end">
+          <button onclick="cargarIngresos()" class="w-full px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200">Filtrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div id="resumen" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"></div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-50 text-left text-xs text-slate-500 uppercase tracking-wider">
+              <th class="px-4 py-3">Habitacion</th>
+              <th class="px-4 py-3">Piso</th>
+              <th class="px-4 py-3">Importe</th>
+              <th class="px-4 py-3">Periodo</th>
+              <th class="px-4 py-3">Metodo</th>
+              <th class="px-4 py-3">Confirmado</th>
+              <th class="px-4 py-3">Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="tabla"></tbody>
+        </table>
+      </div>
+      <div id="tabla-empty" class="hidden text-center py-12 text-slate-400">Sin ingresos para este periodo</div>
+    </div>
+  </main>
+
+  <!-- Add Modal -->
+  <div id="modal-add" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-add')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md relative z-10 p-6">
+      <h3 class="text-lg font-semibold text-slate-800 mb-4">Registrar ingreso</h3>
+      <form id="form-add" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Habitacion</label>
+          <select id="add-room" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Importe (EUR)</label>
+          <input type="number" id="add-amount" step="0.01" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Mes</label>
+            <select id="add-month" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Ano</label>
+            <select id="add-year" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Metodo de pago</label>
+          <select id="add-method" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="efectivo">Efectivo</option>
+            <option value="transferencia">Transferencia</option>
+            <option value="bizum">Bizum</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="add-confirmed" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+          <label for="add-confirmed" class="text-sm text-slate-700">Pago confirmado</label>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal('modal-add')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('income');
+
+    let pisos = [], habitaciones = [], roomMap = {}, flatMap = {};
+
+    async function init() {
+      [pisos, habitaciones] = await Promise.all([api('/flats'), api('/rooms')]);
+      roomMap = buildMap(habitaciones);
+      flatMap = buildMap(pisos);
+
+      llenarMes(el('f-mes'));
+      llenarAno(el('f-ano'));
+      llenarPisos(el('f-piso'), pisos);
+
+      llenarMes(el('add-month'));
+      llenarAno(el('add-year'));
+      llenarHabitacionesPorPiso(el('add-room'), pisos, habitaciones);
+
+      await cargarIngresos();
+    }
+
+    async function cargarIngresos() {
+      const mes = el('f-mes').value;
+      const ano = el('f-ano').value;
+      const piso = el('f-piso').value;
+      let query = `?month=${mes}&year=${ano}`;
+      if (piso) query += `&flat_id=${piso}`;
+
+      try {
+        const ingresos = await api(`/income${query}`);
+        renderTabla(ingresos);
+        renderResumen(ingresos);
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    function renderResumen(ingresos) {
+      const total = ingresos.reduce((s, i) => s + i.amount, 0);
+      const confirmados = ingresos.filter(i => i.confirmed).reduce((s, i) => s + i.amount, 0);
+      const pendientes = total - confirmados;
+
+      el('resumen').innerHTML = `
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Total periodo</p>
+          <p class="text-2xl font-bold text-emerald-600 mt-1">${eur(total)}</p>
+          <p class="text-xs text-slate-400 mt-1">${ingresos.length} registros</p>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Confirmados</p>
+          <p class="text-2xl font-bold text-emerald-600 mt-1">${eur(confirmados)}</p>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Pendientes</p>
+          <p class="text-2xl font-bold ${pendientes > 0 ? 'text-amber-500' : 'text-slate-300'} mt-1">${eur(pendientes)}</p>
+        </div>
+      `;
+    }
+
+    function renderTabla(ingresos) {
+      if (!ingresos.length) {
+        el('tabla').innerHTML = '';
+        el('tabla-empty').classList.remove('hidden');
+        return;
+      }
+      el('tabla-empty').classList.add('hidden');
+      el('tabla').innerHTML = ingresos.map(i => {
+        const room = roomMap[i.room_id];
+        const flat = room ? flatMap[room.flat_id] : null;
+        return `
+          <tr class="table-row border-t border-slate-100">
+            <td class="px-4 py-3 font-medium text-slate-800">${room ? room.name : '#' + i.room_id}</td>
+            <td class="px-4 py-3 text-slate-500">${flat ? flat.name : '\u2014'}</td>
+            <td class="px-4 py-3 font-semibold text-emerald-600">${eur(i.amount)}</td>
+            <td class="px-4 py-3 text-slate-500">${mesNombre(i.month)} ${i.year}</td>
+            <td class="px-4 py-3 text-slate-500">${METODOS_PAGO[i.payment_method] || i.payment_method}</td>
+            <td class="px-4 py-3">
+              ${i.confirmed
+                ? '<span class="badge bg-emerald-100 text-emerald-700">Si</span>'
+                : '<span class="badge bg-amber-100 text-amber-700">Pendiente</span>'}
+            </td>
+            <td class="px-4 py-3 text-slate-400 text-xs">${fecha(i.created_at)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    el('form-add').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        room_id: parseInt(el('add-room').value),
+        amount: parseFloat(el('add-amount').value),
+        month: parseInt(el('add-month').value),
+        year: parseInt(el('add-year').value),
+        payment_method: el('add-method').value,
+        confirmed: el('add-confirmed').checked,
+      };
+      try {
+        await api('/income', { method: 'POST', body });
+        cerrarModal('modal-add');
+        el('form-add').reset();
+        llenarMes(el('add-month'));
+        llenarAno(el('add-year'));
+        notify('Ingreso registrado');
+        await cargarIngresos();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>

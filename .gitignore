@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build output
+web/dist/
+web/.astro/
+
+# Environment
+.env
+.env.*
+
+# Database
+data/casasvigo.db
+data/casasvigo.db-shm
+data/casasvigo.db-wal
+data/backups/
+
+# OS
+.DS_Store
+Thumbs.db
+nul
+
+# WhatsApp session data (sensitive)
+agents/services/whatsapp-api/.wwebjs_auth/
+agents/services/whatsapp-api/.wwebjs_cache/
+agents/services/whatsapp-api/logs/
+
+# Old repos (will be removed after migration)
+CasasVigo/
+Claw/
+Vigo_room_manager/
+web_casas_temp/
+
+# IDE
+.vscode/
+.idea/

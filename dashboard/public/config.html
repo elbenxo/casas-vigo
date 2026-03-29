@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuracion — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Configuracion</h2>
+        <p class="text-slate-500 text-sm mt-1">Parametros del sistema</p>
+      </div>
+      <button onclick="abrirNueva()" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Nueva clave
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-50 text-left text-xs text-slate-500 uppercase tracking-wider">
+              <th class="px-4 py-3">Clave</th>
+              <th class="px-4 py-3">Valor</th>
+              <th class="px-4 py-3">Actualizado</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody id="tabla"></tbody>
+        </table>
+      </div>
+      <div id="tabla-empty" class="hidden text-center py-12 text-slate-400">Sin configuracion</div>
+    </div>
+
+    <!-- System Health -->
+    <div class="mt-8 bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+      <h3 class="text-lg font-semibold text-slate-800 mb-4">Estado del sistema</h3>
+      <div id="health" class="text-sm text-slate-400">Comprobando...</div>
+    </div>
+  </main>
+
+  <!-- Edit Modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-edit')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md relative z-10 p-6">
+      <h3 id="modal-title" class="text-lg font-semibold text-slate-800 mb-4">Editar configuracion</h3>
+      <form id="form-edit" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Clave</label>
+          <input type="text" id="edit-key" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500 font-mono">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Valor</label>
+          <textarea id="edit-value" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal('modal-edit')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('config');
+
+    let isNew = false;
+
+    async function cargar() {
+      try {
+        const config = await api('/config');
+        renderTabla(config);
+      } catch (err) {
+        el('tabla').innerHTML = '';
+        el('tabla-empty').classList.remove('hidden');
+        el('tabla-empty').textContent = err.message;
+      }
+    }
+
+    let configData = [];
+
+    function renderTabla(items) {
+      const rows = Array.isArray(items) ? items : Object.entries(items).map(([key, value]) => ({ key, value }));
+      configData = rows;
+
+      if (!rows.length) {
+        el('tabla').innerHTML = '';
+        el('tabla-empty').classList.remove('hidden');
+        return;
+      }
+      el('tabla-empty').classList.add('hidden');
+      el('tabla').innerHTML = rows.map((c, i) => `
+        <tr class="table-row border-t border-slate-100">
+          <td class="px-4 py-3 font-mono text-sm font-medium text-slate-800">${c.key}</td>
+          <td class="px-4 py-3 font-mono text-sm text-slate-600 max-w-md truncate">${c.value ?? '\u2014'}</td>
+          <td class="px-4 py-3 text-slate-400 text-xs">${fecha(c.updated_at)}</td>
+          <td class="px-4 py-3">
+            <button onclick="editar(${i})" class="text-indigo-600 hover:text-indigo-800 text-xs font-medium">Editar</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function editar(index) {
+      const c = configData[index];
+      if (!c) return;
+      isNew = false;
+      el('modal-title').textContent = 'Editar configuracion';
+      el('edit-key').value = c.key;
+      el('edit-key').disabled = true;
+      el('edit-value').value = c.value || '';
+      abrirModal('modal-edit');
+    }
+
+    function abrirNueva() {
+      isNew = true;
+      el('modal-title').textContent = 'Nueva configuracion';
+      el('edit-key').value = '';
+      el('edit-key').disabled = false;
+      el('edit-value').value = '';
+      abrirModal('modal-edit');
+    }
+
+    el('form-edit').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = el('edit-key').value;
+      const value = el('edit-value').value;
+      try {
+        await api(`/config/${encodeURIComponent(key)}`, {
+          method: 'PUT',
+          body: { value },
+        });
+        cerrarModal('modal-edit');
+        notify('Configuracion guardada');
+        await cargar();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    });
+
+    async function checkHealth() {
+      try {
+        const res = await fetch('/health');
+        const data = await res.json();
+        el('health').innerHTML = `
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full ${data.status === 'ok' ? 'bg-emerald-500' : 'bg-red-500'}"></span>
+            <span class="font-medium ${data.status === 'ok' ? 'text-emerald-700' : 'text-red-600'}">${data.status === 'ok' ? 'Sistema operativo' : 'Error'}</span>
+          </div>
+          <p class="text-xs text-slate-400">API: ${data.status} &middot; DB: ${data.db || 'ok'}</p>
+        `;
+      } catch (err) {
+        el('health').innerHTML = `<span class="text-red-500">No se puede conectar con la API</span>`;
+      }
+    }
+
+    cargar();
+    checkHealth();
+  </script>
+</body>
+</html>

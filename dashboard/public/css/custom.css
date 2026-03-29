@@ -1,0 +1,45 @@
+/* Casas Vigo Dashboard — Custom styles */
+
+/* Toast fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#toast-container > div {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Stat card hover */
+.stat-card {
+  transition: box-shadow 0.15s ease;
+}
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Table row hover */
+.table-row:hover {
+  background-color: #f8fafc;
+}
+
+/* Occupancy bar */
+.occ-bar {
+  transition: width 0.4s ease;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Badge common */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}

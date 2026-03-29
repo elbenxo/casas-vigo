@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contactos — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Contactos</h2>
+        <p class="text-slate-500 text-sm mt-1">Inquilinos, prospectos y ex-inquilinos</p>
+      </div>
+      <button onclick="abrirNuevo()" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Nuevo contacto
+      </button>
+    </div>
+
+    <!-- Filter -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 mb-6">
+      <div class="flex gap-3 items-end">
+        <div class="w-48">
+          <label class="block text-xs text-slate-500 mb-1">Rol</label>
+          <select id="f-role" onchange="cargar()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div id="count" class="text-sm text-slate-400 pb-2"></div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-50 text-left text-xs text-slate-500 uppercase tracking-wider">
+              <th class="px-4 py-3">Nombre</th>
+              <th class="px-4 py-3">Telefono</th>
+              <th class="px-4 py-3">Rol</th>
+              <th class="px-4 py-3">Piso</th>
+              <th class="px-4 py-3">Habitacion</th>
+              <th class="px-4 py-3">Contrato</th>
+              <th class="px-4 py-3">Idioma</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody id="tabla"></tbody>
+        </table>
+      </div>
+      <div id="tabla-empty" class="hidden text-center py-12 text-slate-400">Sin contactos</div>
+    </div>
+  </main>
+
+  <!-- Edit/Add Modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-edit')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md relative z-10 p-6">
+      <h3 id="modal-title" class="text-lg font-semibold text-slate-800 mb-4">Editar contacto</h3>
+      <form id="form-edit" class="space-y-4">
+        <input type="hidden" id="edit-id">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
+          <input type="text" id="edit-name" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Telefono</label>
+          <input type="text" id="edit-phone" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="+34612345678">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Rol</label>
+          <select id="edit-role" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Piso</label>
+            <select id="edit-flat" onchange="onFlatChange()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Habitacion</label>
+            <select id="edit-room" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="">—</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Inicio contrato</label>
+            <input type="date" id="edit-start" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Fin contrato</label>
+            <input type="date" id="edit-end" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Idioma</label>
+          <select id="edit-lang" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="es">Espanol</option>
+            <option value="en">English</option>
+            <option value="gl">Galego</option>
+            <option value="fr">Francais</option>
+            <option value="de">Deutsch</option>
+            <option value="ko">Korean</option>
+            <option value="pt">Portugues</option>
+            <option value="pl">Polski</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal('modal-edit')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('contacts');
+
+    let pisos = [], habitaciones = [], flatMap = {}, roomMap = {};
+    let isNew = false;
+
+    const roleBadge = {
+      owner:       'bg-purple-100 text-purple-700',
+      tenant:      'bg-emerald-100 text-emerald-700',
+      prospect:    'bg-blue-100 text-blue-700',
+      'ex-tenant': 'bg-slate-100 text-slate-600',
+    };
+
+    async function init() {
+      [pisos, habitaciones] = await Promise.all([api('/flats'), api('/rooms')]);
+      flatMap = buildMap(pisos);
+      roomMap = buildMap(habitaciones);
+
+      // Role filter
+      const fRole = el('f-role');
+      Object.entries(ROLES).forEach(([k, v]) => {
+        fRole.innerHTML += `<option value="${k}">${v}</option>`;
+      });
+
+      // Role select in form
+      const editRole = el('edit-role');
+      editRole.innerHTML = '';
+      Object.entries(ROLES).forEach(([k, v]) => {
+        editRole.innerHTML += `<option value="${k}">${v}</option>`;
+      });
+
+      // Flat select in form
+      llenarPisos(el('edit-flat'), pisos);
+
+      await cargar();
+    }
+
+    async function cargar() {
+      const role = el('f-role').value;
+      let q = role ? `?role=${role}` : '';
+      try {
+        const contactos = await api(`/contacts${q}`);
+        el('count').textContent = `${contactos.length} contactos`;
+        renderTabla(contactos);
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    function renderTabla(contactos) {
+      if (!contactos.length) {
+        el('tabla').innerHTML = '';
+        el('tabla-empty').classList.remove('hidden');
+        return;
+      }
+      el('tabla-empty').classList.add('hidden');
+      el('tabla').innerHTML = contactos.map(c => {
+        const flat = flatMap[c.flat_id];
+        const room = roomMap[c.room_id];
+        const contrato = c.contract_start
+          ? `${fecha(c.contract_start)} \u2014 ${fecha(c.contract_end)}`
+          : '\u2014';
+        return `
+          <tr class="table-row border-t border-slate-100">
+            <td class="px-4 py-3 font-medium text-slate-800">${c.name || '\u2014'}</td>
+            <td class="px-4 py-3 text-slate-500 font-mono text-xs">${c.phone}</td>
+            <td class="px-4 py-3"><span class="badge ${roleBadge[c.role] || 'bg-slate-100 text-slate-600'}">${ROLES[c.role] || c.role}</span></td>
+            <td class="px-4 py-3 text-slate-500">${flat ? flat.name : '\u2014'}</td>
+            <td class="px-4 py-3 text-slate-500">${room ? room.name : '\u2014'}</td>
+            <td class="px-4 py-3 text-slate-400 text-xs">${contrato}</td>
+            <td class="px-4 py-3 text-slate-400 text-xs">${(c.language || 'es').toUpperCase()}</td>
+            <td class="px-4 py-3">
+              <button onclick="editar(${c.id})" class="text-indigo-600 hover:text-indigo-800 text-xs font-medium">Editar</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function onFlatChange() {
+      const flatId = parseInt(el('edit-flat').value);
+      const sel = el('edit-room');
+      sel.innerHTML = '<option value="">\u2014</option>';
+      if (!flatId) return;
+      habitaciones.filter(r => r.flat_id === flatId).forEach(r => {
+        sel.innerHTML += `<option value="${r.id}">${r.name}</option>`;
+      });
+    }
+
+    async function editar(id) {
+      isNew = false;
+      el('modal-title').textContent = 'Editar contacto';
+      try {
+        const c = await api(`/contacts/${id}`);
+        el('edit-id').value = c.id;
+        el('edit-name').value = c.name || '';
+        el('edit-phone').value = c.phone;
+        el('edit-phone').disabled = true;
+        el('edit-role').value = c.role;
+        el('edit-flat').value = c.flat_id || '';
+        onFlatChange();
+        el('edit-room').value = c.room_id || '';
+        el('edit-start').value = c.contract_start || '';
+        el('edit-end').value = c.contract_end || '';
+        el('edit-lang').value = c.language || 'es';
+        abrirModal('modal-edit');
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    function abrirNuevo() {
+      isNew = true;
+      el('modal-title').textContent = 'Nuevo contacto';
+      el('edit-id').value = '';
+      el('edit-name').value = '';
+      el('edit-phone').value = '';
+      el('edit-phone').disabled = false;
+      el('edit-role').value = 'prospect';
+      el('edit-flat').value = '';
+      onFlatChange();
+      el('edit-room').value = '';
+      el('edit-start').value = '';
+      el('edit-end').value = '';
+      el('edit-lang').value = 'es';
+      abrirModal('modal-edit');
+    }
+
+    el('form-edit').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        name: el('edit-name').value || null,
+        role: el('edit-role').value,
+        flat_id: el('edit-flat').value ? parseInt(el('edit-flat').value) : null,
+        room_id: el('edit-room').value ? parseInt(el('edit-room').value) : null,
+        contract_start: el('edit-start').value || null,
+        contract_end: el('edit-end').value || null,
+        language: el('edit-lang').value,
+      };
+
+      try {
+        if (isNew) {
+          body.phone = el('edit-phone').value;
+          await api('/contacts', { method: 'POST', body });
+          notify('Contacto creado');
+        } else {
+          await api(`/contacts/${el('edit-id').value}`, { method: 'PUT', body });
+          notify('Contacto actualizado');
+        }
+        cerrarModal('modal-edit');
+        await cargar();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>

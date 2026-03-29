@@ -1,0 +1,53 @@
+{
+  "lastUpdated": "2026-03-29",
+  "flats": {
+    "irmandinhos": {
+      "name": "Rúa Irmandiños 23",
+      "rooms": {
+        "primavera": { "available": false, "occupiedUntil": null, "note": "" },
+        "verano": { "available": false, "occupiedUntil": null, "note": "" },
+        "otono": { "available": false, "occupiedUntil": null, "note": "" },
+        "invierno": { "available": false, "occupiedUntil": null, "note": "" }
+      }
+    },
+    "1-derecha": {
+      "name": "Alfonso XIII 9, 1º Dcha",
+      "rooms": {
+        "blue": { "available": false, "occupiedUntil": null, "note": "" },
+        "bambu": { "available": false, "occupiedUntil": null, "note": "" },
+        "estrella": { "available": false, "occupiedUntil": null, "note": "" },
+        "mundo": { "available": false, "occupiedUntil": null, "note": "" },
+        "arroba": { "available": false, "occupiedUntil": null, "note": "" },
+        "prensa": { "available": false, "occupiedUntil": null, "note": "" }
+      }
+    },
+    "3-izquierda": {
+      "name": "Alfonso XIII 9, 3º Izq",
+      "rooms": {
+        "azul": { "available": false, "occupiedUntil": null, "note": "" },
+        "roja": { "available": false, "occupiedUntil": null, "note": "" },
+        "amarilla": { "available": false, "occupiedUntil": null, "note": "" },
+        "verde": { "available": false, "occupiedUntil": null, "note": "" },
+        "blanca": { "available": false, "occupiedUntil": null, "note": "" },
+        "gris": { "available": false, "occupiedUntil": null, "note": "" }
+      }
+    },
+    "4-derecha-atico": {
+      "name": "Alfonso XIII 9, 4º Dcha Ático",
+      "rooms": {
+        "oliva": { "available": false, "occupiedUntil": null, "note": "" },
+        "blanco-negro": { "available": false, "occupiedUntil": null, "note": "" },
+        "pistacho": { "available": false, "occupiedUntil": null, "note": "" },
+        "roja": { "available": false, "occupiedUntil": null, "note": "" },
+        "calabaza": { "available": false, "occupiedUntil": null, "note": "" }
+      }
+    },
+    "4-izquierda-atico": {
+      "name": "Alfonso XIII 9, 4º Izq Ático",
+      "rooms": {
+        "provenzal": { "available": false, "occupiedUntil": null, "note": "" },
+        "nueva-york": { "available": false, "occupiedUntil": null, "note": "" }
+      }
+    }
+  }
+}

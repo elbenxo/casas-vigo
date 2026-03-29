@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(keybindings-help)",
+      "Bash(find /e/Claude/FlatManagementSystem/Claw -type f -name *.json -o -name *.md -o -name *.py -o -name *.js -o -name *.ts -o -name *.bat -o -name *.sh)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(npm test:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)"
+    ]
+  }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habitaciones — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-slate-800">Habitaciones</h2>
+      <p class="text-slate-500 text-sm mt-1">Gestion de habitaciones por piso</p>
+    </div>
+    <div id="content">
+      <div class="flex items-center justify-center h-64 text-slate-400">Cargando...</div>
+    </div>
+  </main>
+
+  <!-- Edit Modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-edit')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md relative z-10 p-6">
+      <h3 class="text-lg font-semibold text-slate-800 mb-4">Editar habitacion</h3>
+      <form id="form-edit" class="space-y-4">
+        <input type="hidden" id="edit-id">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Precio mensual (EUR)</label>
+          <input type="number" id="edit-price" step="0.01" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Precio noche (EUR)</label>
+          <input type="number" id="edit-nightly" step="0.01" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Disponible</label>
+          <select id="edit-available" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+            <option value="1">Si</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Disponible desde</label>
+          <input type="date" id="edit-from" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Nota</label>
+          <textarea id="edit-note" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal('modal-edit')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('rooms');
+
+    let pisos = [], habitaciones = [];
+
+    async function cargar() {
+      try {
+        [pisos, habitaciones] = await Promise.all([api('/flats'), api('/rooms')]);
+        renderizar();
+      } catch (err) {
+        el('content').innerHTML = `<div class="bg-red-50 border border-red-200 rounded-xl p-6 text-red-600">${err.message}</div>`;
+      }
+    }
+
+    function renderizar() {
+      const html = pisos.map(f => {
+        const habs = habitaciones.filter(h => h.flat_id === f.id);
+        const libres = habs.filter(h => h.available).length;
+        return `
+          <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6">
+            <div class="flex items-baseline justify-between mb-4">
+              <div>
+                <h3 class="text-lg font-semibold text-slate-800">${f.name}</h3>
+                <p class="text-sm text-slate-400">${f.address}${f.has_tourist_license ? ' &middot; <span class="text-amber-500">Licencia turistica</span>' : ''}</p>
+              </div>
+              <span class="badge ${libres === habs.length ? 'bg-emerald-100 text-emerald-700' : libres > 0 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}">
+                ${libres}/${habs.length} libres
+              </span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              ${habs.map(h => `
+                <div class="border border-slate-200 rounded-lg p-4 hover:border-indigo-300 transition-colors">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <p class="font-medium text-slate-800">${h.name}</p>
+                      <p class="text-xs text-slate-400">${h.slug}${h.size_m2 ? ' &middot; ' + h.size_m2 + ' m&sup2;' : ''}</p>
+                    </div>
+                    <span class="badge ${h.available ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
+                      ${h.available ? 'Libre' : 'Ocupada'}
+                    </span>
+                  </div>
+                  <div class="mt-3 flex items-baseline justify-between">
+                    <div>
+                      <span class="text-lg font-bold text-slate-800">${eur(h.price_monthly)}</span><span class="text-xs text-slate-400">/mes</span>
+                      ${h.price_nightly ? `<br><span class="text-sm text-slate-500">${eur(h.price_nightly)}</span><span class="text-xs text-slate-400">/noche</span>` : ''}
+                    </div>
+                    <button onclick="editar(${h.id})" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center gap-1">
+                      ${ico(ICONS.edit)} Editar
+                    </button>
+                  </div>
+                  ${h.available_from ? `<p class="text-xs text-slate-400 mt-2">Libre desde: ${fecha(h.available_from)}</p>` : ''}
+                  ${h.note ? `<p class="text-xs text-slate-500 mt-1 italic">${h.note}</p>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+      el('content').innerHTML = html;
+    }
+
+    function editar(id) {
+      const h = habitaciones.find(r => r.id === id);
+      if (!h) return;
+      el('edit-id').value = h.id;
+      el('edit-price').value = h.price_monthly;
+      el('edit-nightly').value = h.price_nightly || '';
+      el('edit-available').value = h.available ? '1' : '0';
+      el('edit-from').value = h.available_from || '';
+      el('edit-note').value = h.note || '';
+      abrirModal('modal-edit');
+    }
+
+    el('form-edit').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = el('edit-id').value;
+      const body = {
+        price_monthly: parseFloat(el('edit-price').value),
+        available: el('edit-available').value === '1',
+        available_from: el('edit-from').value || null,
+        note: el('edit-note').value || null,
+      };
+      const nightly = el('edit-nightly').value;
+      if (nightly) body.price_nightly = parseFloat(nightly);
+
+      try {
+        await api(`/rooms/${id}`, { method: 'PUT', body });
+        cerrarModal('modal-edit');
+        notify('Habitacion actualizada');
+        await cargar();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    });
+
+    cargar();
+  </script>
+</body>
+</html>

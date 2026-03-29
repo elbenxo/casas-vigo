@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div id="content">
+      <div class="flex items-center justify-center h-64 text-slate-400">Cargando...</div>
+    </div>
+  </main>
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('home');
+
+    async function cargar() {
+      try {
+        const [stats, pisos, habitaciones] = await Promise.all([
+          api('/stats'),
+          api('/flats'),
+          api('/rooms'),
+        ]);
+
+        const r = stats.rooms;
+        const ocupadas = r.total - r.available;
+        const neto = stats.income_this_month - stats.costs_this_month;
+        const netoColor = neto >= 0 ? 'text-emerald-600' : 'text-red-600';
+
+        // Build per-flat breakdown
+        const porPiso = pisos.map(f => {
+          const habs = habitaciones.filter(h => h.flat_id === f.id);
+          const total = habs.length;
+          const libres = habs.filter(h => h.available).length;
+          const occ = total - libres;
+          return { name: f.name, address: f.address, total, libres, occ, pct: pct(occ, total) };
+        });
+
+        el('content').innerHTML = `
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-slate-800">Panel de Control</h2>
+            <p class="text-slate-500 text-sm mt-1">${mesNombre(stats.period.month)} ${stats.period.year}</p>
+          </div>
+
+          <!-- Stat cards -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+              <p class="text-sm text-slate-500 font-medium">Pisos</p>
+              <p class="text-3xl font-bold text-slate-800 mt-1">${stats.flats}</p>
+            </div>
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+              <p class="text-sm text-slate-500 font-medium">Habitaciones</p>
+              <p class="text-3xl font-bold text-slate-800 mt-1">${ocupadas}<span class="text-lg text-slate-400 font-normal">/${r.total}</span></p>
+              <p class="text-xs text-slate-400 mt-1">${r.available} libres &middot; ${pct(ocupadas, r.total)}% ocupacion</p>
+            </div>
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+              <p class="text-sm text-slate-500 font-medium">Ingresos mes</p>
+              <p class="text-3xl font-bold text-emerald-600 mt-1">${eur(stats.income_this_month)}</p>
+            </div>
+            <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+              <p class="text-sm text-slate-500 font-medium">Costes mes</p>
+              <p class="text-3xl font-bold text-red-500 mt-1">${eur(stats.costs_this_month)}</p>
+              <p class="text-xs mt-1 ${netoColor} font-medium">Neto: ${eur(neto)}</p>
+            </div>
+          </div>
+
+          <!-- Occupancy per flat -->
+          <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-8">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">Ocupacion por piso</h3>
+            <div class="space-y-4">
+              ${porPiso.map(f => `
+                <div>
+                  <div class="flex justify-between items-baseline mb-1">
+                    <div>
+                      <span class="text-sm font-medium text-slate-700">${f.name}</span>
+                      <span class="text-xs text-slate-400 ml-2">${f.address}</span>
+                    </div>
+                    <span class="text-sm text-slate-500">${f.occ}/${f.total} <span class="text-xs">(${f.pct}%)</span></span>
+                  </div>
+                  <div class="w-full bg-slate-100 rounded-full h-2.5">
+                    <div class="occ-bar h-2.5 rounded-full ${f.pct >= 80 ? 'bg-emerald-500' : f.pct >= 50 ? 'bg-amber-400' : 'bg-red-400'}" style="width: ${f.pct}%"></div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Contacts summary -->
+          <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+            <h3 class="text-lg font-semibold text-slate-800 mb-4">Contactos</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              ${Object.entries(stats.contacts).map(([role, count]) => `
+                <div class="text-center">
+                  <p class="text-2xl font-bold text-slate-700">${count}</p>
+                  <p class="text-xs text-slate-500">${ROLES[role] || role}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        el('content').innerHTML = `
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+            <p class="text-red-600 font-medium">Error al cargar datos</p>
+            <p class="text-red-400 text-sm mt-1">${err.message}</p>
+            <p class="text-slate-400 text-xs mt-3">Asegurate de que la API esta corriendo en localhost:3000</p>
+          </div>
+        `;
+      }
+    }
+
+    cargar();
+  </script>
+</body>
+</html>
