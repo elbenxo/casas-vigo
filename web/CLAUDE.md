@@ -42,16 +42,14 @@ src/
 
 ## Key Files
 
-- `astro.config.mjs` - Site config, base path `/web_casas`
+- `astro.config.mjs` - Site config, base path `/casas-vigo`
 - `tailwind.config.mjs` - Design tokens (primary, accent, sand colors)
 - `src/data/flats.ts` - Flat/room data with multilingual fields
 - `src/data/vigo.ts` - Vigo info sections with multilingual fields
-- `.github/workflows/deploy.yml` - GitHub Pages deployment
-
 ## Deployment
 
-- GitHub Pages via GitHub Actions
-- Base path: `/web_casas` (update `astro.config.mjs` site/base for your repo)
+- GitHub Pages via GitHub Actions (workflow at repo root: `/.github/workflows/deploy.yml`)
+- Base path: `/casas-vigo`
 - Push to `main` triggers automatic deploy
 
 ## TODO
