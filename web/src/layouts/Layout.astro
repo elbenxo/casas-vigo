@@ -2,14 +2,47 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import type { Lang } from '../i18n/translations';
+import { languages, type Lang } from '../i18n/translations';
 
 interface Props {
   title: string;
+  description?: string;
   lang?: Lang;
+  ogImage?: string;
+  /** Current path without lang prefix, e.g. '/pisos/' */
+  path?: string;
+  /** JSON-LD structured data */
+  jsonLd?: Record<string, unknown>;
 }
 
-const { title, lang = 'es' } = Astro.props;
+const {
+  title,
+  description,
+  lang = 'es',
+  ogImage,
+  path = '/',
+  jsonLd,
+} = Astro.props;
+
+const siteName = 'Casas Vigo';
+const base = '/casas-vigo';
+const siteOrigin = 'https://elbenxo.github.io';
+
+const fullTitle = `${title} | ${siteName}`;
+
+const defaultDescriptions: Record<Lang, string> = {
+  es: 'Habitaciones amuebladas en alquiler en Vigo, Galicia. 5 pisos, 27 habitaciones, desde 300 EUR/mes. WiFi, todo incluido.',
+  en: 'Furnished rooms for rent in Vigo, Galicia. 5 flats, 27 rooms, from 300 EUR/month. WiFi, all included.',
+  gl: 'Habitacións amobladas en alugueiro en Vigo, Galicia. 5 pisos, 27 habitacións, dende 300 EUR/mes. WiFi, todo incluído.',
+};
+const metaDescription = description || defaultDescriptions[lang];
+
+// Canonical & hreflang
+function langUrl(l: Lang): string {
+  const langPrefix = l === 'es' ? '' : `/${l}`;
+  return `${siteOrigin}${base}${langPrefix}${path}`;
+}
+const canonicalUrl = langUrl(lang);
 ---
 
 <!doctype html>
@@ -17,9 +50,37 @@ const { title, lang = 'es' } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Habitaciones en alquiler en Vigo, Galicia. Rooms for rent in Vigo, Galicia." />
-    <link rel="icon" type="image/svg+xml" href="/web_casas/favicon.svg" />
-    <title>{title} | Casas Vigo</title>
+    <meta name="description" content={metaDescription} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* hreflang alternates */}
+    {Object.keys(languages).map((l) => (
+      <link rel="alternate" hreflang={l} href={langUrl(l as Lang)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={langUrl('es')} />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : lang === 'gl' ? 'gl_ES' : 'en_GB'} />
+    {ogImage && <meta property="og:image" content={`${siteOrigin}${base}${ogImage}`} />}
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    {ogImage && <meta name="twitter:image" content={`${siteOrigin}${base}${ogImage}`} />}
+
+    <title>{fullTitle}</title>
+
+    {/* JSON-LD structured data */}
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
   </head>
   <body class="min-h-screen flex flex-col bg-sand-50 text-gray-800 font-sans">
     <Nav lang={lang} />

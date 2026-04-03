@@ -27,7 +27,7 @@ export interface Flat {
   reviews: Review[];
 }
 
-const IMG = '/web_casas/images';
+const IMG = '/casas-vigo/images';
 
 export const flats: Flat[] = [
   // ─────────────────────────────────────────────

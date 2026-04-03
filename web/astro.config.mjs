@@ -1,10 +1,11 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://yourusername.github.io',
-  base: '/web_casas',
-  integrations: [tailwind()],
+  site: 'https://elbenxo.github.io',
+  base: '/casas-vigo',
+  integrations: [tailwind(), sitemap()],
   i18n: {
     defaultLocale: 'es',
     locales: ['es', 'en', 'gl'],

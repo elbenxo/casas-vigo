@@ -157,13 +157,13 @@ export function t(lang: Lang, key: keyof typeof translations['es']): string {
 }
 
 export function getLangFromUrl(url: URL): Lang {
-  const [, lang] = url.pathname.replace(/^\/web_casas/, '').split('/');
+  const [, lang] = url.pathname.replace(/^\/casas-vigo/, '').split('/');
   if (lang in languages) return lang as Lang;
   return defaultLang;
 }
 
 export function getLocalePath(lang: Lang, path: string): string {
-  const base = '/web_casas';
+  const base = '/casas-vigo';
   if (lang === defaultLang) return `${base}${path}`;
   return `${base}/${lang}${path}`;
 }
