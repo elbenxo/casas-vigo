@@ -6,7 +6,8 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const currentPath = Astro.url.pathname.replace(/^\/casas-vigo/, '').replace(/^\/(en|gl)/, '') || '/';
+const langCodes = Object.keys(languages).filter(l => l !== 'es').join('|');
+const currentPath = Astro.url.pathname.replace(/^\/casas-vigo/, '').replace(new RegExp(`^\\/(${langCodes})`), '') || '/';
 ---
 
 <nav class="bg-white shadow-sm sticky top-0 z-50">
