@@ -11,35 +11,56 @@ const jsonLdArray = generateHomeJsonLd(lang);
 ---
 
 <Layout title={t(lang, 'nav.home')} lang={lang} path="/" jsonLd={jsonLdArray}>
-  <section class="relative bg-gradient-to-br from-primary-800 to-primary-900 text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20 md:py-32">
+  <!-- Hero -->
+  <section class="relative bg-gradient-to-br from-primary-800 via-primary-900 to-[#132a42] text-white overflow-hidden">
+    <div class="absolute inset-0 hero-pattern"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-24 md:py-36 hero-animate">
       <h1 class="font-display text-4xl md:text-6xl font-bold leading-tight">{t(lang, 'hero.title')}</h1>
       <p class="mt-4 text-lg md:text-xl text-primary-200 max-w-2xl">{t(lang, 'hero.subtitle')}</p>
-      <a href={getLocalePath(lang, '/pisos/')} class="inline-block mt-8 bg-accent-500 hover:bg-accent-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">{t(lang, 'hero.cta')}</a>
+      <a href={getLocalePath(lang, '/pisos/')} class="inline-block mt-8 bg-accent-500 hover:bg-accent-600 text-white font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 shadow-lg shadow-accent-500/25 hover:shadow-xl hover:shadow-accent-500/35 hover:-translate-y-0.5">
+        {t(lang, 'hero.cta')}
+      </a>
     </div>
-    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-sand-50 to-transparent"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-sand-50 to-transparent"></div>
   </section>
+
+  <!-- Featured Rooms -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-    <h2 class="font-display text-3xl font-bold text-gray-900 mb-8">{t(lang, 'home.featured')}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {flats.map(flat => <FlatCard flat={flat} lang={lang} />)}
+    <h2 class="font-display text-3xl font-bold text-gray-900 mb-8 reveal">{t(lang, 'home.featured')}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-grid">
+      {flats.map(flat => (
+        <FlatCard flat={flat} lang={lang} />
+      ))}
     </div>
   </section>
+
+  <!-- Why Vigo -->
   <section class="bg-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-      <div class="max-w-3xl mx-auto text-center">
+      <div class="max-w-3xl mx-auto text-center reveal">
         <h2 class="font-display text-3xl font-bold text-gray-900 mb-4">{t(lang, 'home.why')}</h2>
         <p class="text-gray-600 text-lg leading-relaxed">{t(lang, 'home.why.text')}</p>
-        <a href={getLocalePath(lang, '/vigo/')} class="inline-block mt-6 text-primary-600 hover:text-primary-700 font-semibold">{t(lang, 'vigo.title')} &rarr;</a>
+        <a href={getLocalePath(lang, '/vigo/')} class="inline-block mt-6 text-primary-600 hover:text-primary-700 font-semibold transition-colors">
+          {t(lang, 'vigo.title')} &rarr;
+        </a>
       </div>
     </div>
   </section>
+
+  <!-- FAQ -->
   <FAQ lang={lang} />
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-    <div class="bg-primary-800 rounded-2xl p-8 md:p-12 text-center text-white">
-      <h2 class="font-display text-2xl md:text-3xl font-bold mb-3">{t(lang, 'home.cta')}</h2>
-      <p class="text-primary-200 mb-6 max-w-xl mx-auto">{t(lang, 'home.cta.text')}</p>
-      <a href={getLocalePath(lang, '/contacto/')} class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">{t(lang, 'home.cta.button')}</a>
+
+  <!-- CTA -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 reveal">
+    <div class="relative bg-gradient-to-br from-primary-800 via-primary-900 to-[#132a42] rounded-2xl p-8 md:p-12 text-center text-white overflow-hidden">
+      <div class="absolute inset-0 hero-pattern"></div>
+      <div class="relative">
+        <h2 class="font-display text-2xl md:text-3xl font-bold mb-3">{t(lang, 'home.cta')}</h2>
+        <p class="text-primary-200 mb-6 max-w-xl mx-auto">{t(lang, 'home.cta.text')}</p>
+        <a href={getLocalePath(lang, '/contacto/')} class="inline-block bg-accent-500 hover:bg-accent-600 text-white font-semibold px-8 py-3.5 rounded-lg transition-all duration-300 shadow-lg shadow-accent-500/25 hover:shadow-xl hover:shadow-accent-500/35 hover:-translate-y-0.5">
+          {t(lang, 'home.cta.button')}
+        </a>
+      </div>
     </div>
   </section>
 </Layout>

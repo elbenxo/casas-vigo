@@ -18,20 +18,23 @@ const faqs = [
 ---
 
 <section class="py-16 bg-sand-50">
-  <div class="max-w-3xl mx-auto px-4">
+  <div class="max-w-3xl mx-auto px-4 reveal">
     <h2 class="text-3xl font-display font-bold text-center text-gray-900 mb-10">
       {t(lang, 'faq.title')}
     </h2>
-    <div class="space-y-4">
-      {faqs.map(({ q, a }) => (
-        <details class="group bg-white rounded-lg shadow-sm border border-gray-100">
-          <summary class="flex justify-between items-center cursor-pointer p-5 font-medium text-gray-900 hover:text-primary-600">
-            {q}
-            <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="space-y-3">
+      {faqs.map(({ q, a }, i) => (
+        <details class="group bg-white rounded-xl shadow-soft border border-gray-100/80 hover:border-primary-200 transition-colors">
+          <summary class="flex justify-between items-center cursor-pointer p-5 font-medium text-gray-900 hover:text-primary-600 transition-colors">
+            <span class="flex items-center gap-3">
+              <span class="flex-shrink-0 w-7 h-7 rounded-full bg-primary-50 text-primary-600 text-xs font-bold flex items-center justify-center">{i + 1}</span>
+              {q}
+            </span>
+            <svg class="w-5 h-5 flex-shrink-0 ml-4 text-gray-400 group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </summary>
-          <div class="px-5 pb-5 text-gray-600 leading-relaxed">
+          <div class="px-5 pb-5 pl-[3.75rem] text-gray-600 leading-relaxed">
             {a}
           </div>
         </details>

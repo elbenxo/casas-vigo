@@ -17,26 +17,38 @@ const jsonLd = {
   '@type': 'LodgingBusiness',
   name: flat.name[lang],
   description: flat.description[lang],
-  address: { '@type': 'PostalAddress', streetAddress: flat.address, addressLocality: 'Vigo', addressRegion: 'Galicia', addressCountry: 'ES' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: flat.address,
+    addressLocality: 'Vigo',
+    addressRegion: 'Galicia',
+    addressCountry: 'ES',
+  },
   geo: { '@type': 'GeoCoordinates', latitude: flat.coordinates.lat, longitude: flat.coordinates.lng },
   amenityFeature: flat.amenities.map(a => ({ '@type': 'LocationFeatureSpecification', name: a, value: true })),
   makesOffer: flat.rooms.map(room => ({
-    '@type': 'Offer', name: room.name[lang], price: room.price, priceCurrency: 'EUR',
+    '@type': 'Offer',
+    name: room.name[lang],
+    price: room.price,
+    priceCurrency: 'EUR',
     availability: room.available ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
   })),
 };
 ---
 
-<Layout title={flat.name[lang]} lang={lang} path={`/pisos/${flat.slug}/`} description={`${flat.name[lang]} — ${flat.rooms.length} habitacións dende ${Math.min(...flat.rooms.map(r => r.price))} EUR/mes en ${flat.neighborhood[lang]}, Vigo`} ogImage={flat.image} jsonLd={jsonLd}>
+<Layout title={flat.name[lang]} lang={lang} path={`/pisos/${flat.slug}/`} description={`${flat.name[lang]} — ${flat.rooms.length} habitaciones desde ${Math.min(...flat.rooms.map(r => r.price))} EUR/mes en ${flat.neighborhood[lang]}, Vigo`} ogImage={flat.image} jsonLd={jsonLd}>
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <!-- Breadcrumb -->
     <nav class="text-sm text-gray-500 mb-6">
       <a href={getLocalePath(lang, '/pisos/')} class="hover:text-primary-600">{t(lang, 'nav.flats')}</a>
       <span class="mx-2">/</span>
       <span class="text-gray-800">{flat.name[lang]}</span>
     </nav>
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-      <div class="aspect-[21/9] bg-primary-100 relative overflow-hidden">
-        <img src={flat.image} alt={`${flat.name[lang]} - ${flat.rooms.length} habitacións en aluguer en ${flat.neighborhood[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" />
+
+    <!-- Header -->
+    <div class="bg-white rounded-xl shadow-soft overflow-hidden border border-gray-100/80 reveal">
+      <div class="aspect-[21/9] bg-primary-100 relative overflow-hidden img-zoom">
+        <img src={flat.image} alt={`${flat.name[lang]} - ${flat.rooms.length} habitaciones amuebladas en ${flat.neighborhood[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" />
       </div>
       <div class="p-6 md:p-8">
         <h1 class="font-display text-3xl font-bold text-gray-900">{flat.name[lang]}</h1>
@@ -44,37 +56,55 @@ const jsonLd = {
         <p class="text-gray-600 mt-4 leading-relaxed max-w-3xl">{flat.description[lang]}</p>
       </div>
     </div>
-    <div class="mt-8">
+
+    <!-- Amenities -->
+    <div class="mt-8 reveal">
       <h2 class="font-display text-xl font-semibold text-gray-900 mb-4">{t(lang, 'flat.amenities')}</h2>
       <div class="flex flex-wrap gap-2">
-        {flat.amenities.map(a => <span class="bg-primary-50 text-primary-700 text-sm font-medium px-3 py-1 rounded-full">{a}</span>)}
+        {flat.amenities.map(a => (
+          <span class="bg-primary-50 text-primary-700 text-sm font-medium px-3 py-1.5 rounded-full border border-primary-100">{a}</span>
+        ))}
       </div>
     </div>
+
+    <!-- Pricing Table -->
     <PricingTable rooms={flat.rooms} lang={lang} />
+
+    <!-- Rooms -->
     <div class="mt-10">
-      <h2 class="font-display text-xl font-semibold text-gray-900 mb-6">{t(lang, 'flat.rooms')}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <h2 class="font-display text-xl font-semibold text-gray-900 mb-6 reveal">{t(lang, 'flat.rooms')}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-grid">
         {flat.rooms.map(room => (
-          <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+          <div class="bg-white rounded-xl shadow-soft overflow-hidden border border-gray-100/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300">
             {room.images.length > 0 && (
-              <div class="aspect-[16/10] bg-primary-50 relative overflow-hidden">
+              <div class="aspect-[16/10] bg-primary-50 relative overflow-hidden img-zoom">
                 <img src={room.images[0]} alt={`${room.name[lang]} en ${flat.name[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
               </div>
             )}
             <div class="p-6">
             <div class="flex items-center justify-between mb-3">
               <h3 class="font-semibold text-gray-900">{room.name[lang]}</h3>
-              <span class:list={['text-xs font-semibold px-2 py-1 rounded-full', room.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500']}>
+              <span class:list={[
+                'text-xs font-semibold px-2 py-1 rounded-full',
+                room.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500',
+              ]}>
                 {room.available ? t(lang, 'flats.available') : t(lang, 'flats.occupied')}
               </span>
             </div>
             <p class="text-2xl font-bold text-primary-700">{room.price}&euro;<span class="text-sm font-normal text-gray-500">{t(lang, 'flats.month')}</span></p>
             <p class="text-sm text-gray-500 mt-1">{room.size}</p>
             <ul class="mt-3 space-y-1">
-              {room.features.map(f => <li class="text-sm text-gray-600 flex items-center gap-2"><span class="w-1.5 h-1.5 bg-primary-400 rounded-full"></span>{f}</li>)}
+              {room.features.map(f => (
+                <li class="text-sm text-gray-600 flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 bg-primary-400 rounded-full"></span>
+                  {f}
+                </li>
+              ))}
             </ul>
             {room.available && (
-              <a href={getLocalePath(lang, '/contacto/')} class="mt-4 block text-center bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 rounded-lg transition-colors text-sm">{t(lang, 'flat.contact')}</a>
+              <a href={getLocalePath(lang, '/contacto/')} class="mt-4 block text-center bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 rounded-lg transition-all duration-300 text-sm hover:shadow-md">
+                {t(lang, 'flat.contact')}
+              </a>
             )}
             </div>
           </div>
@@ -82,12 +112,13 @@ const jsonLd = {
       </div>
     </div>
 
+    <!-- Reviews -->
     {flat.reviews.length > 0 && (
-      <div class="mt-10">
+      <div class="mt-10 reveal">
         <h2 class="font-display text-xl font-semibold text-gray-900 mb-6">{t(lang, 'flat.reviews')}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {flat.reviews.map(review => (
-            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-xl shadow-soft p-6 border border-gray-100/80">
               <p class="text-gray-600 italic leading-relaxed">"{review.text[lang]}"</p>
               <p class="mt-3 text-sm font-semibold text-primary-700">— {review.name}</p>
             </div>

@@ -10,11 +10,11 @@ const langCodes = Object.keys(languages).filter(l => l !== 'es').join('|');
 const currentPath = Astro.url.pathname.replace(/^\/casas-vigo/, '').replace(new RegExp(`^\\/(${langCodes})`), '') || '/';
 ---
 
-<nav class="bg-white shadow-sm sticky top-0 z-50">
+<nav class="bg-white/85 backdrop-blur-xl shadow-sm sticky top-0 z-50 border-b border-gray-100/60">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <div class="flex items-center justify-between h-16">
-      <a href={getLocalePath(lang, '/')} class="font-display text-xl font-bold text-primary-800">
-        Casas Vigo
+      <a href={getLocalePath(lang, '/')} class="font-display text-xl font-bold text-primary-800 tracking-tight hover:text-primary-900 transition-colors">
+        <span class="text-accent-500">C</span>asas <span class="text-accent-500">V</span>igo
       </a>
 
       <div class="hidden md:flex items-center gap-6">

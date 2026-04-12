@@ -9,11 +9,11 @@ const { lang } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-primary-900 text-white mt-16">
+<footer class="bg-gradient-to-b from-primary-900 to-[#132a42] text-white mt-16">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
-        <h3 class="font-display text-xl font-bold mb-2">Casas Vigo</h3>
+        <h3 class="font-display text-xl font-bold mb-2"><span class="text-accent-400">C</span>asas <span class="text-accent-400">V</span>igo</h3>
         <p class="text-primary-200 text-sm">{t(lang, 'footer.tagline')}</p>
       </div>
       <div>
