@@ -56,6 +56,12 @@
       <div id="desglose-body" class="space-y-2"></div>
     </div>
 
+    <!-- Breakdown by flat -->
+    <div id="por-piso" class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6 hidden">
+      <h3 class="text-sm font-semibold text-slate-700 mb-3">Costes por piso</h3>
+      <div id="por-piso-body" class="space-y-2"></div>
+    </div>
+
     <!-- Table -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
       <div class="overflow-x-auto">
@@ -129,7 +135,7 @@
       pisos = await api('/flats');
       flatMap = buildMap(pisos);
 
-      llenarMes(el('f-mes'));
+      llenarMes(el('f-mes'), undefined, true);
       llenarAno(el('f-ano'));
       llenarPisos(el('f-piso'), pisos);
 
@@ -157,37 +163,54 @@
       const ano = el('f-ano').value;
       const piso = el('f-piso').value;
       const tipo = el('f-tipo').value;
-      let q = `?month=${mes}&year=${ano}`;
+      let q = `?year=${ano}`;
+      if (mes) q += `&month=${mes}`;
       if (piso) q += `&flat_id=${piso}`;
       if (tipo) q += `&type=${tipo}`;
 
       try {
         const costes = await api(`/costs${q}`);
+        const total = costes.reduce((s, c) => s + c.amount, 0);
         renderTabla(costes);
-        renderResumen(costes);
-        renderDesglose(costes);
+        renderResumen(costes, total, !mes);
+        renderDesglose(costes, total);
+        renderPorPiso(costes, total);
       } catch (err) {
         notify(err.message, 'error');
       }
     }
 
-    function renderResumen(costes) {
-      const total = costes.reduce((s, c) => s + c.amount, 0);
+    function renderResumen(costes, total, anual) {
+      const mesesUnicos = new Set(costes.map(c => c.month)).size;
       el('resumen').innerHTML = `
         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100 col-span-2 sm:col-span-1">
-          <p class="text-sm text-slate-500">Total periodo</p>
+          <p class="text-sm text-slate-500">Total ${anual ? 'anual' : 'periodo'}</p>
           <p class="text-2xl font-bold text-red-500 mt-1">${eur(total)}</p>
-          <p class="text-xs text-slate-400 mt-1">${costes.length} registros</p>
+          <p class="text-xs text-slate-400 mt-1">${costes.length} registros${anual ? ' \u00b7 ' + mesesUnicos + ' meses' : ''}</p>
+          ${anual && mesesUnicos ? `<p class="text-xs text-slate-400">Media mensual: ${eur(total / mesesUnicos)}</p>` : ''}
         </div>
       `;
     }
 
-    function renderDesglose(costes) {
+    function renderPorPiso(costes, total) {
+      if (!costes.length) { el('por-piso').classList.add('hidden'); return; }
+      el('por-piso').classList.remove('hidden');
+      const byFlat = {};
+      costes.forEach(c => { byFlat[c.flat_id] = (byFlat[c.flat_id] || 0) + c.amount; });
+      const colors = ['bg-rose-400', 'bg-orange-400', 'bg-amber-400', 'bg-red-400', 'bg-pink-400'];
+      el('por-piso-body').innerHTML = Object.entries(byFlat)
+        .sort((a, b) => b[1] - a[1])
+        .map(([fid, amount], idx) => {
+          const flat = flatMap[fid];
+          return breakdownBar(flat ? flat.name : '#' + fid, amount, total, colors[idx % colors.length]);
+        }).join('');
+    }
+
+    function renderDesglose(costes, total) {
       if (!costes.length) { el('desglose').classList.add('hidden'); return; }
       el('desglose').classList.remove('hidden');
 
       const byType = {};
-      const total = costes.reduce((s, c) => s + c.amount, 0);
       costes.forEach(c => {
         byType[c.type] = (byType[c.type] || 0) + c.amount;
       });

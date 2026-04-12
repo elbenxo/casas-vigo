@@ -63,6 +63,8 @@ const ICONS = {
   income:   'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
   costs:    'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z',
   contacts: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+  occupancy:'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+  calendar: 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5',
   config:   'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z',
   menu:     'M4 6h16M4 12h16M4 18h16',
   x:        'M6 18L18 6M6 6l12 12',
@@ -73,12 +75,14 @@ const ICONS = {
 
 // ─── Navegacion ───────────────────────────────────────────────
 const NAV_ITEMS = [
-  { id: 'home',     href: '/dashboard/',              label: 'Inicio',        icon: 'home' },
-  { id: 'rooms',    href: '/dashboard/rooms.html',    label: 'Habitaciones',  icon: 'rooms' },
-  { id: 'income',   href: '/dashboard/income.html',   label: 'Ingresos',      icon: 'income' },
-  { id: 'costs',    href: '/dashboard/costs.html',    label: 'Costes',        icon: 'costs' },
-  { id: 'contacts', href: '/dashboard/contacts.html', label: 'Contactos',     icon: 'contacts' },
-  { id: 'config',   href: '/dashboard/config.html',   label: 'Configuracion', icon: 'config' },
+  { id: 'home',      href: '/dashboard/',                label: 'Inicio',        icon: 'home' },
+  { id: 'rooms',     href: '/dashboard/rooms.html',      label: 'Habitaciones',  icon: 'rooms' },
+  { id: 'occupancy', href: '/dashboard/occupancy.html',  label: 'Ocupacion',     icon: 'occupancy' },
+  { id: 'calendar',  href: '/dashboard/calendar.html',   label: 'Calendario',    icon: 'calendar' },
+  { id: 'income',    href: '/dashboard/income.html',     label: 'Ingresos',      icon: 'income' },
+  { id: 'costs',     href: '/dashboard/costs.html',      label: 'Costes',        icon: 'costs' },
+  { id: 'contacts',  href: '/dashboard/contacts.html',   label: 'Contactos',     icon: 'contacts' },
+  { id: 'config',    href: '/dashboard/config.html',     label: 'Configuracion', icon: 'config' },
 ];
 
 function initNav(activeId) {
@@ -129,20 +133,20 @@ function notify(msg, type = 'success') {
 
 // ─── Selectores comunes ───────────────────────────────────────
 function llenarPisos(sel, pisos, todos = true) {
-  sel.innerHTML = todos
+  let html = todos
     ? '<option value="">Todos los pisos</option>'
     : '<option value="">Seleccionar piso\u2026</option>';
-  pisos.forEach(f => {
-    sel.innerHTML += `<option value="${f.id}">${f.name}</option>`;
-  });
+  pisos.forEach(f => { html += `<option value="${f.id}">${f.name}</option>`; });
+  sel.innerHTML = html;
 }
 
-function llenarMes(sel, selected) {
-  sel.innerHTML = '';
+function llenarMes(sel, selected, includeAll = false) {
+  let html = includeAll ? '<option value="">Todo el a\u00f1o</option>' : '';
   MESES.forEach((n, i) => {
     const m = i + 1;
-    sel.innerHTML += `<option value="${m}"${m === (selected ?? MES) ? ' selected' : ''}>${n}</option>`;
+    html += `<option value="${m}"${m === (selected ?? MES) ? ' selected' : ''}>${n}</option>`;
   });
+  sel.innerHTML = html;
 }
 
 function llenarAno(sel, selected) {
@@ -199,4 +203,41 @@ function buildMap(arr, key = 'id') {
 function pct(part, total) {
   if (!total) return '0';
   return Math.round((part / total) * 100);
+}
+
+function diasHasta(dateStr) {
+  if (!dateStr) return null;
+  return Math.ceil((new Date(dateStr) - new Date()) / (1000 * 60 * 60 * 24));
+}
+
+function eurM2(price, m2) {
+  if (!price || !m2) return null;
+  return Math.round((price / m2) * 100) / 100;
+}
+
+function occBarColor(p) {
+  return p >= 80 ? 'bg-emerald-500' : p >= 50 ? 'bg-amber-400' : 'bg-red-400';
+}
+
+function breakdownBar(label, amount, total, colorClass) {
+  const p = total ? Math.round((amount / total) * 100) : 0;
+  return `
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-slate-600 w-36 truncate">${label}</span>
+      <div class="flex-1 bg-slate-100 rounded-full h-2">
+        <div class="${colorClass} h-2 rounded-full" style="width:${p}%"></div>
+      </div>
+      <span class="text-sm font-medium text-slate-700 w-24 text-right">${eur(amount)}</span>
+      <span class="text-xs text-slate-400 w-10 text-right">${p}%</span>
+    </div>`;
+}
+
+function groupByKey(arr, keyFn) {
+  const m = {};
+  arr.forEach(item => {
+    const k = keyFn(item);
+    if (!m[k]) m[k] = [];
+    m[k].push(item);
+  });
+  return m;
 }

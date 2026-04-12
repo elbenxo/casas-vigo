@@ -84,7 +84,7 @@
                     <span class="text-sm text-slate-500">${f.occ}/${f.total} <span class="text-xs">(${f.pct}%)</span></span>
                   </div>
                   <div class="w-full bg-slate-100 rounded-full h-2.5">
-                    <div class="occ-bar h-2.5 rounded-full ${f.pct >= 80 ? 'bg-emerald-500' : f.pct >= 50 ? 'bg-amber-400' : 'bg-red-400'}" style="width: ${f.pct}%"></div>
+                    <div class="occ-bar h-2.5 rounded-full ${occBarColor(f.pct)}" style="width: ${f.pct}%"></div>
                   </div>
                 </div>
               `).join('')}

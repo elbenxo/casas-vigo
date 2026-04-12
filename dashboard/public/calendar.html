@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+  <style>
+    .timeline-row { display: grid; grid-template-columns: 140px 1fr; }
+    .timeline-bar { position: absolute; top: 3px; bottom: 3px; border-radius: 4px; min-width: 3px; cursor: default; }
+    .timeline-bar:hover .tt { display: block; }
+    .tt { display: none; position: absolute; z-index: 20; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); pointer-events: none; }
+    .grid-line { position: absolute; top: 0; bottom: 0; width: 1px; background: #e2e8f0; }
+    .today-line { position: absolute; top: 0; bottom: 0; width: 2px; background: #f87171; z-index: 5; }
+    .view-btn { padding: 0.375rem 0.75rem; font-size: 0.875rem; border-radius: 0.5rem; transition: all 0.15s; }
+    .view-btn.active { background: #4f46e5; color: white; }
+    .view-btn:not(.active) { background: #f1f5f9; color: #475569; }
+    .view-btn:not(.active):hover { background: #e2e8f0; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Calendario de Alquileres</h2>
+        <p class="text-slate-500 text-sm mt-1">Periodos de contrato por habitacion</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- View toggle -->
+        <div class="flex gap-1">
+          <button id="btn-year" onclick="setView('year')" class="view-btn active">Año</button>
+          <button id="btn-month" onclick="setView('month')" class="view-btn">Mes</button>
+        </div>
+        <!-- Navigation -->
+        <div class="flex items-center gap-1">
+          <button onclick="navegar(-1)" class="px-3 py-1.5 bg-slate-100 rounded-lg text-sm hover:bg-slate-200">&larr;</button>
+          <span id="label-periodo" class="text-lg font-bold text-slate-800 min-w-[120px] text-center"></span>
+          <button onclick="navegar(1)" class="px-3 py-1.5 bg-slate-100 rounded-lg text-sm hover:bg-slate-200">&rarr;</button>
+          <button onclick="irAHoy()" class="ml-1 px-3 py-1.5 bg-slate-100 rounded-lg text-xs hover:bg-slate-200 text-slate-500">Hoy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex flex-wrap gap-4 mb-4 text-xs text-slate-500">
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-indigo-400 inline-block"></span> Contrato activo</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span> Vence pronto</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-red-400 inline-block"></span> Vencido</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-100 border border-emerald-300 inline-block"></span> Libre</span>
+      <span class="flex items-center gap-1 ml-auto"><span class="w-6 border-t-2 border-red-400 inline-block"></span> Hoy</span>
+    </div>
+
+    <div id="calendario" class="space-y-6"></div>
+  </main>
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('calendar');
+
+    let view = 'year'; // 'year' | 'month'
+    let currentYear = ANO;
+    let currentMonth = MES; // 1-12
+    let allPisos = [], allHabs = [], allContactos = [], roomsByFlat = {};
+
+    async function init() {
+      [allPisos, allHabs, allContactos] = await Promise.all([
+        api('/flats'), api('/rooms'), api('/contacts?role=tenant')
+      ]);
+      roomsByFlat = groupByKey(allHabs, r => r.flat_id);
+      render();
+    }
+
+    function setView(v) {
+      view = v;
+      el('btn-year').className = 'view-btn' + (v === 'year' ? ' active' : '');
+      el('btn-month').className = 'view-btn' + (v === 'month' ? ' active' : '');
+      render();
+    }
+
+    function navegar(delta) {
+      if (view === 'year') {
+        currentYear += delta;
+      } else {
+        currentMonth += delta;
+        if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+        if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+      }
+      render();
+    }
+
+    function irAHoy() {
+      currentYear = ANO;
+      currentMonth = MES;
+      render();
+    }
+
+    function pctInRange(date, start, end) {
+      if (end - start === 0) return 0;
+      return Math.max(0, Math.min(100, ((date - start) / (end - start)) * 100));
+    }
+
+    function contractBarColor(t) {
+      if (!t.contract_end) return 'bg-indigo-400';
+      const dias = diasHasta(t.contract_end);
+      if (dias <= 0) return 'bg-red-400';
+      if (dias <= 30) return 'bg-amber-400';
+      return 'bg-indigo-400';
+    }
+
+    function barTooltip(t) {
+      const endLabel = t.contract_end ? fecha(t.contract_end) : 'indefinido';
+      const dias = t.contract_end ? diasHasta(t.contract_end) : null;
+      let extra = '';
+      if (dias !== null && dias <= 0) extra = '<br><span class="text-red-300">Contrato vencido</span>';
+      else if (dias !== null && dias <= 30) extra = '<br><span class="text-amber-300">Vence en ' + dias + ' dias</span>';
+      else if (dias === null) extra = '<br><span class="text-slate-300">Contrato indefinido</span>';
+      return `<div class="tt bg-slate-800 text-white text-xs rounded px-2 py-1.5 whitespace-nowrap shadow-lg">
+        <strong>${t.name}</strong><br>${fecha(t.contract_start)} \u2014 ${endLabel}${extra}</div>`;
+    }
+
+    function render() {
+      const tenantByRoom = {};
+      allContactos.forEach(c => {
+        if (!c.room_id) return;
+        if (!tenantByRoom[c.room_id]) tenantByRoom[c.room_id] = [];
+        tenantByRoom[c.room_id].push(c);
+      });
+
+      if (view === 'year') renderYear(tenantByRoom);
+      else renderMonth(tenantByRoom);
+    }
+
+    function renderYear(tenantByRoom) {
+      el('label-periodo').textContent = currentYear;
+
+      const ys = new Date(currentYear, 0, 1);
+      const ye = new Date(currentYear + 1, 0, 1);
+      const hoy = new Date();
+      const hoyPct = pctInRange(hoy, ys, ye);
+      const showToday = hoy >= ys && hoy < ye;
+
+      const monthPcts = [];
+      for (let m = 0; m < 12; m++) monthPcts.push(pctInRange(new Date(currentYear, m, 1), ys, ye));
+
+      const monthLabels = MESES.map((name, i) => {
+        const left = monthPcts[i];
+        const width = (i < 11 ? monthPcts[i + 1] : 100) - left;
+        return `<div class="absolute text-xs text-slate-400 text-center" style="left:${left}%;width:${width}%">${name.substring(0, 3)}</div>`;
+      }).join('');
+
+      const gridLines = monthPcts.map(p => `<div class="grid-line" style="left:${p}%"></div>`).join('');
+      const todayLine = showToday ? `<div class="today-line" style="left:${hoyPct}%"></div>` : '';
+
+      el('calendario').innerHTML = allPisos.map(f => {
+        const rooms = roomsByFlat[f.id] || [];
+        const rows = rooms.map(r => buildRow(r, tenantByRoom, ys, ye, gridLines, todayLine)).join('');
+        return flatBlock(f, monthLabels, rows);
+      }).join('');
+    }
+
+    function renderMonth(tenantByRoom) {
+      el('label-periodo').textContent = mesNombre(currentMonth) + ' ' + currentYear;
+
+      const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+      const ms = new Date(currentYear, currentMonth - 1, 1);
+      const me = new Date(currentYear, currentMonth, 1); // first of next month
+      const hoy = new Date();
+      const hoyPct = pctInRange(hoy, ms, me);
+      const showToday = hoy >= ms && hoy < me;
+
+      // Day labels — show every day but only label key ones
+      const dayPcts = [];
+      for (let d = 1; d <= daysInMonth; d++) {
+        dayPcts.push({ day: d, pct: pctInRange(new Date(currentYear, currentMonth - 1, d), ms, me) });
+      }
+
+      // Grid lines for weeks (every Monday) + day 1, 10, 20
+      const gridLines = dayPcts
+        .filter(d => {
+          const dow = new Date(currentYear, currentMonth - 1, d.day).getDay();
+          return dow === 1 || d.day === 1; // Mondays + 1st
+        })
+        .map(d => `<div class="grid-line" style="left:${d.pct}%"></div>`)
+        .join('');
+
+      // Day labels: show 1, 5, 10, 15, 20, 25 and last
+      const dayWidth = 100 / daysInMonth;
+      const dayLabels = dayPcts
+        .filter(d => d.day === 1 || d.day % 5 === 0 || d.day === daysInMonth)
+        .map(d => `<div class="absolute text-xs text-slate-400 text-center" style="left:${d.pct}%;width:${dayWidth}%">${d.day}</div>`)
+        .join('');
+
+      const todayLine = showToday ? `<div class="today-line" style="left:${hoyPct}%"></div>` : '';
+
+      el('calendario').innerHTML = allPisos.map(f => {
+        const rooms = roomsByFlat[f.id] || [];
+        const rows = rooms.map(r => buildRow(r, tenantByRoom, ms, me, gridLines, todayLine)).join('');
+        return flatBlock(f, dayLabels, rows);
+      }).join('');
+    }
+
+    function buildRow(r, tenantByRoom, rangeStart, rangeEnd, gridLines, todayLine) {
+      const tenants = tenantByRoom[r.id] || [];
+      const rowBg = r.available ? 'bg-emerald-50/50' : '';
+
+      const bars = tenants.map(t => {
+        if (!t.contract_start) return '';
+        const cStart = new Date(t.contract_start);
+        const cEnd = t.contract_end ? new Date(t.contract_end) : rangeEnd;
+        if (cEnd < rangeStart || cStart >= rangeEnd) return '';
+
+        const left = pctInRange(cStart < rangeStart ? rangeStart : cStart, rangeStart, rangeEnd);
+        const right = pctInRange(cEnd > rangeEnd ? rangeEnd : cEnd, rangeStart, rangeEnd);
+        const width = right - left;
+
+        return `<div class="timeline-bar ${contractBarColor(t)}" style="left:${left}%;width:${Math.max(width, 0.5)}%">${barTooltip(t)}</div>`;
+      }).join('');
+
+      return `
+        <div class="timeline-row border-b border-slate-50 hover:bg-slate-50/50">
+          <div class="flex items-center px-3 text-sm border-r border-slate-100 ${r.available ? 'text-emerald-600' : 'text-slate-700'}">
+            <span class="truncate font-medium">${r.name}</span>
+          </div>
+          <div class="relative ${rowBg}" style="min-height:32px;">
+            ${gridLines}
+            ${bars}
+            ${todayLine}
+          </div>
+        </div>`;
+    }
+
+    function flatBlock(f, headerLabels, rows) {
+      return `
+        <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-100">
+            <h3 class="text-sm font-semibold text-slate-800">${f.name}</h3>
+            <p class="text-xs text-slate-400">${f.address}</p>
+          </div>
+          <div class="overflow-x-auto">
+            <div style="min-width: 700px;">
+              <div class="timeline-row border-b border-slate-200 bg-slate-50">
+                <div class="px-3 py-1.5 text-xs text-slate-500 font-medium">Habitacion</div>
+                <div class="relative" style="height:24px;">${headerLabels}</div>
+              </div>
+              ${rows}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    init();
+  </script>
+</body>
+</html>

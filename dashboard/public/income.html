@@ -44,6 +44,18 @@
     <!-- Summary -->
     <div id="resumen" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"></div>
 
+    <!-- Per-flat breakdown -->
+    <div id="por-piso" class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6 hidden">
+      <h3 class="text-sm font-semibold text-slate-700 mb-3">Ingresos por piso</h3>
+      <div id="por-piso-body" class="space-y-2"></div>
+    </div>
+
+    <!-- Per-room breakdown -->
+    <div id="por-hab" class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6 hidden">
+      <h3 class="text-sm font-semibold text-slate-700 mb-3">Ingresos por habitacion</h3>
+      <div id="por-hab-body" class="space-y-4"></div>
+    </div>
+
     <!-- Table -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
       <div class="overflow-x-auto">
@@ -92,11 +104,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Metodo de pago</label>
-          <select id="add-method" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value="efectivo">Efectivo</option>
-            <option value="transferencia">Transferencia</option>
-            <option value="bizum">Bizum</option>
-          </select>
+          <select id="add-method" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
         </div>
         <div class="flex items-center gap-2">
           <input type="checkbox" id="add-confirmed" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
@@ -123,13 +131,17 @@
       roomMap = buildMap(habitaciones);
       flatMap = buildMap(pisos);
 
-      llenarMes(el('f-mes'));
+      llenarMes(el('f-mes'), undefined, true);
       llenarAno(el('f-ano'));
       llenarPisos(el('f-piso'), pisos);
 
       llenarMes(el('add-month'));
       llenarAno(el('add-year'));
       llenarHabitacionesPorPiso(el('add-room'), pisos, habitaciones);
+
+      const addMethod = el('add-method');
+      addMethod.innerHTML = Object.entries(METODOS_PAGO)
+        .map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
 
       await cargarIngresos();
     }
@@ -138,28 +150,33 @@
       const mes = el('f-mes').value;
       const ano = el('f-ano').value;
       const piso = el('f-piso').value;
-      let query = `?month=${mes}&year=${ano}`;
+      let query = `?year=${ano}`;
+      if (mes) query += `&month=${mes}`;
       if (piso) query += `&flat_id=${piso}`;
 
       try {
         const ingresos = await api(`/income${query}`);
+        const total = ingresos.reduce((s, i) => s + i.amount, 0);
         renderTabla(ingresos);
-        renderResumen(ingresos);
+        renderResumen(ingresos, total, !mes);
+        renderPorPiso(ingresos, total);
+        renderPorHabitacion(ingresos);
       } catch (err) {
         notify(err.message, 'error');
       }
     }
 
-    function renderResumen(ingresos) {
-      const total = ingresos.reduce((s, i) => s + i.amount, 0);
+    function renderResumen(ingresos, total, anual) {
       const confirmados = ingresos.filter(i => i.confirmed).reduce((s, i) => s + i.amount, 0);
       const pendientes = total - confirmados;
+      const mesesUnicos = new Set(ingresos.map(i => i.month)).size;
 
       el('resumen').innerHTML = `
         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-          <p class="text-sm text-slate-500">Total periodo</p>
+          <p class="text-sm text-slate-500">Total ${anual ? 'anual' : 'periodo'}</p>
           <p class="text-2xl font-bold text-emerald-600 mt-1">${eur(total)}</p>
-          <p class="text-xs text-slate-400 mt-1">${ingresos.length} registros</p>
+          <p class="text-xs text-slate-400 mt-1">${ingresos.length} registros${anual ? ' \u00b7 ' + mesesUnicos + ' meses' : ''}</p>
+          ${anual && mesesUnicos ? `<p class="text-xs text-slate-400">Media mensual: ${eur(total / mesesUnicos)}</p>` : ''}
         </div>
         <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
           <p class="text-sm text-slate-500">Confirmados</p>
@@ -170,6 +187,54 @@
           <p class="text-2xl font-bold ${pendientes > 0 ? 'text-amber-500' : 'text-slate-300'} mt-1">${eur(pendientes)}</p>
         </div>
       `;
+    }
+
+    function renderPorPiso(ingresos, total) {
+      if (!ingresos.length) { el('por-piso').classList.add('hidden'); return; }
+      el('por-piso').classList.remove('hidden');
+      const byFlat = {};
+      ingresos.forEach(i => {
+        const room = roomMap[i.room_id];
+        const fid = room ? room.flat_id : 0;
+        byFlat[fid] = (byFlat[fid] || 0) + i.amount;
+      });
+      const colors = ['bg-indigo-400', 'bg-emerald-400', 'bg-amber-400', 'bg-rose-400', 'bg-purple-400'];
+      el('por-piso-body').innerHTML = Object.entries(byFlat)
+        .sort((a, b) => b[1] - a[1])
+        .map(([fid, amount], idx) => {
+          const flat = flatMap[fid];
+          return breakdownBar(flat ? flat.name : 'Sin piso', amount, total, colors[idx % colors.length]);
+        }).join('');
+    }
+
+    function renderPorHabitacion(ingresos) {
+      if (!ingresos.length) { el('por-hab').classList.add('hidden'); return; }
+      el('por-hab').classList.remove('hidden');
+      const tree = {};
+      ingresos.forEach(i => {
+        const room = roomMap[i.room_id];
+        const fid = room ? room.flat_id : 0;
+        if (!tree[fid]) tree[fid] = {};
+        tree[fid][i.room_id] = (tree[fid][i.room_id] || 0) + i.amount;
+      });
+      el('por-hab-body').innerHTML = Object.entries(tree).map(([fid, rooms]) => {
+        const flat = flatMap[fid];
+        const flatTotal = Object.values(rooms).reduce((s, a) => s + a, 0);
+        const roomRows = Object.entries(rooms)
+          .sort((a, b) => b[1] - a[1])
+          .map(([rid, amount]) => {
+            const room = roomMap[rid];
+            return breakdownBar(room ? room.name : '#' + rid, amount, flatTotal, 'bg-indigo-300');
+          }).join('');
+        return `
+          <div>
+            <div class="flex justify-between items-baseline mb-2">
+              <span class="text-sm font-medium text-slate-800">${flat ? flat.name : 'Sin piso'}</span>
+              <span class="text-sm font-semibold text-emerald-600">${eur(flatTotal)}</span>
+            </div>
+            <div class="space-y-1 pl-2">${roomRows}</div>
+          </div>`;
+      }).join('');
     }
 
     function renderTabla(ingresos) {

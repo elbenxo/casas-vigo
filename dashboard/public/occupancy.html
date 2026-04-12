@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ocupacion — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Ocupacion</h2>
+        <p class="text-slate-500 text-sm mt-1">Estado de habitaciones por piso</p>
+      </div>
+      <div>
+        <select id="f-piso" onchange="render()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></select>
+      </div>
+    </div>
+
+    <!-- Global summary -->
+    <div id="resumen" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"></div>
+
+    <!-- Yield ranking -->
+    <div id="rendimiento" class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6 hidden">
+      <h3 class="text-sm font-semibold text-slate-700 mb-3">Rendimiento por m² (EUR/m²/mes)</h3>
+      <div id="rendimiento-body"></div>
+    </div>
+
+    <!-- Expiring soon -->
+    <div id="vencimientos" class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-6 hidden">
+      <h3 class="text-sm font-semibold text-slate-700 mb-3">Contratos por vencer (proximos 60 dias)</h3>
+      <div id="vencimientos-body"></div>
+    </div>
+
+    <!-- Per-flat sections -->
+    <div id="pisos" class="space-y-6"></div>
+  </main>
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script>
+    initNav('occupancy');
+
+    let allPisos = [], allHabs = [], allTenants = [], tenantByRoom = {}, flatMap = {}, roomMap = {}, roomsByFlat = {};
+
+    async function init() {
+      try {
+        [allPisos, allHabs, allTenants] = await Promise.all([
+          api('/flats'), api('/rooms'), api('/contacts?role=tenant')
+        ]);
+        tenantByRoom = {};
+        allTenants.forEach(c => { if (c.room_id) tenantByRoom[c.room_id] = c; });
+        flatMap = buildMap(allPisos);
+        roomMap = buildMap(allHabs);
+        roomsByFlat = groupByKey(allHabs, r => r.flat_id);
+
+        llenarPisos(el('f-piso'), allPisos);
+        render();
+      } catch (err) {
+        el('pisos').innerHTML = `
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+            <p class="text-red-600 font-medium">Error al cargar datos</p>
+            <p class="text-red-400 text-sm mt-1">${err.message}</p>
+          </div>`;
+      }
+    }
+
+    function render() {
+      const filtroFlat = el('f-piso').value;
+      const pisos = filtroFlat ? allPisos.filter(f => f.id == filtroFlat) : allPisos;
+      const habitaciones = filtroFlat ? allHabs.filter(r => r.flat_id == filtroFlat) : allHabs;
+
+      const totalRooms = habitaciones.length;
+      const available = habitaciones.filter(r => r.available).length;
+      const occupied = totalRooms - available;
+      const occPct = pct(occupied, totalRooms);
+
+      // Yield ranking (computed once, reused for summary + ranking section)
+      const ranked = habitaciones
+        .filter(r => r.price_monthly && r.size_m2)
+        .map(r => ({ ...r, yield: eurM2(r.price_monthly, r.size_m2), flat: flatMap[r.flat_id] }))
+        .sort((a, b) => b.yield - a.yield);
+      const avgYield = ranked.length ? (ranked.reduce((s, r) => s + r.yield, 0) / ranked.length).toFixed(2) : '\u2014';
+      const potentialIncome = habitaciones.filter(r => !r.available).reduce((s, r) => s + (r.price_monthly || 0), 0);
+
+      el('resumen').innerHTML = `
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Total habitaciones</p>
+          <p class="text-3xl font-bold text-slate-800 mt-1">${totalRooms}</p>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Ocupadas / Libres</p>
+          <p class="text-3xl font-bold text-slate-800 mt-1">${occupied} <span class="text-lg text-slate-400 font-normal">/ ${available}</span></p>
+          <div class="w-full bg-slate-100 rounded-full h-2 mt-2">
+            <div class="occ-bar h-2 rounded-full ${occBarColor(occPct)}" style="width:${occPct}%"></div>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">${occPct}% ocupacion</p>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Rendimiento medio</p>
+          <p class="text-3xl font-bold text-indigo-600 mt-1">${avgYield}</p>
+          <p class="text-xs text-slate-400 mt-1">EUR/m\u00b2/mes</p>
+        </div>
+        <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm text-slate-500">Ingresos potenciales</p>
+          <p class="text-3xl font-bold text-emerald-600 mt-1">${eur(potentialIncome)}</p>
+          <p class="text-xs text-slate-400 mt-1">ocupadas este mes</p>
+        </div>
+      `;
+
+      if (ranked.length) {
+        el('rendimiento').classList.remove('hidden');
+        const maxY = ranked[0].yield;
+        el('rendimiento-body').innerHTML = `
+          <div class="space-y-1.5">
+            ${ranked.map(r => {
+              const w = maxY ? Math.round((r.yield / maxY) * 100) : 0;
+              const barColor = r.available ? 'bg-slate-300' : 'bg-indigo-400';
+              return `
+                <div class="flex items-center gap-2 text-sm">
+                  <span class="text-slate-600 w-28 truncate" title="${r.flat ? r.flat.name : ''}">${r.name}</span>
+                  <span class="text-slate-400 w-16 text-xs">${r.size_m2}m\u00b2 \u00b7 ${eur(r.price_monthly)}</span>
+                  <div class="flex-1 bg-slate-100 rounded-full h-1.5">
+                    <div class="${barColor} h-1.5 rounded-full" style="width:${w}%"></div>
+                  </div>
+                  <span class="font-medium text-slate-700 w-20 text-right">${r.yield.toFixed(2)} \u20ac/m\u00b2</span>
+                </div>`;
+            }).join('')}
+          </div>`;
+      } else {
+        el('rendimiento').classList.add('hidden');
+      }
+
+      // Expiring soon (next 60 days)
+      const hoy = new Date();
+      const en60 = new Date(hoy.getTime() + 60 * 24 * 60 * 60 * 1000);
+      const roomIds = new Set(habitaciones.map(r => r.id));
+      const expiring = Object.values(tenantByRoom)
+        .filter(c => roomIds.has(c.room_id) && c.contract_end && new Date(c.contract_end) <= en60)
+        .sort((a, b) => new Date(a.contract_end) - new Date(b.contract_end));
+
+      if (expiring.length) {
+        el('vencimientos').classList.remove('hidden');
+        el('vencimientos-body').innerHTML = `
+          <div class="space-y-2">
+            ${expiring.map(c => {
+              const dias = diasHasta(c.contract_end);
+              const room = roomMap[c.room_id];
+              const flat = room ? flatMap[room.flat_id] : null;
+              const urgency = dias <= 0 ? 'text-red-600 font-semibold' : dias <= 30 ? 'text-amber-600 font-medium' : 'text-slate-600';
+              const badge = dias <= 0
+                ? '<span class="badge bg-red-100 text-red-700">Vencido</span>'
+                : dias <= 30
+                  ? '<span class="badge bg-amber-100 text-amber-700">' + dias + ' dias</span>'
+                  : '<span class="badge bg-slate-100 text-slate-600">' + dias + ' dias</span>';
+              return `
+                <div class="flex items-center justify-between gap-3 py-1.5 border-b border-slate-50 last:border-0">
+                  <div class="flex items-center gap-3">
+                    ${badge}
+                    <div>
+                      <span class="text-sm font-medium text-slate-800">${c.name}</span>
+                      <span class="text-xs text-slate-400 ml-2">${room ? room.name : ''} \u00b7 ${flat ? flat.name : ''}</span>
+                    </div>
+                  </div>
+                  <span class="text-sm ${urgency}">${fecha(c.contract_end)}</span>
+                </div>`;
+            }).join('')}
+          </div>`;
+      } else {
+        el('vencimientos').classList.add('hidden');
+      }
+
+      // Per-flat sections
+      el('pisos').innerHTML = pisos.map(f => {
+        const rooms = roomsByFlat[f.id] || [];
+        const fOcc = rooms.filter(r => !r.available).length;
+        const fPct = pct(fOcc, rooms.length);
+        const fYields = rooms.filter(r => r.price_monthly && r.size_m2).map(r => eurM2(r.price_monthly, r.size_m2));
+        const fAvgYield = fYields.length ? (fYields.reduce((s, y) => s + y, 0) / fYields.length).toFixed(2) : '\u2014';
+
+        const roomCards = rooms.map(r => {
+          const avail = r.available;
+          const tenant = tenantByRoom[r.id];
+          const dias = tenant ? diasHasta(tenant.contract_end) : null;
+          const yieldVal = eurM2(r.price_monthly, r.size_m2);
+
+          const border = avail ? 'border-emerald-200' : dias !== null && dias <= 30 ? 'border-amber-300' : 'border-slate-200';
+          const bg = avail ? 'bg-emerald-50' : dias !== null && dias <= 0 ? 'bg-red-50' : 'bg-white';
+
+          let statusBadge;
+          if (avail) {
+            statusBadge = '<span class="badge bg-emerald-100 text-emerald-700">Libre</span>';
+          } else if (dias !== null && dias <= 0) {
+            statusBadge = '<span class="badge bg-red-100 text-red-700">Vencido</span>';
+          } else if (dias !== null && dias <= 30) {
+            statusBadge = '<span class="badge bg-amber-100 text-amber-700">' + dias + 'd</span>';
+          } else {
+            statusBadge = '<span class="badge bg-slate-200 text-slate-600">Ocupada</span>';
+          }
+
+          const size = r.size_m2 ? `${r.size_m2} m\u00b2` : '';
+          const bed = r.bed_type || '';
+          const details = [size, bed].filter(Boolean).join(' \u00b7 ');
+
+          const tenantInfo = tenant
+            ? `<p class="text-xs text-slate-500 mt-1">${tenant.name}</p>
+               <p class="text-xs text-slate-400">Hasta ${fecha(tenant.contract_end)}</p>`
+            : '';
+
+          const availFrom = avail && r.available_from
+            ? `<p class="text-xs text-emerald-500 mt-1">Disponible ${fecha(r.available_from)}</p>`
+            : '';
+
+          return `
+            <div class="${bg} border ${border} rounded-lg p-4">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <p class="text-sm font-medium text-slate-800">${r.name}</p>
+                  ${details ? `<p class="text-xs text-slate-400">${details}</p>` : ''}
+                </div>
+                ${statusBadge}
+              </div>
+              <div class="flex items-baseline gap-2 mt-1">
+                ${r.price_monthly ? `<span class="text-sm font-semibold text-slate-700">${eur(r.price_monthly)}<span class="text-xs text-slate-400 font-normal">/mes</span></span>` : ''}
+                ${yieldVal ? `<span class="text-xs text-indigo-500 font-medium">${yieldVal.toFixed(2)} \u20ac/m\u00b2</span>` : ''}
+              </div>
+              ${tenantInfo}
+              ${availFrom}
+              ${r.note ? `<p class="text-xs text-slate-400 mt-1 italic">${r.note}</p>` : ''}
+            </div>`;
+        }).join('');
+
+        return `
+          <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="text-lg font-semibold text-slate-800">${f.name}</h3>
+                <p class="text-xs text-slate-400">${f.address}</p>
+              </div>
+              <div class="text-right">
+                <span class="text-sm font-medium text-slate-600">${fOcc}/${rooms.length} ocupadas</span>
+                <span class="text-xs text-slate-400 ml-1">(${fPct}%)</span>
+                <p class="text-xs text-indigo-500">${fAvgYield} \u20ac/m\u00b2 medio</p>
+              </div>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2 mb-4">
+              <div class="occ-bar ${occBarColor(fPct)} h-2 rounded-full" style="width:${fPct}%"></div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              ${roomCards}
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    init();
+  </script>
+</body>
+</html>
