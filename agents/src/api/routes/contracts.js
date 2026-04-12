@@ -58,11 +58,11 @@ router.get('/:id', asyncRoute((req, res) => {
 /**
  * POST /api/contracts/generate
  * Generate a contract from a template.
- * Body: { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit }
+ * Body: { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit, owner_name, utilities_provision, sign_date }
  */
 router.post('/generate', asyncRoute((req, res) => {
   const db = getDb();
-  const { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit } = req.body;
+  const { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit, owner_name, utilities_provision, sign_date } = req.body;
 
   if (!prospect_id || !room_id) {
     return res.status(400).json({ error: 'prospect_id and room_id required' });
@@ -95,6 +95,9 @@ router.post('/generate', asyncRoute((req, res) => {
     end_date: end_date ?? null,
     monthly_rent: effectiveRent,
     deposit: deposit ?? null,
+    owner_name: owner_name ?? null,
+    utilities_provision: utilities_provision ?? '25',
+    sign_date: sign_date ?? null,
     outputDir: CONTRACTS_OUTPUT_DIR,
   });
 

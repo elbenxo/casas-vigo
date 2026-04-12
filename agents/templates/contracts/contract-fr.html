@@ -29,7 +29,21 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .doc-header p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+    .translation-notice {
+      background: #f8f8f0;
+      border: 1px solid #d0c060;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #555;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
     .section-title {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
@@ -47,26 +61,23 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      display: inline;
     }
     .clause p { margin-top: 4px; text-align: justify; }
     ul.clause-list { margin-top: 6px; padding-left: 20px; }
     ul.clause-list li { margin-bottom: 4px; }
-    .notice-box {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-left: 4px solid #555;
-      padding: 10px 14px;
-      font-size: 0.82rem;
-      margin-top: 12px;
-      font-style: italic;
-      color: #555;
-    }
     .signature-section { margin-top: 60px; padding-top: 20px; }
-    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 16px;
+    }
     .signature-block { text-align: center; }
-    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-line {
+      border-top: 1px solid #1a1a1a;
+      margin-top: 60px;
+      padding-top: 8px;
+    }
     .signature-block .role {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.75rem;
@@ -75,6 +86,25 @@
       color: #555;
     }
     .signature-block .name { font-size: 0.9rem; }
+    .annex {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #1a1a1a;
+    }
+    .annex h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+    .annex-lines { border-collapse: collapse; width: 100%; }
+    .annex-lines td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
     .doc-footer {
       margin-top: 40px;
       font-size: 0.75rem;
@@ -87,8 +117,10 @@
       html { font-size: 12px; }
       body { padding: 0; max-width: none; }
       @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .no-print { display: none !important; }
       .clause { page-break-inside: avoid; }
       .signature-section { page-break-inside: avoid; }
+      .annex { page-break-before: auto; }
     }
   </style>
 </head>
@@ -96,148 +128,233 @@
 
   <div class="doc-header">
     <h1>Contrat de Location de Chambre</h1>
-    <p>Location &#xE0; usage autre que la r&#xE9;sidence principale &mdash; Vigo, Pontevedra, Espagne</p>
+    <p>&#192; Vigo, le {{sign_date}}</p>
   </div>
 
-  <div class="notice-box">
-    Note&#xA0;: Ce document est une traduction en fran&#xE7;ais &#xE0; titre informatif.
-    Le cadre juridique applicable est le droit espagnol (Ley de Arrendamientos Urbanos).
-    Tout litige sera soumis aux tribunaux de Vigo, Espagne.
+  <div class="translation-notice">
+    Ce contrat a &#233;t&#233; r&#233;dig&#233; initialement en espagnol et est r&#233;gi par le droit espagnol. Cette traduction est fournie &#224; titre indicatif uniquement&#160;; en cas de divergence, la version espagnole pr&#233;vaut.
   </div>
 
-  <div class="section-title">Parties</div>
+  <!-- R&#201;UNIS -->
+  <div class="section-title">R&#233;unis</div>
 
-  <p>&#xC0; Vigo, le <strong>{{sign_date}}</strong></p>
-
-  <p style="margin-top:14px;">
-    <strong>D&#x27;une part</strong>, M./Mme <strong>{{owner_name}}</strong>,
-    num&#xE9;ro d&#x27;identification <strong>{{owner_dni}}</strong>,
-    ci-apr&#xE8;s d&#xE9;nomm&#xE9;(e) <strong>&laquo;LE BAILLEUR&raquo;</strong>.
+  <p>
+    A. D&#8217;une part, M./Mme <strong>{{owner_name}}</strong>, majeur(e), domicili&#233;(e) &#224;
+    <strong>{{flat_address}}</strong>, ci-apr&#232;s d&#233;nomm&#233;(e) <strong>le bailleur</strong>.
   </p>
 
   <p style="margin-top:10px;">
-    <strong>D&#x27;autre part</strong>, M./Mme <strong>{{tenant_name}}</strong>,
-    num&#xE9;ro de passeport/pi&#xE8;ce d&#x27;identit&#xE9; <strong>{{tenant_dni}}</strong>,
-    de nationalit&#xE9; <strong>{{tenant_nationality}}</strong>,
-    ci-apr&#xE8;s d&#xE9;nomm&#xE9;(e) <strong>&laquo;LE LOCATAIRE&raquo;</strong>.
+    B. Et d&#8217;autre part, M./Mme <strong>{{tenant_name}}</strong>, n&#233;(e) le <strong>{{tenant_dob}}</strong>,
+    num&#233;ro d&#8217;identit&#233; <strong>{{tenant_dni}}</strong>, t&#233;l&#233;phone <strong>{{tenant_phone}}</strong>
+    et adresse &#233;lectronique <strong>{{tenant_email}}</strong>,
+    ci-apr&#232;s d&#233;nomm&#233;(e) <strong>le locataire</strong>.
   </p>
 
-  <div class="section-title">Pr&#xE9;ambule</div>
+  <!-- D&#201;CLARENT -->
+  <div class="section-title">D&#233;clarent</div>
 
   <p>
-    Le BAILLEUR est propri&#xE9;taire de l&#x27;immeuble situ&#xE9; au <strong>{{flat_address}}</strong>,
-    Vigo, Espagne, dans lequel se trouve la chambre objet du pr&#xE9;sent contrat.
+    Les deux parties agissant en leur propre nom et droit, se reconnaissant mutuellement la capacit&#233;
+    juridique n&#233;cessaire pour contracter, et &#224; cet effet,
+  </p>
+
+  <!-- EXPOSENT -->
+  <div class="section-title">Exposent</div>
+
+  <p>
+    I. Que M./Mme {{owner_name}} est propri&#233;taire du logement situ&#233; au <strong>{{flat_address}}</strong>, Vigo.
   </p>
   <p style="margin-top:8px;">
-    Les deux parties conviennent de conclure le pr&#xE9;sent contrat de location de chambre
-    conform&#xE9;ment aux conditions suivantes&#xA0;:
+    II. Que le locataire est int&#233;ress&#233;(e) par la location d&#8217;une chambre dans ledit logement
+    en tant que r&#233;sidence principale.
+  </p>
+  <p style="margin-top:8px;">
+    En cons&#233;quence de ce qui pr&#233;c&#232;de, les deux parties conviennent de formaliser le pr&#233;sent contrat de location de chambre,
+    qui sera r&#233;gi par les clauses suivantes&#160;:
   </p>
 
-  <div class="section-title">Conditions</div>
+  <!-- CLAUSES -->
+  <div class="section-title">Clauses</div>
 
   <div class="clause">
-    <span class="clause-title">Article 1 &mdash; Objet.</span>
+    <div class="clause-title">1. Objet du contrat</div>
     <p>
-      Le BAILLEUR loue au LOCATAIRE la chambre d&#xE9;nomm&#xE9;e
-      <strong>&laquo;{{room_name}}&raquo;</strong>, situ&#xE9;e dans l&#x27;appartement
-      <strong>{{flat_name}}</strong> au {{flat_address}}, Vigo. La location comprend l&#x27;acc&#xE8;s
-      aux parties communes (cuisine, salle de bain, salon et espaces partag&#xE9;s).
+      Le bailleur c&#232;de au locataire l&#8217;usage exclusif de la chambre
+      <strong>&laquo;{{room_name}}&raquo;</strong>, ainsi que le droit d&#8217;utiliser les espaces
+      et &#233;quipements communs du logement.
+    </p>
+    <p>
+      Le locataire peut r&#233;silier le contrat &#224; tout moment, moyennant un pr&#233;avis minimum de <strong>30 jours</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 2 &mdash; Dur&#xE9;e.</span>
+    <div class="clause-title">2. Dur&#233;e</div>
     <p>
-      Le pr&#xE9;sent contrat est conclu pour la p&#xE9;riode allant du <strong>{{start_date}}</strong>
-      au <strong>{{end_date}}</strong>. &#xC0; l&#x27;expiration de cette p&#xE9;riode, le contrat prend
-      fin, sauf accord &#xE9;crit de prolongation entre les parties.
+      Le contrat commencera le <strong>{{start_date}}</strong> et
+      prendra fin le <strong>{{end_date}}</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 3 &mdash; Loyer.</span>
+    <div class="clause-title">3. D&#233;p&#244;t de garantie</div>
     <p>
-      Le loyer mensuel convenu est de <strong>{{monthly_rent}} EUR</strong>, payable dans les cinq (5)
-      premiers jours de chaque mois par virement bancaire, Bizum ou esp&#xE8;ces selon accord entre les parties.
+      Le locataire remet par le pr&#233;sent acte la somme de <strong>{{deposit}} euros</strong> &#224; titre de d&#233;p&#244;t de garantie,
+      qui r&#233;pondra des obligations d&#233;coulant du contrat.
+    </p>
+    <p>
+      Le d&#233;p&#244;t sera restitu&#233; apr&#232;s la fin du contrat et la remise des cl&#233;s, une fois v&#233;rifi&#233;
+      l&#8217;&#233;tat de la chambre et du logement, et &#224; condition qu&#8217;il n&#8217;existe pas de montants impay&#233;s ou de dommages.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 4 &mdash; D&#xE9;p&#xF4;t de garantie.</span>
+    <div class="clause-title">4. Loyer et charges</div>
+    <p>4.1. Le loyer mensuel sera de <strong>{{monthly_rent}} euros</strong>.</p>
     <p>
-      Le LOCATAIRE remet en ce jour au BAILLEUR la somme de <strong>{{deposit}} EUR</strong>
-      &#xE0; titre de d&#xE9;p&#xF4;t de garantie. Cette somme sera restitu&#xE9;e &#xE0; la fin
-      du contrat, apr&#xE8;s v&#xE9;rification de l&#x27;&#xE9;tat de la chambre.
+      4.2. Les charges g&#233;n&#233;rales de l&#8217;immeuble (charges de copropri&#233;t&#233;, imp&#244;ts, internet et assurances)
+      seront &#224; la charge du bailleur.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">Article 5 &mdash; Services inclus.</span>
     <p>
-      Le loyer comprend&#xA0;: l&#x27;eau, l&#x27;&#xE9;lectricit&#xE9; (usage raisonnable),
-      la connexion WiFi et le nettoyage p&#xE9;riodique des parties communes.
-      Toute consommation excessive d&#x27;&#xE9;lectricit&#xE9; pourra faire l&#x27;objet
-      d&#x27;une facturation suppl&#xE9;mentaire.
+      4.3. Les frais de fournitures (eau, &#233;lectricit&#233; et gaz) seront r&#233;partis proportionnellement
+      entre les occupants du logement. &#192; cet effet, le locataire versera une provision
+      mensuelle de <strong>{{utilities_provision}} &euro;</strong>.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">Article 6 &mdash; R&#xE8;glement int&#xE9;rieur.</span>
-    <p>Le LOCATAIRE s&#x27;engage &#xE0; respecter les r&#xE8;gles suivantes&#xA0;:</p>
+    <p>&#192; la fin du contrat, une r&#233;gularisation sera effectu&#233;e&#160;:</p>
     <ul class="clause-list">
-      <li>Il est strictement interdit de fumer &#xE0; l&#x27;int&#xE9;rieur du logement.</li>
-      <li>Les heures de silence doivent &#xEA;tre respect&#xE9;es de 23h00 &#xE0; 08h00.</li>
-      <li>Les animaux de compagnie ne sont pas autoris&#xE9;s sans accord pr&#xE9;alable &#xE9;crit du BAILLEUR.</li>
-      <li>Les visites doivent &#xEA;tre notifi&#xE9;es et approuv&#xE9;es par le BAILLEUR &#xE0; l&#x27;avance.</li>
-      <li>Le LOCATAIRE est tenu de maintenir la chambre et les parties communes propres et en ordre.</li>
-      <li>La sous-location ou la mise &#xE0; disposition de la chambre &#xE0; des tiers est strictement interdite.</li>
+      <li>S&#8217;il y a un exc&#233;dent, il sera restitu&#233; au locataire.</li>
+      <li>S&#8217;il y a un d&#233;ficit, il sera d&#233;duit du d&#233;p&#244;t de garantie.</li>
+    </ul>
+    <p>Le bailleur fournira une copie des factures lorsqu&#8217;il le jugera opportun.</p>
+    <p>
+      4.4. Le paiement du loyer s&#8217;effectuera dans les trois premiers jours de chaque mois,
+      par le moyen convenu entre les parties.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">5. Usage du logement</div>
+    <p>
+      La chambre est destin&#233;e exclusivement &#224; la r&#233;sidence principale du locataire,
+      toute cession ou sous-location &#233;tant interdite.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">6. &#201;tat et inventaire</div>
+    <p>
+      Le logement est remis meubl&#233; et &#233;quip&#233;. Le locataire d&#233;clare en avoir v&#233;rifi&#233;
+      l&#8217;&#233;tat conform&#233;ment &#224; l&#8217;inventaire joint en annexe.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">7. Entretien et cohabitation</div>
+    <p>Le locataire s&#8217;engage &#224;&#160;:</p>
+    <ul class="clause-list">
+      <li>Maintenir la chambre et les parties communes en bon &#233;tat.</li>
+      <li>Respecter les r&#232;gles de vie commune avec les autres occupants.</li>
+      <li>Participer &#224; l&#8217;entretien et au nettoyage des parties communes.</li>
     </ul>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 7 &mdash; R&#xE9;siliation.</span>
+    <div class="clause-title">8. Nettoyage</div>
     <p>
-      Chacune des parties peut r&#xE9;silier le pr&#xE9;sent contrat avec un pr&#xE9;avis minimum
-      de <strong>trente (30) jours</strong> notifi&#xE9; par &#xE9;crit. Le non-respect grave
-      du r&#xE8;glement int&#xE9;rieur ou des obligations de paiement conf&#xE8;re au BAILLEUR
-      le droit de r&#xE9;silier le contrat imm&#xE9;diatement.
+      La chambre et le logement sont remis propres et devront &#234;tre rendus dans le m&#234;me
+      &#233;tat. Dans le cas contraire, les frais de nettoyage seront factur&#233;s, avec un minimum de <strong>50 &euro;</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 8 &mdash; Juridiction.</span>
+    <div class="clause-title">9. R&#232;gles de cohabitation</div>
     <p>
-      Pour tout litige d&#xE9;coulant du pr&#xE9;sent contrat, les deux parties se soumettent
-      express&#xE9;ment aux tribunaux de la ville de Vigo, Espagne, renonçant &#xE0; tout
-      autre for qui pourrait leur &#xEA;tre applicable.
+      Il est interdit de causer des nuisances aux voisins ou aux occupants, en particulier entre
+      <strong>22h30 et 8h00</strong>.
     </p>
   </div>
 
+  <div class="clause">
+    <div class="clause-title">10. Interdictions</div>
+    <p>Il est strictement interdit&#160;: de fumer dans le logement, d&#8217;avoir des animaux et d&#8217;organiser des f&#234;tes.</p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">11. Responsabilit&#233; vis-&#224;-vis des tiers</div>
+    <p>
+      Le locataire sera responsable des dommages caus&#233;s par les personnes
+      qu&#8217;il invite dans le logement.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">12. D&#233;g&#226;ts et r&#233;parations</div>
+    <p>Le locataire devra signaler toute panne ou d&#233;gradation.</p>
+    <ul class="clause-list">
+      <li>Les dommages individuels seront &#224; la charge du responsable.</li>
+      <li>Si aucun responsable n&#8217;est identifi&#233;, les frais seront r&#233;partis entre les occupants.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">13. Acc&#232;s au logement</div>
+    <p>
+      Le locataire autorisera l&#8217;acc&#232;s au bailleur ou &#224; des techniciens, apr&#232;s notification pr&#233;alable,
+      pour effectuer les r&#233;parations n&#233;cessaires.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">14. R&#233;siliation du contrat</div>
+    <p>
+      Le non-respect des obligations pourra entra&#238;ner la r&#233;siliation du contrat,
+      sans pr&#233;judice des actions juridiques applicables.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">15. Juridiction</div>
+    <p>Les parties se soumettent aux tribunaux de Vigo.</p>
+  </div>
+
+  <!-- SIGNATURES -->
   <div class="signature-section">
     <p>
-      En foi de quoi, les deux parties signent le pr&#xE9;sent contrat en double exemplaire
-      &#xE0; Vigo, le <strong>{{sign_date}}</strong>.
+      En foi de quoi, les parties signent le pr&#233;sent contrat en double exemplaire au lieu et &#224; la date indiqu&#233;s.
     </p>
     <div class="signature-grid">
       <div class="signature-block">
         <div class="signature-line">
-          <div class="role">Le Bailleur</div>
+          <div class="role">Le bailleur</div>
           <div class="name">{{owner_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">N&#xB0; identification&#xA0;: {{owner_dni}}</div>
         </div>
       </div>
       <div class="signature-block">
         <div class="signature-line">
-          <div class="role">Le Locataire</div>
+          <div class="role">Le locataire</div>
           <div class="name">{{tenant_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">Passeport/PI&#xA0;: {{tenant_dni}}</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ANNEXE&#160;: INVENTAIRE -->
+  <div class="annex">
+    <h2>Annexe&#160;: Inventaire des biens</h2>
+    <table class="annex-lines">
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+    </table>
+  </div>
+
   <div class="doc-footer">
-    Casas Vigo &mdash; {{flat_address}}, Vigo, Espagne &mdash; Contrat g&#xE9;n&#xE9;r&#xE9; le {{sign_date}}
+    Casas Vigo &mdash; {{flat_address}}, Vigo
   </div>
 
 </body>

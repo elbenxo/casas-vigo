@@ -66,26 +66,27 @@ function ensureOutputDir(outputDir) {
 function buildTemplateData(prospect, room, flat, contractParams) {
   const today = new Date().toISOString().slice(0, 10);
   return {
-    // Prospect / tenant
+    // Prospect / tenant (matches real contract: name, DOB, DNI, phone, email)
     tenant_name: prospect.name ?? '',
+    tenant_dob: prospect.dob ?? '',
+    tenant_dni: prospect.dni ?? '',
     tenant_phone: prospect.phone ?? '',
     tenant_email: prospect.email ?? '',
-    tenant_language: prospect.language ?? contractParams.lang ?? 'es',
+    // Owner
+    owner_name: contractParams.owner_name ?? '',
     // Room
     room_name: room.name ?? '',
-    room_slug: room.slug ?? '',
-    room_size: room.size_m2 ?? '',
-    room_bed_type: room.bed_type ?? '',
     // Flat
     flat_name: flat.name ?? '',
     flat_address: flat.address ?? '',
-    flat_neighborhood: flat.neighborhood ?? '',
     // Contract terms
     start_date: contractParams.start_date ?? '',
     end_date: contractParams.end_date ?? '',
     monthly_rent: contractParams.monthly_rent ?? room.price_monthly ?? '',
     deposit: contractParams.deposit ?? '',
+    utilities_provision: contractParams.utilities_provision ?? '25',
     // Meta
+    sign_date: contractParams.sign_date ?? today,
     contract_date: today,
     lang: contractParams.lang ?? 'es',
   };

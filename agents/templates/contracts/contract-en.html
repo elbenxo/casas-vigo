@@ -29,7 +29,21 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .doc-header p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+    .translation-notice {
+      background: #f8f8f0;
+      border: 1px solid #d0c060;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #555;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
     .section-title {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
@@ -47,8 +61,6 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      display: inline;
     }
     .clause p { margin-top: 4px; text-align: justify; }
     ul.clause-list { margin-top: 6px; padding-left: 20px; }
@@ -74,6 +86,25 @@
       color: #555;
     }
     .signature-block .name { font-size: 0.9rem; }
+    .annex {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #1a1a1a;
+    }
+    .annex h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+    .annex-lines { border-collapse: collapse; width: 100%; }
+    .annex-lines td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
     .doc-footer {
       margin-top: 40px;
       font-size: 0.75rem;
@@ -82,16 +113,6 @@
       border-top: 1px solid #e0e0e0;
       padding-top: 12px;
     }
-    .notice-box {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-left: 4px solid #555;
-      padding: 10px 14px;
-      font-size: 0.82rem;
-      margin-top: 12px;
-      font-style: italic;
-      color: #555;
-    }
     @media print {
       html { font-size: 12px; }
       body { padding: 0; max-width: none; }
@@ -99,6 +120,7 @@
       .no-print { display: none !important; }
       .clause { page-break-inside: avoid; }
       .signature-section { page-break-inside: avoid; }
+      .annex { page-break-before: auto; }
     }
   </style>
 </head>
@@ -106,145 +128,231 @@
 
   <div class="doc-header">
     <h1>Room Rental Agreement</h1>
-    <p>Non-primary-residence rental &mdash; Vigo, Pontevedra, Spain</p>
-    <p style="font-size:0.8rem;margin-top:4px;">
-      This agreement is governed by Spanish law. The landlord and tenant agree to submit any disputes
-      to the courts of Vigo.
-    </p>
+    <p>In Vigo, on {{sign_date}}</p>
   </div>
 
-  <div class="notice-box">
-    Note: This is an English translation for the tenant's understanding.
-    The legal framework is Spanish law (Ley de Arrendamientos Urbanos and applicable regulations).
+  <div class="translation-notice">
+    This contract is originally drafted in Spanish and is governed by Spanish law. This translation is provided for convenience only; in case of any discrepancy, the Spanish version prevails.
   </div>
 
-  <div class="section-title">Parties</div>
+  <!-- PARTIES PRESENT -->
+  <div class="section-title">Parties Present</div>
 
-  <p>In Vigo, on <strong>{{sign_date}}</strong></p>
-
-  <p style="margin-top:14px;">
-    <strong>Party of the first part</strong>: Mr./Ms. <strong>{{owner_name}}</strong>,
-    ID number <strong>{{owner_dni}}</strong>,
-    hereinafter referred to as the <strong>&ldquo;LANDLORD&rdquo;</strong>.
+  <p>
+    A. On one side, Mr./Ms. <strong>{{owner_name}}</strong>, of legal age, with address at
+    <strong>{{flat_address}}</strong>, hereinafter referred to as <strong>the landlord</strong>.
   </p>
 
   <p style="margin-top:10px;">
-    <strong>Party of the second part</strong>: Mr./Ms. <strong>{{tenant_name}}</strong>,
-    ID/Passport number <strong>{{tenant_dni}}</strong>,
-    nationality <strong>{{tenant_nationality}}</strong>,
-    hereinafter referred to as the <strong>&ldquo;TENANT&rdquo;</strong>.
+    B. On the other side, Mr./Ms. <strong>{{tenant_name}}</strong>, born on <strong>{{tenant_dob}}</strong>,
+    with ID number <strong>{{tenant_dni}}</strong>, phone <strong>{{tenant_phone}}</strong>
+    and email <strong>{{tenant_email}}</strong>,
+    hereinafter referred to as <strong>the tenant</strong>.
   </p>
 
-  <div class="section-title">Background</div>
+  <!-- ACT IN THEIR OWN RIGHT -->
+  <div class="section-title">Act in Their Own Right</div>
 
   <p>
-    The LANDLORD is the owner of the property located at <strong>{{flat_address}}</strong>, Vigo, Spain,
-    which contains the room that is the subject of this agreement.
+    Both parties acting in their own name and right, mutually acknowledging the legal capacity
+    required to enter into this agreement, and to that effect,
+  </p>
+
+  <!-- SET FORTH -->
+  <div class="section-title">Set Forth</div>
+
+  <p>
+    I. That Mr./Ms. {{owner_name}} is the owner of the property located at <strong>{{flat_address}}</strong>, Vigo.
   </p>
   <p style="margin-top:8px;">
-    Both parties, in the capacity they represent, agree to enter into this room rental agreement
-    subject to the following terms and conditions:
+    II. That the tenant is interested in renting a room in said property as their primary residence.
+  </p>
+  <p style="margin-top:8px;">
+    In view of the above, both parties agree to formalise this room rental agreement, which shall be governed by the following:
   </p>
 
-  <div class="section-title">Terms and Conditions</div>
+  <!-- CLAUSES -->
+  <div class="section-title">Clauses</div>
 
   <div class="clause">
-    <span class="clause-title">Article 1 &mdash; Subject Matter.</span>
+    <div class="clause-title">1. Subject of the Agreement</div>
     <p>
-      The LANDLORD rents to the TENANT the room named <strong>&ldquo;{{room_name}}&rdquo;</strong>,
-      located in apartment <strong>{{flat_name}}</strong> at {{flat_address}}, Vigo. The rental includes
-      access to the shared areas of the apartment (kitchen, bathroom, living room and other common areas).
+      The landlord grants the tenant exclusive use of room
+      <strong>&laquo;{{room_name}}&raquo;</strong>, as well as the right to use the shared areas
+      and common facilities of the property.
+    </p>
+    <p>
+      The tenant may withdraw from this agreement at any time, giving a minimum notice of <strong>30 days</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 2 &mdash; Duration.</span>
+    <div class="clause-title">2. Duration</div>
     <p>
-      This agreement shall be in effect from <strong>{{start_date}}</strong> to <strong>{{end_date}}</strong>.
-      Upon expiry, the agreement shall terminate unless the parties expressly agree to an extension in writing.
+      The agreement shall commence on <strong>{{start_date}}</strong> and
+      end on <strong>{{end_date}}</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 3 &mdash; Rent.</span>
+    <div class="clause-title">3. Security Deposit</div>
     <p>
-      The agreed monthly rent is <strong>{{monthly_rent}} EUR</strong>, payable within the first five (5) days
-      of each calendar month by bank transfer, Bizum or cash as agreed between the parties.
+      The tenant hereby delivers the sum of <strong>{{deposit}} euros</strong> as a security deposit,
+      which shall cover any obligations arising from this agreement.
+    </p>
+    <p>
+      The deposit shall be returned after the end of the agreement and handover of keys, once the condition
+      of the room and property has been verified, and provided there are no outstanding amounts or damages.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 4 &mdash; Security Deposit.</span>
+    <div class="clause-title">4. Rent and Expenses</div>
+    <p>4.1. The monthly rent shall be <strong>{{monthly_rent}} euros</strong>.</p>
     <p>
-      The TENANT hereby delivers to the LANDLORD the amount of <strong>{{deposit}} EUR</strong> as
-      a security deposit. This amount shall be returned upon termination of the agreement, after
-      inspection of the room's condition and deduction of any damages caused.
+      4.2. General property expenses (community fees, taxes, internet and insurance)
+      shall be borne by the landlord.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">Article 5 &mdash; Included Services.</span>
     <p>
-      The rent includes: water supply, electricity (reasonable use), WiFi internet connection,
-      and periodic cleaning of shared areas. Excessive electricity use may result in an additional charge.
+      4.3. Utility costs (water, electricity and gas) shall be shared proportionally
+      among the occupants of the property. To that end, the tenant shall pay a monthly
+      provision of <strong>{{utilities_provision}} &euro;</strong>.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">Article 6 &mdash; House Rules.</span>
-    <p>The TENANT agrees to comply with the following rules:</p>
+    <p>Upon termination of the agreement, a settlement shall be made:</p>
     <ul class="clause-list">
-      <li>Smoking is strictly prohibited inside the property.</li>
-      <li>Quiet hours must be observed between 23:00 and 08:00.</li>
-      <li>Pets are not permitted without prior written consent from the LANDLORD.</li>
-      <li>Guests must be notified to and approved by the LANDLORD in advance.</li>
-      <li>The TENANT must keep the room and shared areas clean and tidy.</li>
-      <li>Subletting the room or allowing third-party use is strictly forbidden.</li>
+      <li>If there is a surplus, it shall be returned to the tenant.</li>
+      <li>If there is a deficit, it shall be deducted from the deposit.</li>
+    </ul>
+    <p>The landlord shall provide copies of invoices when deemed appropriate.</p>
+    <p>
+      4.4. Rent shall be paid within the first three days of each month,
+      by the method agreed upon between the parties.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">5. Use of the Property</div>
+    <p>
+      The room is intended exclusively as the tenant's primary residence
+      and may not be sublet or assigned to any third party.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">6. Condition and Inventory</div>
+    <p>
+      The property is delivered furnished and equipped. The tenant declares having verified
+      its condition in accordance with the inventory attached as an annex.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">7. Upkeep and Cohabitation</div>
+    <p>The tenant undertakes to:</p>
+    <ul class="clause-list">
+      <li>Keep the room and common areas in good condition.</li>
+      <li>Respect the cohabitation rules with the other occupants.</li>
+      <li>Participate in the maintenance and cleaning of common areas.</li>
     </ul>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 7 &mdash; Termination.</span>
+    <div class="clause-title">8. Cleaning</div>
     <p>
-      Either party may terminate this agreement with a minimum notice of <strong>thirty (30) days</strong>
-      communicated in writing. Serious breach of the house rules or payment obligations entitles the
-      LANDLORD to immediate termination.
+      The room and property are delivered clean and must be returned in the same
+      condition. Otherwise, cleaning costs will be charged, with a minimum of <strong>50 &euro;</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Article 8 &mdash; Jurisdiction.</span>
+    <div class="clause-title">9. Cohabitation Rules</div>
     <p>
-      For the resolution of any dispute arising from this agreement, both parties expressly submit
-      to the Courts and Tribunals of the city of Vigo, Spain, waiving any other jurisdiction
-      that might apply.
+      Causing disturbances to neighbours or other occupants shall not be permitted, especially between
+      <strong>22:30 and 8:00</strong>.
     </p>
   </div>
 
+  <div class="clause">
+    <div class="clause-title">10. Prohibitions</div>
+    <p>The following are strictly prohibited: smoking inside the property, keeping pets, and organising parties.</p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">11. Liability for Third Parties</div>
+    <p>
+      The tenant shall be responsible for any damage caused by persons
+      they invite into the property.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">12. Damages and Repairs</div>
+    <p>The tenant must report any breakdown or damage promptly.</p>
+    <ul class="clause-list">
+      <li>Individual damages shall be borne by the party responsible.</li>
+      <li>If no responsible party is identified, costs shall be shared among the occupants.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">13. Access to the Property</div>
+    <p>
+      The tenant shall permit access by the landlord or technicians, upon prior notice,
+      to carry out necessary repairs.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">14. Termination of the Agreement</div>
+    <p>
+      Failure to comply with the obligations set out herein may result in termination of the agreement,
+      without prejudice to any legal actions that may be applicable.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">15. Jurisdiction</div>
+    <p>The parties submit to the Courts and Tribunals of Vigo.</p>
+  </div>
+
+  <!-- SIGNATURES -->
   <div class="signature-section">
     <p>
-      In witness whereof, both parties sign this agreement in duplicate in Vigo, on <strong>{{sign_date}}</strong>.
+      In witness whereof, the parties sign this agreement in duplicate at the place and date indicated above.
     </p>
     <div class="signature-grid">
       <div class="signature-block">
         <div class="signature-line">
           <div class="role">The Landlord</div>
           <div class="name">{{owner_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">ID: {{owner_dni}}</div>
         </div>
       </div>
       <div class="signature-block">
         <div class="signature-line">
           <div class="role">The Tenant</div>
           <div class="name">{{tenant_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">ID/Passport: {{tenant_dni}}</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ANNEX: INVENTORY -->
+  <div class="annex">
+    <h2>Annex: Inventory of Goods</h2>
+    <table class="annex-lines">
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+    </table>
+  </div>
+
   <div class="doc-footer">
-    Casas Vigo &mdash; {{flat_address}}, Vigo, Spain &mdash; Agreement generated on {{sign_date}}
+    Casas Vigo &mdash; {{flat_address}}, Vigo
   </div>
 
 </body>

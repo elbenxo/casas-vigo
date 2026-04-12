@@ -29,7 +29,21 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .doc-header p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+    .translation-notice {
+      background: #f8f8f0;
+      border: 1px solid #d0c060;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #555;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
     .section-title {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
@@ -47,26 +61,23 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      display: inline;
     }
     .clause p { margin-top: 4px; text-align: justify; }
     ul.clause-list { margin-top: 6px; padding-left: 20px; }
     ul.clause-list li { margin-bottom: 4px; }
-    .notice-box {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-left: 4px solid #555;
-      padding: 10px 14px;
-      font-size: 0.82rem;
-      margin-top: 12px;
-      font-style: italic;
-      color: #555;
-    }
     .signature-section { margin-top: 60px; padding-top: 20px; }
-    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 16px;
+    }
     .signature-block { text-align: center; }
-    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-line {
+      border-top: 1px solid #1a1a1a;
+      margin-top: 60px;
+      padding-top: 8px;
+    }
     .signature-block .role {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.75rem;
@@ -75,6 +86,25 @@
       color: #555;
     }
     .signature-block .name { font-size: 0.9rem; }
+    .annex {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #1a1a1a;
+    }
+    .annex h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+    .annex-lines { border-collapse: collapse; width: 100%; }
+    .annex-lines td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
     .doc-footer {
       margin-top: 40px;
       font-size: 0.75rem;
@@ -87,8 +117,10 @@
       html { font-size: 12px; }
       body { padding: 0; max-width: none; }
       @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .no-print { display: none !important; }
       .clause { page-break-inside: avoid; }
       .signature-section { page-break-inside: avoid; }
+      .annex { page-break-before: auto; }
     }
   </style>
 </head>
@@ -96,149 +128,231 @@
 
   <div class="doc-header">
     <h1>Zimmer-Mietvertrag</h1>
-    <p>Vermietung zu anderen Zwecken als zur Dauermiete &mdash; Vigo, Pontevedra, Spanien</p>
+    <p>In Vigo, am {{sign_date}}</p>
   </div>
 
-  <div class="notice-box">
-    Hinweis: Dieses Dokument ist eine deutsche &#xDC;bersetzung zum besseren Verst&#xE4;ndnis des Mieters.
-    Ma&#xDF;geblich ist das spanische Recht (Ley de Arrendamientos Urbanos).
-    Streitigkeiten werden vor den Gerichten von Vigo, Spanien, ausgetragen.
+  <div class="translation-notice">
+    Dieser Vertrag wurde urspr&#252;nglich auf Spanisch verfasst und unterliegt spanischem Recht. Diese &#220;bersetzung dient nur zur Information; bei Abweichungen gilt die spanische Fassung.
   </div>
 
+  <!-- VERTRAGSPARTEIEN -->
   <div class="section-title">Vertragsparteien</div>
 
-  <p>In Vigo, am <strong>{{sign_date}}</strong></p>
-
-  <p style="margin-top:14px;">
-    <strong>Einerseits</strong>: Herr/Frau <strong>{{owner_name}}</strong>,
-    Ausweisnummer <strong>{{owner_dni}}</strong>,
-    im Folgenden <strong>&bdquo;VERMIETER&ldquo;</strong> genannt.
+  <p>
+    A. Einerseits, Herr/Frau <strong>{{owner_name}}</strong>, vollj&#228;hrig, mit Adresse
+    <strong>{{flat_address}}</strong>, nachfolgend bezeichnet als <strong>der Vermieter</strong>.
   </p>
 
   <p style="margin-top:10px;">
-    <strong>Andererseits</strong>: Herr/Frau <strong>{{tenant_name}}</strong>,
-    Reisepass-/Ausweisnummer <strong>{{tenant_dni}}</strong>,
-    Staatsangeh&#xF6;rigkeit <strong>{{tenant_nationality}}</strong>,
-    im Folgenden <strong>&bdquo;MIETER&ldquo;</strong> genannt.
+    B. Andererseits, Herr/Frau <strong>{{tenant_name}}</strong>, geboren am <strong>{{tenant_dob}}</strong>,
+    Ausweisnummer <strong>{{tenant_dni}}</strong>, Telefon <strong>{{tenant_phone}}</strong>
+    und E-Mail <strong>{{tenant_email}}</strong>,
+    nachfolgend bezeichnet als <strong>der Mieter</strong>.
   </p>
 
-  <div class="section-title">Pr&#xE4;ambel</div>
+  <!-- HANDELN IN EIGENEM NAMEN -->
+  <div class="section-title">Handeln in eigenem Namen</div>
 
   <p>
-    Der VERMIETER ist Eigent&#xFC;mer der Immobilie in der <strong>{{flat_address}}</strong>,
-    Vigo, Spanien, in der sich das Zimmer befindet, das Gegenstand dieses Vertrags ist.
+    Beide Parteien handeln in eigenem Namen und Recht, erkennen gegenseitig die erforderliche
+    Rechtsf&#228;higkeit zum Vertragsabschluss an und erkl&#228;ren zu diesem Zweck:
+  </p>
+
+  <!-- VORBEMERKUNGEN -->
+  <div class="section-title">Vorbemerkungen</div>
+
+  <p>
+    I. Herr/Frau {{owner_name}} ist Eigent&#252;mer/in der Immobilie in <strong>{{flat_address}}</strong>, Vigo.
   </p>
   <p style="margin-top:8px;">
-    Beide Parteien vereinbaren den vorliegenden Zimmer-Mietvertrag gem&#xE4;&#xDF;
-    den folgenden Bedingungen:
+    II. Der Mieter m&#246;chte ein Zimmer in dieser Unterkunft als Hauptwohnsitz mieten.
+  </p>
+  <p style="margin-top:8px;">
+    Auf der Grundlage des Vorstehenden vereinbaren beide Parteien, diesen Zimmer-Mietvertrag zu schlie&#223;en,
+    der durch die folgenden Klauseln geregelt wird:
   </p>
 
-  <div class="section-title">Vertragsbedingungen</div>
+  <!-- KLAUSELN -->
+  <div class="section-title">Klauseln</div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 1 &mdash; Mietgegenstand.</span>
+    <div class="clause-title">1. Vertragsgegenstand</div>
     <p>
-      Der VERMIETER vermietet dem MIETER das Zimmer mit der Bezeichnung
-      <strong>&bdquo;{{room_name}}&ldquo;</strong> in der Wohnung <strong>{{flat_name}}</strong>,
-      {{flat_address}}, Vigo. Die Miete beinhaltet die Nutzung der Gemeinschaftsbereiche
-      (K&#xFC;che, Bad, Wohnzimmer und sonstige Gemeinschaftsr&#xE4;ume).
+      Der Vermieter gew&#228;hrt dem Mieter die ausschlie&#223;liche Nutzung des Zimmers
+      <strong>&laquo;{{room_name}}&raquo;</strong> sowie das Recht zur Nutzung der
+      Gemeinschaftsbereiche und -einrichtungen der Unterkunft.
+    </p>
+    <p>
+      Der Mieter kann den Vertrag jederzeit mit einer Mindestkk&#252;ndigungsfrist von <strong>30 Tagen</strong> k&#252;ndigen.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 2 &mdash; Mietdauer.</span>
+    <div class="clause-title">2. Vertragsdauer</div>
     <p>
-      Dieser Vertrag gilt f&#xFC;r den Zeitraum vom <strong>{{start_date}}</strong>
-      bis zum <strong>{{end_date}}</strong>. Nach Ablauf dieser Frist endet der Vertrag,
-      sofern die Parteien keine ausdr&#xFC;ckliche schriftliche Verl&#xE4;ngerung vereinbaren.
+      Der Vertrag beginnt am <strong>{{start_date}}</strong> und
+      endet am <strong>{{end_date}}</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 3 &mdash; Miete.</span>
+    <div class="clause-title">3. Kaution</div>
     <p>
-      Die vereinbarte monatliche Miete betr&#xE4;gt <strong>{{monthly_rent}} EUR</strong>,
-      zahlbar innerhalb der ersten f&#xFC;nf (5) Tage eines jeden Monats per &#xDC;berweisung,
-      Bizum oder Barzahlung nach Vereinbarung zwischen den Parteien.
+      Der Mieter zahlt hiermit den Betrag von <strong>{{deposit}} Euro</strong> als Kaution,
+      die f&#252;r die aus dem Vertrag entstehenden Verpflichtungen haftet.
+    </p>
+    <p>
+      Die Kaution wird nach Vertragsende und R&#252;ckgabe der Schl&#252;ssel zur&#252;ckerstattet, sobald der Zustand
+      des Zimmers und der Unterkunft &#252;berpr&#252;ft wurde und keine ausstehenden Betr&#228;ge oder Sch&#228;den vorliegen.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 4 &mdash; Kaution.</span>
+    <div class="clause-title">4. Miete und Nebenkosten</div>
+    <p>4.1. Die monatliche Miete betr&#228;gt <strong>{{monthly_rent}} Euro</strong>.</p>
     <p>
-      Der MIETER &#xFC;bergibt dem VERMIETER hiermit einen Betrag von
-      <strong>{{deposit}} EUR</strong> als Kaution. Dieser Betrag wird bei Beendigung
-      des Vertrags zur&#xFC;ckerstattet, nach Pr&#xFC;fung des Zustands des Zimmers
-      und Abzug etwaiger Sch&#xE4;den.
+      4.2. Die allgemeinen Immobilienkosten (Hausgeld, Steuern, Internet und Versicherungen)
+      gehen zu Lasten des Vermieters.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">&#xA7; 5 &mdash; Inbegriffene Leistungen.</span>
     <p>
-      Die Miete umfasst: Wasser, Strom (vern&#xFC;nftiger Verbrauch), WLAN-Internetverbindung
-      und regelm&#xE4;&#xDF;ige Reinigung der Gemeinschaftsbereiche. Bei &#xFC;berm&#xE4;&#xDF;igem
-      Stromverbrauch kann ein zus&#xE4;tzlicher Aufschlag berechnet werden.
+      4.3. Die Betriebskosten (Wasser, Strom und Gas) werden anteilig auf die Bewohner verteilt.
+      Zu diesem Zweck zahlt der Mieter eine monatliche Vorauszahlung von <strong>{{utilities_provision}} &euro;</strong>.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">&#xA7; 6 &mdash; Hausordnung.</span>
-    <p>Der MIETER verpflichtet sich, folgende Regeln einzuhalten:</p>
+    <p>Bei Vertragsende erfolgt eine Abrechnung:</p>
     <ul class="clause-list">
-      <li>Das Rauchen innerhalb der Immobilie ist strengstens verboten.</li>
-      <li>Die Ruhezeiten zwischen 23:00 und 08:00 Uhr sind einzuhalten.</li>
-      <li>Haustiere sind ohne vorherige schriftliche Genehmigung des VERMIETERS nicht erlaubt.</li>
-      <li>Besucher m&#xFC;ssen dem VERMIETER vorab mitgeteilt und von ihm genehmigt werden.</li>
-      <li>Der MIETER ist verpflichtet, das Zimmer und die Gemeinschaftsbereiche sauber und ordentlich zu halten.</li>
-      <li>Die Untervermietung oder &#xDC;berlassung des Zimmers an Dritte ist strengstens verboten.</li>
+      <li>Bei einem &#220;berschuss wird dieser an den Mieter zur&#252;ckerstattet.</li>
+      <li>Bei einem Defizit wird es von der Kaution abgezogen.</li>
+    </ul>
+    <p>Der Vermieter stellt Kopien der Rechnungen zur Verf&#252;gung, wenn er es f&#252;r angemessen h&#228;lt.</p>
+    <p>
+      4.4. Die Mietzahlung erfolgt innerhalb der ersten drei Tage eines jeden Monats
+      auf dem zwischen den Parteien vereinbarten Weg.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">5. Nutzung der Unterkunft</div>
+    <p>
+      Das Zimmer ist ausschlie&#223;lich als Hauptwohnsitz des Mieters bestimmt;
+      Untervermietung oder Abtretung an Dritte ist untersagt.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">6. Zustand und Inventar</div>
+    <p>
+      Die Unterkunft wird m&#246;bliert und ausgestattet &#252;bergeben. Der Mieter erkl&#228;rt, den Zustand
+      gem&#228;&#223; dem als Anhang beigef&#252;gten Inventar &#252;berpr&#252;ft zu haben.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">7. Instandhaltung und Zusammenleben</div>
+    <p>Der Mieter verpflichtet sich:</p>
+    <ul class="clause-list">
+      <li>Das Zimmer und die Gemeinschaftsbereiche in gutem Zustand zu erhalten.</li>
+      <li>Die Hausordnung gegen&#252;ber den anderen Bewohnern einzuhalten.</li>
+      <li>An der Instandhaltung und Reinigung der Gemeinschaftsbereiche teilzunehmen.</li>
     </ul>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 7 &mdash; K&#xFC;ndigung.</span>
+    <div class="clause-title">8. Reinigung</div>
     <p>
-      Jede der Parteien kann den Vertrag mit einer Mindestkündigungsfrist von
-      <strong>drei&#xDF;ig (30) Tagen</strong> schriftlich k&#xFC;ndigen. Bei schwerwiegenden
-      Verst&#xF6;&#xDF;en gegen die Hausordnung oder Zahlungspflichten ist der VERMIETER
-      zur fristlosen K&#xFC;ndigung berechtigt.
+      Das Zimmer und die Unterkunft werden sauber &#252;bergeben und m&#252;ssen in demselben
+      Zustand zur&#252;ckgegeben werden. Andernfalls werden Reinigungskosten mit einem Mindestbetrag von <strong>50 &euro;</strong> berechnet.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 8 &mdash; Gerichtsstand.</span>
+    <div class="clause-title">9. Hausordnung</div>
     <p>
-      F&#xFC;r alle Streitigkeiten aus diesem Vertrag unterwerfen sich beide Parteien
-      ausdr&#xFC;cklich den Gerichten der Stadt Vigo, Spanien, unter Verzicht auf jeden
-      anderen Gerichtsstand, der ihnen zustehen k&#xF6;nnte.
+      Es ist nicht gestattet, Nachbarn oder Mitbewohner zu bel&#228;stigen, insbesondere zwischen
+      <strong>22:30 und 8:00 Uhr</strong>.
     </p>
   </div>
 
+  <div class="clause">
+    <div class="clause-title">10. Verbote</div>
+    <p>Folgendes ist verboten: Rauchen in der Unterkunft, Tierhaltung und das Veranstalten von Partys.</p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">11. Haftung f&#252;r Dritte</div>
+    <p>
+      Der Mieter haftet f&#252;r Sch&#228;den, die durch Personen verursacht werden,
+      die er in die Unterkunft einl&#228;dt.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">12. Sch&#228;den und Reparaturen</div>
+    <p>Der Mieter muss Sch&#228;den oder St&#246;rungen umgehend melden.</p>
+    <ul class="clause-list">
+      <li>Individuelle Sch&#228;den gehen zu Lasten des Verursachers.</li>
+      <li>Kann kein Verursacher festgestellt werden, werden die Kosten auf die Bewohner aufgeteilt.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">13. Zugang zur Unterkunft</div>
+    <p>
+      Der Mieter gestattet dem Vermieter oder Technikern nach vorheriger Ank&#252;ndigung den Zutritt,
+      um notwendige Reparaturen durchzuf&#252;hren.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">14. Vertragsk&#252;ndigung</div>
+    <p>
+      Die Verletzung der Vertragspflichten kann zur K&#252;ndigung des Vertrages f&#252;hren,
+      unbeschadet etwaiger rechtlicher Schritte.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">15. Gerichtsstand</div>
+    <p>Die Parteien unterwerfen sich den Gerichten von Vigo.</p>
+  </div>
+
+  <!-- UNTERSCHRIFTEN -->
   <div class="signature-section">
     <p>
-      Zum Zeichen des Einverst&#xE4;ndnisses unterzeichnen beide Parteien diesen Vertrag
-      in zweifacher Ausfertigung in Vigo, am <strong>{{sign_date}}</strong>.
+      Zum Zeichen des Einverst&#228;ndnisses unterzeichnen die Parteien diesen Vertrag in zweifacher Ausfertigung am angegebenen Ort und Datum.
     </p>
     <div class="signature-grid">
       <div class="signature-block">
         <div class="signature-line">
           <div class="role">Der Vermieter</div>
           <div class="name">{{owner_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">Ausweis-Nr.: {{owner_dni}}</div>
         </div>
       </div>
       <div class="signature-block">
         <div class="signature-line">
           <div class="role">Der Mieter</div>
           <div class="name">{{tenant_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">Pass/Ausweis: {{tenant_dni}}</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ANHANG: INVENTAR -->
+  <div class="annex">
+    <h2>Anhang: Inventar der Einrichtungsgegenst&#228;nde</h2>
+    <table class="annex-lines">
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+    </table>
+  </div>
+
   <div class="doc-footer">
-    Casas Vigo &mdash; {{flat_address}}, Vigo, Spanien &mdash; Vertrag erstellt am {{sign_date}}
+    Casas Vigo &mdash; {{flat_address}}, Vigo
   </div>
 
 </body>

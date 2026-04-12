@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contrato de Arrendamento de Habitaci&#xF3;n — {{tenant_name}}</title>
+  <title>Contrato de Arrendamento de Habitaci&#243;n — {{tenant_name}}</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 14px; }
@@ -29,7 +29,11 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .doc-header p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
     .section-title {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
@@ -47,16 +51,23 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      display: inline;
     }
     .clause p { margin-top: 4px; text-align: justify; }
     ul.clause-list { margin-top: 6px; padding-left: 20px; }
     ul.clause-list li { margin-bottom: 4px; }
     .signature-section { margin-top: 60px; padding-top: 20px; }
-    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 16px;
+    }
     .signature-block { text-align: center; }
-    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-line {
+      border-top: 1px solid #1a1a1a;
+      margin-top: 60px;
+      padding-top: 8px;
+    }
     .signature-block .role {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.75rem;
@@ -65,6 +76,25 @@
       color: #555;
     }
     .signature-block .name { font-size: 0.9rem; }
+    .annex {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #1a1a1a;
+    }
+    .annex h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+    .annex-lines { border-collapse: collapse; width: 100%; }
+    .annex-lines td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
     .doc-footer {
       margin-top: 40px;
       font-size: 0.75rem;
@@ -77,148 +107,242 @@
       html { font-size: 12px; }
       body { padding: 0; max-width: none; }
       @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .no-print { display: none !important; }
       .clause { page-break-inside: avoid; }
       .signature-section { page-break-inside: avoid; }
+      .annex { page-break-before: auto; }
     }
   </style>
 </head>
 <body>
 
   <div class="doc-header">
-    <h1>Contrato de Arrendamento de Habitaci&#xF3;n</h1>
-    <p>Arrendamento de uso distinto da vivenda habitual &mdash; Vigo, Pontevedra</p>
+    <h1>Contrato de Arrendamento de Habitaci&#243;n</h1>
+    <p>En Vigo, o {{sign_date}}</p>
   </div>
 
-  <div class="section-title">Comp&#xE1;recen</div>
+  <!-- REUNI&#769;DOS -->
+  <div class="section-title">Reuni&#769;dos</div>
 
-  <p>En Vigo, o d&#xED;a <strong>{{sign_date}}</strong></p>
-
-  <p style="margin-top:14px;">
-    <strong>Dunha parte</strong>, D./D&#xE3;. <strong>{{owner_name}}</strong>, con DNI <strong>{{owner_dni}}</strong>,
-    en calidade de propietario do inmoble, en diante <strong>&laquo;O ARRENDADOR&raquo;</strong>.
+  <p>
+    A. Dunha parte, D. <strong>{{owner_name}}</strong>, maior de idade, con domicilio en
+    <strong>{{flat_address}}</strong>, en diante, <strong>o arrendador</strong>.
   </p>
 
   <p style="margin-top:10px;">
-    <strong>Doutra parte</strong>, D./D&#xE3;. <strong>{{tenant_name}}</strong>, con DNI/Pasaporte <strong>{{tenant_dni}}</strong>,
-    de nacionalidade <strong>{{tenant_nationality}}</strong>,
-    en diante <strong>&laquo;O ARRENDATARIO&raquo;</strong>.
+    B. E doutra, D./D&#170; <strong>{{tenant_name}}</strong>, nacido/a o <strong>{{tenant_dob}}</strong>,
+    con DNI <strong>{{tenant_dni}}</strong>, tel&#233;fono <strong>{{tenant_phone}}</strong>
+    e correo electr&#243;nico <strong>{{tenant_email}}</strong>,
+    en diante, <strong>o arrendatario</strong>.
   </p>
 
-  <div class="section-title">Exp&#xF5;en</div>
+  <!-- INTERVE&#771;EN -->
+  <div class="section-title">Interve&#771;en</div>
 
   <p>
-    Que o ARRENDADOR &#xE9; propietario do inmoble sito en <strong>{{flat_address}}</strong>, Vigo,
-    no que se atopa a habitaci&#xF3;n obxecto do presente contrato.
+    Ambas as partes en nome e dereito propios, recoñ&#233;cendose mutuamente a capacidade
+    legal necesaria para contratar, e para tal efecto,
+  </p>
+
+  <!-- EXPO&#771;EN -->
+  <div class="section-title">Expo&#771;en</div>
+
+  <p>
+    I. Que D. {{owner_name}} &#233; propietario da vivenda sita en <strong>{{flat_address}}</strong>, Vigo.
   </p>
   <p style="margin-top:8px;">
-    Que ambas partes acordan celebrar o presente contrato de arrendamento de habitaci&#xF3;n,
-    con arranxo &#xE1;s seguintes:
+    II. Que o arrendatario est&#225; interesado en alugar unha habitaci&#243;n en dita vivenda
+    como residencia habitual.
+  </p>
+  <p style="margin-top:8px;">
+    En virtude do anterior, ambas as partes acordan formalizar o presente contrato de arrendamento
+    de habitaci&#243;n, que se rexer&#225; polas seguintes:
   </p>
 
-  <div class="section-title">Estipulaci&#xF3;ns</div>
+  <!-- CL&#193;USULAS -->
+  <div class="section-title">Cl&#225;usulas</div>
 
   <div class="clause">
-    <span class="clause-title">Primeira &mdash; Obxecto.</span>
+    <div class="clause-title">1. Obxecto do contrato</div>
     <p>
-      O ARRENDADOR arrenda ao ARRENDATARIO a habitaci&#xF3;n denominada
-      <strong>&laquo;{{room_name}}&raquo;</strong>, pertencente ao piso <strong>{{flat_name}}</strong>,
-      sito en {{flat_address}}, Vigo, con acceso &#xE1;s zonas com&#xFA;ns do inmoble.
+      O arrendador cede ao arrendatario o uso exclusivo da habitaci&#243;n
+      <strong>&laquo;{{room_name}}&raquo;</strong>, as&#237; como o dereito a utilizar as zonas
+      e equipamentos com&#250;ns da vivenda.
+    </p>
+    <p>
+      O arrendatario poder&#225; desistir do contrato en calquera momento, cun preaviso
+      m&#237;nimo de <strong>30 d&#237;as</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Segunda &mdash; Duraci&#xF3;n.</span>
+    <div class="clause-title">2. Duraci&#243;n</div>
     <p>
-      O presente contrato ter&#xE1; unha duraci&#xF3;n dende o <strong>{{start_date}}</strong>
-      ata o <strong>{{end_date}}</strong>. &#xC1; finalizaci&#xF3;n do prazo pactado, o contrato
-      extinguirase, aga&#xF1;o acordo expreso de pr&#xF3;rroga entre as partes.
+      O contrato comezar&#225; o d&#237;a <strong>{{start_date}}</strong> e
+      finalizar&#225; o d&#237;a <strong>{{end_date}}</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Terceira &mdash; Renda.</span>
+    <div class="clause-title">3. Fianza</div>
     <p>
-      A renda mensual acordada &#xE9; de <strong>{{monthly_rent}} EUR</strong>, pagadeiros dentro
-      dos primeiros cinco (5) d&#xED;as de cada mes mediante transferencia bancaria, Bizum ou
-      efectivo segundo acordo entre as partes.
+      O arrendatario entrega neste acto a cantidade de <strong>{{deposit}} euros</strong> en concepto
+      de fianza, que responder&#225; das obrigaci&#243;ns derivadas do contrato.
+    </p>
+    <p>
+      A fianza ser&#225; devoluta tras a finalizaci&#243;n do contrato e entrega de chaves, unha vez
+      comprobado o estado da habitaci&#243;n e da vivenda, e sempre que non existan
+      cantidades pendentes ou danos.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Cuarta &mdash; Fianza.</span>
+    <div class="clause-title">4. Renda e gastos</div>
+    <p>4.1. A renda mensual ser&#225; de <strong>{{monthly_rent}} euros</strong>.</p>
     <p>
-      O ARRENDATARIO fai entrega neste acto ao ARRENDADOR da cantidade de
-      <strong>{{deposit}} EUR</strong> en concepto de fianza. Dito importe ser&#xE1; devolto
-      ao finalizar o contrato, previa comprobaci&#xF3;n do estado da habitaci&#xF3;n.
+      4.2. Os gastos xerais do inmoble (comunidade, tributos, internet e seguros)
+      ser&#225;n por conta do arrendador.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">Quinta &mdash; Servizos inclu&#xED;dos.</span>
     <p>
-      A renda incl&#xFA;e: auga, electricidade (uso razoable), conexi&#xF3;n WiFi e limpeza
-      peri&#xF3;dica das zonas com&#xFA;ns. O uso excesivo da electricidade poder&#xE1; supor
-      un cargo adicional.
+      4.3. Os gastos de subministros (auga, electricidade e gas) repartiranse proporcionalmente
+      entre os ocupantes da vivenda. Para tal efecto, o arrendatario abonar&#225; unha provisi&#243;n
+      mensual de <strong>{{utilities_provision}} &euro;</strong>.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">Sexta &mdash; Normas de convivencia.</span>
-    <p>O ARRENDATARIO comp&#xF3;mete a respectar as seguintes normas:</p>
+    <p>Ao finalizar o contrato, realizarase a liquidaci&#243;n:</p>
     <ul class="clause-list">
-      <li>Queda prohibido fumar no interior do inmoble.</li>
-      <li>Deber&#xE1; respectarse o horario de silencio entre as 23:00 e as 08:00 horas.</li>
-      <li>Non se permiten mascotas sen autorizaci&#xF3;n previa e por escrito do ARRENDADOR.</li>
-      <li>As visitas deber&#xE1;n ser comunicadas e aprobadas polo ARRENDADOR con antelaci&#xF3;n.</li>
-      <li>O ARRENDATARIO deber&#xE1; manter a habitaci&#xF3;n e as zonas com&#xFA;ns en bo estado de limpeza.</li>
-      <li>Queda prohibido subarrendar a habitaci&#xF3;n ou ceder o seu uso a terceiros.</li>
+      <li>Se houbese exceso, devolverase ao arrendatario.</li>
+      <li>Se houbese d&#233;ficit, descontarase da fianza.</li>
+    </ul>
+    <p>O arrendador facilitar&#225; copia das facturas cando o estime oportuno.</p>
+    <p>
+      4.4. O pagamento da renda realizarase dentro dos tres primeiros d&#237;as de cada mes,
+      polo medio acordado entre as partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">5. Uso da vivenda</div>
+    <p>
+      A habitaci&#243;n dest&#237;nase exclusivamente a vivenda habitual do arrendatario,
+      quedando prohibido cedela ou subarrend&#225;la.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">6. Estado e inventario</div>
+    <p>
+      A vivenda ent&#233;gase amoblada e equipada. O arrendatario declara ter verificado
+      o seu estado conforme ao inventario que se adxunta como anexo.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">7. Conservaci&#243;n e convivencia</div>
+    <p>O arrendatario comp&#243;metese a:</p>
+    <ul class="clause-list">
+      <li>Manter en bo estado a habitaci&#243;n e as zonas com&#250;ns.</li>
+      <li>Respectar as normas de convivencia co resto dos ocupantes.</li>
+      <li>Participar no mantemento e limpeza das zonas com&#250;ns.</li>
     </ul>
   </div>
 
   <div class="clause">
-    <span class="clause-title">S&#xE9;ptima &mdash; Rescisi&#xF3;n.</span>
+    <div class="clause-title">8. Limpeza</div>
     <p>
-      Calquera das partes poder&#xE1; resolver o contrato cun preaviso m&#xED;nimo de
-      <strong>trinta (30) d&#xED;as</strong> comunicado por escrito. O incumprimento grave
-      das normas de convivencia ou das obrigas de pago facultar&#xE1; ao ARRENDADOR para
-      resolver o contrato de forma inmediata.
+      A habitaci&#243;n e a vivenda ent&#233;ganse limpas e deber&#225;n devolverse no mesmo
+      estado. En caso contrario, repercutir&#225;se o custo de limpeza, cun m&#237;nimo de <strong>50 &euro;</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">Oitava &mdash; Xurisdici&#xF3;n.</span>
+    <div class="clause-title">9. Normas de convivencia</div>
     <p>
-      Para a resoluci&#xF3;n de calquera controversia derivada do presente contrato, ambas partes
-      som&#xE9;tense expresamente aos Xulgados e Tribunais da cidade de Vigo, con renuncia a
-      calquera outro foro que puidera corresponderlles.
+      Non se permitir&#225; causar molestias a ve&#241;ios ou ocupantes, especialmente entre
+      as <strong>22:30 e as 8:00 horas</strong>.
     </p>
   </div>
 
+  <div class="clause">
+    <div class="clause-title">10. Prohibici&#243;ns</div>
+    <p>Queda prohibido: fumar na vivenda, ter animais e organizar festas.</p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">11. Responsabilidade por terceiros</div>
+    <p>
+      O arrendatario ser&#225; responsable dos danos causados polas persoas
+      que invite &#225; vivenda.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">12. Danos e reparaci&#243;ns</div>
+    <p>O arrendatario deber&#225; comunicar calquera avar&#237;a ou dano.</p>
+    <ul class="clause-list">
+      <li>Os danos individuais ser&#225;n a cargo do responsable.</li>
+      <li>Se non se identifica responsable, repartiranse entre os ocupantes.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">13. Acceso &#225; vivenda</div>
+    <p>
+      O arrendatario permitir&#225; o acceso ao arrendador ou a t&#233;cnicos, previa comunicaci&#243;n,
+      para realizar as reparaci&#243;ns necesarias.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">14. Resoluci&#243;n do contrato</div>
+    <p>
+      O incumprimento das obrigaci&#243;ns poder&#225; dar lugar &#225; resoluci&#243;n do contrato,
+      sen prexu&#237;zo das acci&#243;ns legais que correspondan.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">15. Xurisdici&#243;n</div>
+    <p>As partes som&#233;tense aos Xulgados e Tribunais de Vigo.</p>
+  </div>
+
+  <!-- SINATURAS -->
   <div class="signature-section">
     <p>
-      En proba de conformidade, ambas partes asinan o presente contrato por duplicado
-      en Vigo, o d&#xED;a <strong>{{sign_date}}</strong>.
+      E en proba de conformidade, asinan o presente contrato por duplicado no lugar e data indicados.
     </p>
     <div class="signature-grid">
       <div class="signature-block">
         <div class="signature-line">
-          <div class="role">O Arrendador</div>
+          <div class="role">O arrendador</div>
           <div class="name">{{owner_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">DNI: {{owner_dni}}</div>
         </div>
       </div>
       <div class="signature-block">
         <div class="signature-line">
-          <div class="role">O Arrendatario</div>
+          <div class="role">O arrendatario</div>
           <div class="name">{{tenant_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">DNI/Pasaporte: {{tenant_dni}}</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ANEXO: INVENTARIO -->
+  <div class="annex">
+    <h2>Anexo: Inventario de Bens</h2>
+    <table class="annex-lines">
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+    </table>
+  </div>
+
   <div class="doc-footer">
-    Casas Vigo &mdash; {{flat_address}}, Vigo &mdash; Contrato xerado o {{sign_date}}
+    Casas Vigo &mdash; {{flat_address}}, Vigo
   </div>
 
 </body>

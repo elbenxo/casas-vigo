@@ -122,7 +122,7 @@ router.get('/:id/interactions', asyncRoute((req, res) => {
  */
 router.post('/', asyncRoute((req, res) => {
   const db = getDb();
-  const { name, phone, email, language, channel, status, flat_interest, room_interest, loss_reason, notes } = req.body;
+  const { name, phone, email, dob, dni, language, channel, status, flat_interest, room_interest, loss_reason, notes } = req.body;
 
   if (!name) return res.status(400).json({ error: 'name required' });
   if (status && !VALID_STATUSES.includes(status)) {
@@ -130,12 +130,14 @@ router.post('/', asyncRoute((req, res) => {
   }
 
   const result = db.prepare(
-    `INSERT INTO prospects (name, phone, email, language, channel, status, flat_interest, room_interest, loss_reason, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO prospects (name, phone, email, dob, dni, language, channel, status, flat_interest, room_interest, loss_reason, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     name,
     phone ?? null,
     email ?? null,
+    dob ?? null,
+    dni ?? null,
     language ?? 'es',
     channel ?? 'whatsapp',
     status ?? 'new',
@@ -162,7 +164,7 @@ router.put('/:id', asyncRoute((req, res) => {
     return res.status(400).json({ error: `status must be one of: ${VALID_STATUSES.join(', ')}` });
   }
 
-  const fields = ['name', 'phone', 'email', 'language', 'channel', 'status', 'flat_interest', 'room_interest', 'loss_reason', 'notes'];
+  const fields = ['name', 'phone', 'email', 'dob', 'dni', 'language', 'channel', 'status', 'flat_interest', 'room_interest', 'loss_reason', 'notes'];
   const updates = [];
   const params = [];
 

@@ -29,7 +29,21 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
-    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .doc-header p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+    .translation-notice {
+      background: #f8f8f0;
+      border: 1px solid #d0c060;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #555;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
     .section-title {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
@@ -47,26 +61,23 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      display: inline;
     }
     .clause p { margin-top: 4px; text-align: justify; }
     ul.clause-list { margin-top: 6px; padding-left: 20px; }
     ul.clause-list li { margin-bottom: 4px; }
-    .notice-box {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-left: 4px solid #555;
-      padding: 10px 14px;
-      font-size: 0.82rem;
-      margin-top: 12px;
-      font-style: italic;
-      color: #555;
-    }
     .signature-section { margin-top: 60px; padding-top: 20px; }
-    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 16px;
+    }
     .signature-block { text-align: center; }
-    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-line {
+      border-top: 1px solid #1a1a1a;
+      margin-top: 60px;
+      padding-top: 8px;
+    }
     .signature-block .role {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.75rem;
@@ -75,6 +86,25 @@
       color: #555;
     }
     .signature-block .name { font-size: 0.9rem; }
+    .annex {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #1a1a1a;
+    }
+    .annex h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+    .annex-lines { border-collapse: collapse; width: 100%; }
+    .annex-lines td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 8px;
+      font-size: 0.85rem;
+    }
     .doc-footer {
       margin-top: 40px;
       font-size: 0.75rem;
@@ -87,8 +117,10 @@
       html { font-size: 12px; }
       body { padding: 0; max-width: none; }
       @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .no-print { display: none !important; }
       .clause { page-break-inside: avoid; }
       .signature-section { page-break-inside: avoid; }
+      .annex { page-break-before: auto; }
     }
   </style>
 </head>
@@ -96,150 +128,232 @@
 
   <div class="doc-header">
     <h1>Umowa Najmu Pokoju</h1>
-    <p>Najem do cel&#xF3;w innych ni&#x17C; sta&#x142;e zamieszkanie &mdash; Vigo, Pontevedra, Hiszpania</p>
+    <p>W Vigo, dnia {{sign_date}}</p>
   </div>
 
-  <div class="notice-box">
-    Uwaga: Niniejszy dokument stanowi t&#x142;umaczenie na j&#x119;zyk polski dla lepszego zrozumienia
-    przez najemc&#x119;. Obowi&#x105;zuje prawo hiszpa&#x144;skie (Ley de Arrendamientos Urbanos).
-    Wszelkie spory b&#x119;d&#x105; rozstrzygane przez s&#x105;dy w Vigo, Hiszpania.
+  <div class="translation-notice">
+    Niniejsza umowa zosta&#322;a pierwotnie sporz&#261;dzona w j&#281;zyku hiszpa&#324;skim i podlega prawu hiszpa&#324;skiemu. Niniejsze t&#322;umaczenie ma charakter informacyjny; w przypadku rozbie&#380;no&#347;ci wersja hiszpa&#324;ska ma pierwsze&#324;stwo.
   </div>
 
-  <div class="section-title">Strony umowy</div>
+  <!-- STRONY UMOWY -->
+  <div class="section-title">Strony Umowy</div>
 
-  <p>W Vigo, dnia <strong>{{sign_date}}</strong></p>
-
-  <p style="margin-top:14px;">
-    <strong>Z jednej strony</strong>: Pan/Pani <strong>{{owner_name}}</strong>,
-    numer identyfikacyjny <strong>{{owner_dni}}</strong>,
-    zwany(a) dalej <strong>&bdquo;WYNAJMUJ&#x104;CYM&ldquo;</strong>.
+  <p>
+    A. Z jednej strony, Pan/Pani <strong>{{owner_name}}</strong>, pe&#322;noletni/a, zamieszkały/a pod adresem
+    <strong>{{flat_address}}</strong>, zwany/a dalej <strong>wynajmuj&#261;cym</strong>.
   </p>
 
   <p style="margin-top:10px;">
-    <strong>Z drugiej strony</strong>: Pan/Pani <strong>{{tenant_name}}</strong>,
-    numer paszportu/dowodu to&#x17C;samo&#x15B;ci <strong>{{tenant_dni}}</strong>,
-    obywatelstwo <strong>{{tenant_nationality}}</strong>,
-    zwany(a) dalej <strong>&bdquo;NAJEMCA&ldquo;</strong>.
+    B. Z drugiej strony, Pan/Pani <strong>{{tenant_name}}</strong>, urodzony/a dnia <strong>{{tenant_dob}}</strong>,
+    numer dokumentu to&#380;samo&#347;ci <strong>{{tenant_dni}}</strong>, telefon <strong>{{tenant_phone}}</strong>
+    i adres e-mail <strong>{{tenant_email}}</strong>,
+    zwany/a dalej <strong>najemc&#261;</strong>.
   </p>
 
-  <div class="section-title">Preambu&#x142;a</div>
+  <!-- DZIA&#321;AJ&#260; WE W&#321;ASNYM IMIENIU -->
+  <div class="section-title">Dzia&#322;aj&#261; we w&#322;asnym imieniu</div>
 
   <p>
-    WYNAJMUJ&#x104;CY jest w&#x142;a&#x15B;cicielem nieruchomo&#x15B;ci po&#x142;o&#x17C;onej pod adresem
-    <strong>{{flat_address}}</strong>, Vigo, Hiszpania, w kt&#xF3;rej znajduje si&#x119;
-    pok&#xF3;j b&#x119;d&#x105;cy przedmiotem niniejszej umowy.
+    Obie strony dzia&#322;aj&#261; we w&#322;asnym imieniu i na w&#322;asne prawo, wzajemnie uznaj&#261;c posiadanie zdolno&#347;ci
+    prawnej wymaganej do zawarcia niniejszej umowy i w tym celu:
+  </p>
+
+  <!-- O&#346;WIADCZAJ&#260; -->
+  <div class="section-title">O&#347;wiadczaj&#261;</div>
+
+  <p>
+    I. &#380;e Pan/Pani {{owner_name}} jest w&#322;a&#347;cicielem/k&#261; nieruchomo&#347;ci po&#322;o&#380;onej pod adresem <strong>{{flat_address}}</strong>, Vigo.
   </p>
   <p style="margin-top:8px;">
-    Obie strony zawieraj&#x105; niniejsz&#x105; umow&#x119; najmu pokoju na nast&#x119;puj&#x105;cych warunkach:
+    II. &#380;e najemca jest zainteresowany/a wynaj&#281;ciem pokoju w tej nieruchomo&#347;ci jako g&#322;&#243;wnego miejsca zamieszkania.
+  </p>
+  <p style="margin-top:8px;">
+    W zwi&#261;zku z powy&#380;szym, obie strony wyra&#380;aj&#261; zgod&#281; na zawarcie niniejszej umowy najmu pokoju,
+    kt&#243;ra b&#281;dzie regulowana przez nast&#281;puj&#261;ce klauzule:
   </p>
 
-  <div class="section-title">Warunki Umowy</div>
+  <!-- KLAUZULE -->
+  <div class="section-title">Klauzule</div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 1 &mdash; Przedmiot umowy.</span>
+    <div class="clause-title">1. Przedmiot umowy</div>
     <p>
-      WYNAJMUJ&#x104;CY wynajmuje NAJEMCY pok&#xF3;j o nazwie
-      <strong>&bdquo;{{room_name}}&ldquo;</strong>, znajduj&#x105;cy si&#x119; w mieszkaniu
-      <strong>{{flat_name}}</strong> pod adresem {{flat_address}}, Vigo. Najem obejmuje
-      prawo do korzystania z cz&#x119;&#x15B;ci wsp&#xF3;lnych (kuchnia, &#x142;azienka,
-      salon i inne wsp&#xF3;lne przestrzenie).
+      Wynajmuj&#261;cy oddaje najemcy do wy&#322;&#261;cznego u&#380;ytku pok&#243;j
+      <strong>&laquo;{{room_name}}&raquo;</strong>, a tak&#380;e prawo do korzystania
+      ze wsp&#243;lnych obszar&#243;w i urz&#261;dze&#324; nieruchomo&#347;ci.
+    </p>
+    <p>
+      Najemca mo&#380;e wypowiedzie&#263; umow&#281; w dowolnym momencie, z zachowaniem minimalnego okresu wypowiedzenia wynosz&#261;cego <strong>30 dni</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 2 &mdash; Czas trwania.</span>
+    <div class="clause-title">2. Czas trwania</div>
     <p>
-      Niniejsza umowa obowi&#x105;zuje od <strong>{{start_date}}</strong> do
-      <strong>{{end_date}}</strong>. Po up&#x142;ywie tego okresu umowa wygasa, chyba &#x17C;e
-      strony wyra&#x17A;nie uzgodni&#x105; przed&#x142;u&#x17C;enie na pi&#x15B;mie.
+      Umowa rozpoczyna si&#281; w dniu <strong>{{start_date}}</strong> i
+      ko&#324;czy si&#281; w dniu <strong>{{end_date}}</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 3 &mdash; Czynsz.</span>
+    <div class="clause-title">3. Kaucja</div>
     <p>
-      Uzgodniony miesi&#x119;czny czynsz wynosi <strong>{{monthly_rent}} EUR</strong>,
-      p&#x142;atny w ci&#x105;gu pierwszych pi&#x119;ciu (5) dni ka&#x17C;dego miesi&#x105;ca
-      przelewem bankowym, Bizum lub got&#xF3;wk&#x105; wed&#x142;ug uzgodnienia stron.
+      Najemca wp&#322;aca niniejszym kwot&#281; <strong>{{deposit}} euro</strong> tytu&#322;em kaucji,
+      kt&#243;ra zabezpiecza zobowi&#261;zania wynikaj&#261;ce z umowy.
+    </p>
+    <p>
+      Kaucja zostanie zwr&#243;cona po zako&#324;czeniu umowy i oddaniu kluczy, po sprawdzeniu stanu
+      pokoju i nieruchomo&#347;ci, pod warunkiem braku zaleg&#322;o&#347;ci lub szk&#243;d.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 4 &mdash; Kaucja.</span>
+    <div class="clause-title">4. Czynsz i op&#322;aty</div>
+    <p>4.1. Miesi&#281;czny czynsz wynosi <strong>{{monthly_rent}} euro</strong>.</p>
     <p>
-      NAJEMCA przekazuje niniejszym WYNAJMUJ&#x104;CEMU kwot&#x119;
-      <strong>{{deposit}} EUR</strong> tytu&#x142;em kaucji. Kwota ta zostanie zwr&#xF3;cona
-      po zako&#x144;czeniu umowy, po sprawdzeniu stanu pokoju i potraceniu ewentualnych
-      szkod przez NAJEMCE spowodowanych.
+      4.2. Og&#243;lne koszty nieruchomo&#347;ci (op&#322;aty wspólnotowe, podatki, internet i ubezpieczenia)
+      ponosi wynajmuj&#261;cy.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">&#xA7; 5 &mdash; Us&#x142;ugi w cenie.</span>
     <p>
-      Czynsz obejmuje: wod&#x119;, pr&#x105;d (rozs&#x105;dne zu&#x17C;ycie), po&#x142;&#x105;czenie
-      WiFi z internetem oraz regularne sprz&#x105;tanie cz&#x119;&#x15B;ci wsp&#xF3;lnych.
-      Nadmierne zu&#x17C;ycie energii elektrycznej mo&#x17C;e skutkowa&#x107; dodatkow&#x105; op&#x142;at&#x105;.
+      4.3. Koszty mediów (woda, pr&#261;d i gaz) b&#281;d&#261; dzielone proporcjonalnie
+      mi&#281;dzy mieszka&#324;c&#243;w nieruchomo&#347;ci. W tym celu najemca b&#281;dzie wp&#322;aca&#263;
+      miesi&#281;czn&#261; zaliczk&#281; w wysoko&#347;ci <strong>{{utilities_provision}} &euro;</strong>.
     </p>
-  </div>
-
-  <div class="clause">
-    <span class="clause-title">&#xA7; 6 &mdash; Regulamin domu.</span>
-    <p>NAJEMCA zobowi&#x105;zuje si&#x119; przestrzega&#x107; nast&#x119;puj&#x105;cych zasad:</p>
+    <p>Po zako&#324;czeniu umowy zostanie dokonane rozliczenie:</p>
     <ul class="clause-list">
-      <li>Palenie tytoniu wewn&#x105;trz nieruchomo&#x15B;ci jest bezwzgl&#x119;dnie zabronione.</li>
-      <li>Nale&#x17C;y przestrzega&#x107; ciszy nocnej w godzinach od 23:00 do 08:00.</li>
-      <li>Zwierz&#x119;ta domowe s&#x105; niedozwolone bez uprzedniej pisemnej zgody WYNAJMUJ&#x104;CEGO.</li>
-      <li>Go&#x15B;cie musz&#x105; by&#x107; zg&#x142;oszeni i zaaprobowani przez WYNAJMUJ&#x104;CEGO z wyprzedzeniem.</li>
-      <li>NAJEMCA jest zobowi&#x105;zany utrzymywa&#x107; pok&#xF3;j i cz&#x119;&#x15B;ci wsp&#xF3;lne w czystos&#x107;ci i porz&#x105;dku.</li>
-      <li>Podnajem pokoju lub udost&#x119;pnianie go osobom trzecim jest bezwzgl&#x119;dnie zabronione.</li>
+      <li>W przypadku nadwy&#380;ki zostanie ona zwr&#243;cona najemcy.</li>
+      <li>W przypadku niedoboru zostanie potr&#261;cony z kaucji.</li>
+    </ul>
+    <p>Wynajmuj&#261;cy udost&#281;pni kopie faktur, gdy uzna to za stosowne.</p>
+    <p>
+      4.4. Czynsz b&#281;dzie p&#322;acony w ci&#261;gu pierwszych trzech dni ka&#380;dego miesi&#261;ca,
+      metod&#261; uzgodn&#261;on&#261; mi&#281;dzy stronami.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">5. Korzystanie z nieruchomo&#347;ci</div>
+    <p>
+      Pok&#243;j przeznaczony jest wy&#322;&#261;cznie na g&#322;&#243;wne miejsce zamieszkania najemcy;
+      zabrania si&#281; jego cesji lub podnajmu.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">6. Stan i inwentarz</div>
+    <p>
+      Nieruchomo&#347;&#263; oddawana jest w stanie umeblowanym i wyposa&#380;onym. Najemca o&#347;wiadcza, &#380;e sprawdzi&#322;/a
+      jej stan zgodnie z inwentarzem za&#322;&#261;czonym jako aneks.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">7. Konserwacja i wsp&#243;&#322;&#380;ycie</div>
+    <p>Najemca zobowi&#261;zuje si&#281; do:</p>
+    <ul class="clause-list">
+      <li>Utrzymywania pokoju i cz&#281;&#347;ci wsp&#243;lnych w dobrym stanie.</li>
+      <li>Przestrzegania zasad wsp&#243;&#322;&#380;ycia z pozosta&#322;ymi mieszka&#324;cami.</li>
+      <li>Uczestniczenia w utrzymaniu i sprz&#261;taniu cz&#281;&#347;ci wsp&#243;lnych.</li>
     </ul>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 7 &mdash; Rozwi&#x105;zanie umowy.</span>
+    <div class="clause-title">8. Sprz&#261;tanie</div>
     <p>
-      Ka&#x17C;da ze stron mo&#x17C;e rozwi&#x105;za&#x107; umow&#x119; z zachowaniem minimum
-      <strong>trzydziestodniowego (30) okresu wypowiedzenia</strong> zg&#x142;oszonego na
-      pi&#x15B;mie. Powa&#x17C;ne naruszenie regulaminu lub zobowi&#x105;za&#x144; p&#x142;atniczych
-      uprawnia WYNAJMUJ&#x104;CEGO do natychmiastowego rozwi&#x105;zania umowy.
+      Pok&#243;j i nieruchomo&#347;&#263; s&#261; przekazywane czyste i musz&#261; zosta&#263; zwr&#243;cone w tym samym
+      stanie. W przeciwnym razie zostanie pobrana op&#322;ata za sprz&#261;tanie w minimalnej wysoko&#347;ci <strong>50 &euro;</strong>.
     </p>
   </div>
 
   <div class="clause">
-    <span class="clause-title">&#xA7; 8 &mdash; Jurysdykcja.</span>
+    <div class="clause-title">9. Zasady wsp&#243;&#322;&#380;ycia</div>
     <p>
-      W przypadku jakichkolwiek spor&#xF3;w wynikaj&#x105;cych z niniejszej umowy
-      obie strony poddaj&#x105; si&#x119; wyra&#x17A;nie jurysdykcji s&#x105;d&#xF3;w miasta
-      Vigo, Hiszpania, rezygnuj&#x105;c z wszelkich innych w&#x142;a&#x15B;ciwych im jurysdykcji.
+      Zabrania si&#281; powodowania uci&#261;&#380;liwo&#347;ci dla s&#261;siad&#243;w lub wsp&#243;&#322;mieszka&#324;c&#243;w, w szczeg&#243;lno&#347;ci w godzinach
+      <strong>22:30&#8211;8:00</strong>.
     </p>
   </div>
 
+  <div class="clause">
+    <div class="clause-title">10. Zakazy</div>
+    <p>Surowo zabrania si&#281;: palenia w nieruchomo&#347;ci, trzymania zwierz&#261;t i organizowania imprez.</p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">11. Odpowiedzialno&#347;&#263; za osoby trzecie</div>
+    <p>
+      Najemca ponosi odpowiedzialno&#347;&#263; za szkody wyrz&#261;dzone przez osoby,
+      kt&#243;re zaprasza do nieruchomo&#347;ci.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">12. Szkody i naprawy</div>
+    <p>Najemca zobowi&#261;zany jest do zg&#322;oszenia ka&#380;dej awarii lub szkody.</p>
+    <ul class="clause-list">
+      <li>Indywidualne szkody ponosi odpowiedzialna osoba.</li>
+      <li>Je&#347;li nie mo&#380;na ustali&#263; sprawcy, koszty b&#281;d&#261; podzielone mi&#281;dzy mieszka&#324;c&#243;w.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">13. Dost&#281;p do nieruchomo&#347;ci</div>
+    <p>
+      Najemca umo&#380;liwi wynajmuj&#261;cemu lub technikom dost&#281;p, po uprzednim powiadomieniu,
+      w celu przeprowadzenia niezb&#281;dnych napraw.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">14. Rozwi&#261;zanie umowy</div>
+    <p>
+      Niewykonanie zobowi&#261;za&#324; mo&#380;e spowodowa&#263; rozwi&#261;zanie umowy,
+      bez uszczerbku dla przys&#322;uguj&#261;cych &#347;rodk&#243;w prawnych.
+    </p>
+  </div>
+
+  <div class="clause">
+    <div class="clause-title">15. Jurysdykcja</div>
+    <p>Strony poddaj&#261; si&#281; s&#261;dom i trybuna&#322;om w Vigo.</p>
+  </div>
+
+  <!-- PODPISY -->
   <div class="signature-section">
     <p>
-      Na dow&#xF3;d zgodno&#x15B;ci obie strony podpisuj&#x105; niniejsz&#x105; umow&#x119; w dw&#xF3;ch
-      egzemplarzach w Vigo, dnia <strong>{{sign_date}}</strong>.
+      Na dow&#243;d zgody strony podpisuj&#261; niniejsz&#261; umow&#281; w dw&#243;ch egzemplarzach w miejscu i dacie wskazanych powy&#380;ej.
     </p>
     <div class="signature-grid">
       <div class="signature-block">
         <div class="signature-line">
-          <div class="role">Wynajmuj&#x105;cy</div>
+          <div class="role">Wynajmuj&#261;cy</div>
           <div class="name">{{owner_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">Nr identyfikacyjny: {{owner_dni}}</div>
         </div>
       </div>
       <div class="signature-block">
         <div class="signature-line">
           <div class="role">Najemca</div>
           <div class="name">{{tenant_name}}</div>
-          <div style="font-size:0.78rem;color:#888;">Paszport/Dow&#xF3;d: {{tenant_dni}}</div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ANEKS: INWENTARZ -->
+  <div class="annex">
+    <h2>Aneks: Inwentarz Rzeczy</h2>
+    <table class="annex-lines">
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>&nbsp;</td></tr>
+    </table>
+  </div>
+
   <div class="doc-footer">
-    Casas Vigo &mdash; {{flat_address}}, Vigo, Hiszpania &mdash; Umowa wygenerowana dnia {{sign_date}}
+    Casas Vigo &mdash; {{flat_address}}, Vigo
   </div>
 
 </body>

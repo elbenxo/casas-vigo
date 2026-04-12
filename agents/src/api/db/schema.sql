@@ -119,6 +119,8 @@ CREATE TABLE IF NOT EXISTS prospects (
   name TEXT NOT NULL,
   phone TEXT,
   email TEXT,
+  dob TEXT,                        -- date of birth (for contract)
+  dni TEXT,                        -- DNI/passport (for contract)
   language TEXT DEFAULT 'es',
   channel TEXT DEFAULT 'whatsapp',  -- whatsapp, telegram, web, idealista, referral, other
   status TEXT DEFAULT 'new',        -- new, contacted, visit_scheduled, visit_done, contract_sent, signed, lost
