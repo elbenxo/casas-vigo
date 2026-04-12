@@ -28,6 +28,14 @@ Repo setup, CI/CD, shared data, deployment.
 - [x] Integration tests: 46 tests covering all endpoints (node:test) — 2026-04-12
 - [x] Code review + simplify: asyncRoute middleware, input validation, LIMIT defaults, 409 on duplicate phone — 2026-04-12
 
+## Completed (Prospects + Contracts API — 2026-04-12)
+- [x] DB: tablas prospects, prospect_interactions, contracts — 2026-04-12
+- [x] API: /api/prospects (8 endpoints: CRUD, status, interactions, analytics) — 2026-04-12
+- [x] API: /api/contracts (6 endpoints: CRUD, generate, download, sign) — 2026-04-12
+- [x] Service: contractGenerator.js (template load + cache, placeholders, file generation) — 2026-04-12
+- [x] Shared constants.js (PROSPECT_STATUSES, PRE_CONTRACT_STATUSES) — 2026-04-12
+- [x] Contract templates: 8 idiomas en agents/templates/contracts/ — 2026-04-12
+
 ## Completed (CI/CD & Deploy)
 - [x] Reconfigure GitHub Pages to deploy from web/ subfolder — 2026-04-12
 - [x] Test web deployment from monorepo — 2026-04-12

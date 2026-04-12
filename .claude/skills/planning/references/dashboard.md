@@ -65,30 +65,31 @@ El script sync-web.js reemplaza al actual sync-availability.js. Genera TODO el c
 #### Reviews
 - [ ] CRUD reviews desde dashboard (nombre, texto multiidioma, piso) — low
 
-### Prospect CRM & Analytics (prospects.html)
+### Prospect CRM & Analytics (prospects.html) — 2026-04-12
 Objetivo: visibilidad completa del funnel comercial — quién pregunta, por dónde, en qué estado está, y métricas de conversión. Sin CRM externo, todo local.
 
 #### Base de datos de prospects
-- [ ] DB: tabla `prospects` (id, name, phone, email, language, channel, status, flat_interest, room_interest, notes, created_at, updated_at) — high
-- [ ] DB: tabla `prospect_interactions` (id, prospect_id, type [message/call/visit/email], direction [in/out], summary, channel, created_at) — high
+- [x] DB: tabla `prospects` (id, name, phone, email, language, channel, status, flat_interest, room_interest, notes, created_at, updated_at) — 2026-04-12
+- [x] DB: tabla `prospect_interactions` (id, prospect_id, type, direction, summary, channel, created_at) — 2026-04-12
 - [ ] DB: tabla `web_hits` (id, page, referrer, utm_source, utm_medium, utm_campaign, language, user_agent, ip_hash, created_at) — medium
-- [ ] API: CRUD endpoints /api/prospects, /api/prospects/:id/interactions — high
-- [ ] API: GET /api/analytics/prospects (stats agregadas: por canal, por estado, conversión) — high
+- [x] API: CRUD endpoints /api/prospects, /api/prospects/:id/interactions (8 endpoints) — 2026-04-12
+- [x] API: GET /api/prospects/analytics/summary (by_status, by_channel, funnel, avg_days, monthly_leads) — 2026-04-12
 - [ ] API: POST /api/hits (pixel tracking desde la web) — medium
 
 #### Pipeline de ventas
-- [ ] Dashboard: vista Kanban del funnel: Nuevo → Contactado → Visita programada → Visita hecha → Contrato enviado → Firmado / Perdido — high
-- [ ] Dashboard: ficha de prospect con historial de interacciones (timeline) — high
-- [ ] Dashboard: crear prospect manualmente + auto-crear desde mensajes WhatsApp — high
-- [ ] Dashboard: mover prospects entre estados con drag-and-drop o botones — medium
-- [ ] Dashboard: filtrar por piso de interés, idioma, canal — medium
-- [ ] Dashboard: campo "motivo de pérdida" cuando se marca como Perdido (precio, ubicación, timing, otro) — medium
+- [x] Dashboard: vista Kanban del funnel: Nuevo → Contactado → Visita prog. → Visita hecha → Contrato env. → Firmado / Perdido — 2026-04-12
+- [x] Dashboard: ficha de prospect con historial de interacciones (timeline) — 2026-04-12
+- [x] Dashboard: crear prospect manualmente — 2026-04-12
+- [ ] Dashboard: auto-crear prospect desde mensajes WhatsApp (requiere sales agent) — high
+- [x] Dashboard: mover prospects entre estados con botones (→ avanzar, ✗ perdido) — 2026-04-12
+- [x] Dashboard: filtrar por piso de interés, canal, estado — 2026-04-12
+- [x] Dashboard: campo "motivo de pérdida" cuando se marca como Perdido (precio, ubicación, timing, otro) — 2026-04-12
 
 #### Estadísticas y métricas
-- [ ] Dashboard: KPIs en cabecera — leads activos, tasa de conversión, tiempo medio hasta firma — high
-- [ ] Dashboard: gráfico leads por canal por mes (WhatsApp, Telegram, Web, Idealista, boca a boca, otro) — high
-- [ ] Dashboard: gráfico funnel de conversión (cuántos pasan de cada etapa a la siguiente) — medium
-- [ ] Dashboard: tiempo medio en cada etapa del funnel — medium
+- [x] Dashboard: KPIs — leads activos, tasa de conversión, leads este mes — 2026-04-12
+- [x] Dashboard: gráfico leads por canal (barras horizontales) — 2026-04-12
+- [x] Dashboard: gráfico funnel de conversión — 2026-04-12
+- [x] Dashboard: leads por mes (últimos 6 meses, barras) — 2026-04-12
 - [ ] Dashboard: ranking de habitaciones más demandadas — medium
 - [ ] Dashboard: mapa de calor por idioma/nacionalidad de los prospects — low
 
@@ -103,37 +104,43 @@ Objetivo: visibilidad completa del funnel comercial — quién pregunta, por dó
 - [ ] Sales agent actualiza estado del prospect según conversación — medium
 - [ ] Sales agent registra cada interacción en prospect_interactions — high
 
-### Gestión de contratos (contracts.html)
+### Gestión de contratos (contracts.html) — 2026-04-12
 Objetivo: crear, almacenar e imprimir contratos desde el dashboard. Contratos basados en plantillas con placeholders, multi-idioma, guardados en filesystem.
 
 **Flujo clave**: el contrato se genera desde el **prospect**, no desde el inquilino. La firma del contrato es lo que convierte un prospect en tenant (contact). El ciclo es: Prospect → Contrato generado → Contrato firmado → se crea Contact + se asigna Room.
 
 #### Plantillas de contrato
-- [ ] Crear plantillas base en `agents/templates/contracts/` — una por idioma (ES, EN, GL, FR, DE, KO, PT, PL) — high
-- [ ] Plantilla usa placeholders: {{tenant_name}}, {{tenant_dni}}, {{tenant_nationality}}, {{room_name}}, {{flat_address}}, {{monthly_rent}}, {{deposit}}, {{start_date}}, {{end_date}}, {{owner_name}}, {{owner_dni}}, etc. — high
-- [ ] Plantilla incluye: datos del inmueble, condiciones generales, normas de la casa, cláusulas legales, espacio para firmas — high
-- [ ] DB: tabla `contracts` (id, prospect_id, room_id, template_lang, file_path, status [draft/signed/terminated], created_at, signed_at) — high
+- [x] 8 plantillas en `agents/templates/contracts/contract-{lang}.html` (ES, EN, GL, FR, DE, KO, PT, PL) — 2026-04-12
+- [x] Placeholders: {{tenant_name}}, {{tenant_dni}}, {{room_name}}, {{flat_address}}, {{monthly_rent}}, {{deposit}}, {{start_date}}, {{end_date}}, etc. — 2026-04-12
+- [x] Incluye: condiciones, normas, cláusulas legales, espacio firmas, @media print A4 — 2026-04-12
+- [x] DB: tabla `contracts` (id, prospect_id, room_id, template_lang, file_path, status, monthly_rent, deposit, dates) — 2026-04-12
 
 #### Dashboard: generación de contratos (desde prospect)
-- [ ] Dashboard: desde ficha de prospect → botón "Generar contrato" — high
-- [ ] Dashboard: seleccionar habitación + elegir idioma → auto-rellenar placeholders con datos del prospect — high
-- [ ] Dashboard: preview del contrato antes de generar — high
-- [ ] Dashboard: generar contrato → guardar como HTML en `data/contracts/{prospect_id}_{room}_{date}.html` — high
-- [ ] Dashboard: botón imprimir (window.print() con CSS @media print optimizado) — high
-- [ ] Dashboard: lista de contratos generados con filtros (piso, prospect, estado, fecha) — medium
-- [ ] Dashboard: marcar contrato como "firmado" → auto-crear contact en DB + asignar room + mover prospect a estado "Firmado" — high
-- [ ] Dashboard: re-generar contrato si cambian condiciones antes de firmar — medium
+- [x] Dashboard: seleccionar prospect + habitación + idioma → auto-rellenar → generar — 2026-04-12
+- [x] Dashboard: preview del contrato en iframe — 2026-04-12
+- [x] Dashboard: generar → guardar como HTML en `data/contracts/{prospect_id}_{room}_{date}.html` — 2026-04-12
+- [x] Dashboard: botón imprimir (window.print()) — 2026-04-12
+- [x] Dashboard: lista de contratos con filtros (estado, piso) — 2026-04-12
+- [x] Dashboard: "Firmar" → auto-crear contact + asignar room + prospect → Firmado (transacción atómica) — 2026-04-12
+- [x] Dashboard: terminar contrato — 2026-04-12
 
 #### También accesible desde Kanban
-- [ ] Pipeline Kanban: en estado "Contrato enviado" mostrar link directo al contrato generado — medium
-- [ ] Pipeline Kanban: acción rápida "Firmado" que ejecuta la conversión prospect → tenant — medium
+- [x] Pipeline Kanban: link a contratos desde cards de prospect — 2026-04-12
+- [ ] Pipeline Kanban: acción rápida "Firmado" directa desde Kanban (actualmente vía contracts page) — medium
 
 #### API
-- [ ] API: POST /api/contracts/generate (recibe prospect_id, room_id, lang → genera HTML) — high
-- [ ] API: GET /api/contracts (lista), GET /api/contracts/:id (detalle + file_path) — high
-- [ ] API: PUT /api/contracts/:id/sign → crea contact, asigna room, actualiza prospect status — high
-- [ ] API: PUT /api/contracts/:id/status (draft → terminated para cancelaciones) — medium
-- [ ] API: GET /api/contracts/:id/download (sirve el HTML guardado) — medium
+- [x] API: POST /api/contracts/generate — 2026-04-12
+- [x] API: GET /api/contracts, GET /api/contracts/:id (con JOINs a prospects y rooms) — 2026-04-12
+- [x] API: PUT /api/contracts/:id/sign → transacción atómica (contract + contact + room + prospect) — 2026-04-12
+- [x] API: PUT /api/contracts/:id/status (draft → terminated) — 2026-04-12
+- [x] API: GET /api/contracts/:id/download — 2026-04-12
+
+#### Code quality (simplify 2026-04-12)
+- [x] contractGenerator.js: template cache + mkdirSync guard — 2026-04-12
+- [x] Shared constants.js (PROSPECT_STATUSES, PRE_CONTRACT_STATUSES) — 2026-04-12
+- [x] Shared esc() in app.js (eliminadas 2 copias privadas) — 2026-04-12
+- [x] Fix: path depth bug en CONTRACTS_OUTPUT_DIR (5→4 niveles) — 2026-04-12
+- [x] Fix: _computeAnalytics variable 'signed' filtrando 'lost' — 2026-04-12
 
 ### Constraints
 - Runs on localhost only (NOT internet-facing)
