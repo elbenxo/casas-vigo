@@ -133,11 +133,11 @@ router.get('/:id/download', asyncRoute((req, res) => {
   if (!contract) return res.status(404).json({ error: 'Contract not found' });
   if (!contract.file_path) return res.status(404).json({ error: 'No file generated for this contract' });
 
-  // Normalize path separators for the local OS
-  const filePath = contract.file_path.replace(/\//g, path.sep);
+  const filePath = path.resolve(contract.file_path.replace(/\//g, path.sep));
+  const disposition = req.query.download === '1' ? 'attachment' : 'inline';
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Content-Disposition', `attachment; filename="${path.basename(filePath)}"`);
-  res.sendFile(path.resolve(filePath));
+  res.setHeader('Content-Disposition', `${disposition}; filename="${path.basename(filePath)}"`);
+  res.sendFile(filePath);
 }));
 
 /**

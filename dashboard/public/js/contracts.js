@@ -257,8 +257,15 @@ const Contracts = (() => {
   async function previewContract(id) {
     _previewContractId = id;
     const iframe = el('preview-iframe');
-    iframe.src = `${API}/contracts/${id}/download`;
+    iframe.srcdoc = '<p style="text-align:center;padding:40px;color:#999;">Cargando contrato...</p>';
     abrirModal('modal-preview');
+    try {
+      const res = await fetch(`${API}/contracts/${id}/download`);
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      iframe.srcdoc = await res.text();
+    } catch (err) {
+      iframe.srcdoc = `<p style="text-align:center;padding:40px;color:red;">${esc(err.message)}</p>`;
+    }
   }
 
   function printContract() {
@@ -271,15 +278,22 @@ const Contracts = (() => {
 
   async function printContractById(id) {
     _previewContractId = id;
-    const iframe = el('preview-iframe');
-    iframe.src = `${API}/contracts/${id}/download`;
     abrirModal('modal-preview');
-    // Wait for load then print
-    iframe.onload = () => {
-      iframe.contentWindow.focus();
-      iframe.contentWindow.print();
-      iframe.onload = null;
-    };
+    const iframe = el('preview-iframe');
+    iframe.srcdoc = '<p style="text-align:center;padding:40px;color:#999;">Cargando...</p>';
+    try {
+      const res = await fetch(`${API}/contracts/${id}/download`);
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      const html = await res.text();
+      iframe.srcdoc = html;
+      iframe.onload = () => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        iframe.onload = null;
+      };
+    } catch (err) {
+      notify('Error cargando contrato: ' + err.message, 'error');
+    }
   }
 
   function signContract(id, prospectName, roomName) {
