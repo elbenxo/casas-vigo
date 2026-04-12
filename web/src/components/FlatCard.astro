@@ -14,7 +14,7 @@ const minPrice = Math.min(...flat.rooms.map(r => r.price));
 
 <a href={getLocalePath(lang, `/pisos/${flat.slug}/`)} class="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
   <div class="aspect-[16/10] bg-primary-100 relative overflow-hidden">
-    <img src={flat.image} alt={flat.name[lang]} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <img src={flat.image} alt={`${flat.name[lang]} - ${flat.rooms.length} ${t(lang, 'flats.rooms')} - ${flat.neighborhood[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
     {availableCount > 0 && (
       <span class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
         {availableCount} {t(lang, 'flats.available').toLowerCase()}

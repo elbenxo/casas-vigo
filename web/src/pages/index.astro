@@ -1,37 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FlatCard from '../components/FlatCard.astro';
+import FAQ from '../components/FAQ.astro';
 import { t, getLocalePath } from '../i18n/translations';
 import { flats } from '../data/flats';
+import { generateHomeJsonLd } from '../utils/json-ld';
 
 const lang = 'es';
-
-const localBusinessJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  name: 'Casas Vigo',
-  description: 'Habitaciones amuebladas en alquiler en Vigo, Galicia. 5 pisos, 27 habitaciones.',
-  url: 'https://elbenxo.github.io/casas-vigo/',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Alfonso XIII 9',
-    addressLocality: 'Vigo',
-    addressRegion: 'Galicia',
-    postalCode: '36201',
-    addressCountry: 'ES',
-  },
-  geo: { '@type': 'GeoCoordinates', latitude: 42.2318, longitude: -8.7154 },
-  priceRange: '300-400 EUR/mes',
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-    opens: '08:00',
-    closes: '23:00',
-  },
-};
+const jsonLdArray = generateHomeJsonLd(lang);
 ---
 
-<Layout title={t(lang, 'nav.home')} lang={lang} path="/" jsonLd={localBusinessJsonLd}>
+<Layout title={t(lang, 'nav.home')} lang={lang} path="/" jsonLd={jsonLdArray}>
   <!-- Hero -->
   <section class="relative bg-gradient-to-br from-primary-800 to-primary-900 text-white">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20 md:py-32">
@@ -66,6 +45,9 @@ const localBusinessJsonLd = {
       </div>
     </div>
   </section>
+
+  <!-- FAQ -->
+  <FAQ lang={lang} />
 
   <!-- CTA -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-16">

@@ -1,8 +1,28 @@
 const { Router } = require('express');
+const { execFile } = require('child_process');
+const path = require('path');
 const { getDb } = require('../db/connection');
 const asyncRoute = require('../middleware/asyncRoute');
 
 const router = Router();
+
+/**
+ * Trigger availability.json sync after room changes
+ * Runs asynchronously (fire-and-forget) to not block API responses
+ */
+function triggerAvailabilitySync() {
+  const scriptPath = path.resolve(__dirname, '../../../../scripts/sync-availability.js');
+  execFile(process.execPath, [scriptPath], {
+    timeout: 30000,
+    windowsHide: true,
+  }, (err, stdout, stderr) => {
+    if (err) {
+      console.error('[auto-sync] availability sync failed:', err.message);
+    } else {
+      console.log('[auto-sync] availability.json updated');
+    }
+  });
+}
 
 router.get('/', asyncRoute((req, res) => {
   const db = getDb();
@@ -43,6 +63,8 @@ router.post('/', asyncRoute((req, res) => {
   );
   const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(result.lastInsertRowid);
   res.status(201).json({ data: room });
+  // Trigger availability sync in background
+  triggerAvailabilitySync();
 }));
 
 router.put('/:id', asyncRoute((req, res) => {
@@ -73,6 +95,8 @@ router.put('/:id', asyncRoute((req, res) => {
   db.prepare(`UPDATE rooms SET ${updates.join(', ')} WHERE id = ?`).run(...params);
   const updated = db.prepare('SELECT * FROM rooms WHERE id = ?').get(req.params.id);
   res.json({ data: updated });
+  // Trigger availability sync in background
+  triggerAvailabilitySync();
 }));
 
 module.exports = router;

@@ -1,0 +1,42 @@
+---
+import { t, type Lang } from '../i18n/translations';
+import type { Room } from '../data/flats';
+
+interface Props {
+  rooms: Room[];
+  lang: Lang;
+}
+
+const { rooms, lang } = Astro.props;
+---
+
+<div class="mt-10 overflow-x-auto">
+  <h2 class="font-display text-xl font-semibold text-gray-900 mb-4">{t(lang, 'flat.price')}</h2>
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b-2 border-gray-200">
+        <th class="py-3 pr-4 text-sm font-semibold text-gray-700">{t(lang, 'flat.rooms')}</th>
+        <th class="py-3 px-4 text-sm font-semibold text-gray-700">{t(lang, 'flat.price')}</th>
+        <th class="py-3 px-4 text-sm font-semibold text-gray-700 hidden sm:table-cell">m²</th>
+        <th class="py-3 pl-4 text-sm font-semibold text-gray-700">{t(lang, 'flat.availability')}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rooms.map(room => (
+        <tr class="border-b border-gray-100 hover:bg-sand-50 transition-colors">
+          <td class="py-3 pr-4 font-medium text-gray-900">{room.name[lang]}</td>
+          <td class="py-3 px-4 font-semibold text-primary-700">{room.price} €{t(lang, 'flats.month')}</td>
+          <td class="py-3 px-4 text-gray-500 hidden sm:table-cell">{room.size}</td>
+          <td class="py-3 pl-4">
+            <span class:list={[
+              'text-xs font-semibold px-2 py-1 rounded-full',
+              room.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500',
+            ]}>
+              {room.available ? t(lang, 'flats.available') : t(lang, 'flats.occupied')}
+            </span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

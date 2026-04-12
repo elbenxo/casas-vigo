@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { t, getLocalePath } from '../../../i18n/translations';
 import { flats } from '../../../data/flats';
+import PricingTable from '../../../components/PricingTable.astro';
 
 const lang = 'en';
 
@@ -35,7 +36,7 @@ const jsonLd = {
     </nav>
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
       <div class="aspect-[21/9] bg-primary-100 relative overflow-hidden">
-        <img src={flat.image} alt={flat.name[lang]} class="absolute inset-0 w-full h-full object-cover" />
+        <img src={flat.image} alt={`${flat.name[lang]} - ${flat.rooms.length} furnished rooms in ${flat.neighborhood[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" />
       </div>
       <div class="p-6 md:p-8">
         <h1 class="font-display text-3xl font-bold text-gray-900">{flat.name[lang]}</h1>
@@ -49,6 +50,7 @@ const jsonLd = {
         {flat.amenities.map(a => <span class="bg-primary-50 text-primary-700 text-sm font-medium px-3 py-1 rounded-full">{a}</span>)}
       </div>
     </div>
+    <PricingTable rooms={flat.rooms} lang={lang} />
     <div class="mt-10">
       <h2 class="font-display text-xl font-semibold text-gray-900 mb-6">{t(lang, 'flat.rooms')}</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -56,7 +58,7 @@ const jsonLd = {
           <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
             {room.images.length > 0 && (
               <div class="aspect-[16/10] bg-primary-50 relative overflow-hidden">
-                <img src={room.images[0]} alt={room.name[lang]} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                <img src={room.images[0]} alt={`${room.name[lang]} in ${flat.name[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
               </div>
             )}
             <div class="p-6">

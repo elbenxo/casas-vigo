@@ -1,63 +1,47 @@
-# Casas Vigo - Room Rentals in Vigo, Galicia, Spain
+# Casas Vigo
 
-> Furnished rooms for rent in Vigo, Galicia. 5 flats, 27 rooms, 300-400 EUR/month.
+> Furnished rooms for rent in Vigo, Galicia, Spain. 5 flats, 27 rooms, from 300 EUR/month.
 
 ## About
 
-Casas Vigo offers furnished rooms for rent in the city of Vigo, Galicia, Spain.
-We manage 5 flats with a total of 27 rooms, ideal for students, professionals,
-and anyone looking for affordable housing in Vigo.
-
-All rooms include: WiFi, fully equipped kitchen, washing machine, heating.
-Prices range from 300 to 400 EUR/month, all included.
+Casas Vigo offers furnished rooms for monthly rental in Vigo, the largest city in Galicia, Spain. All rooms include WiFi, utilities, heating, hot water, and access to shared kitchen and common areas. Located in central neighborhoods near the HST train station. Monthly rentals, all-inclusive, perfect for professionals, students, and travelers.
 
 ## Properties
 
-### Flat 1: Rua Irmandinhos 23 (City Center)
-- 4 rooms: Primavera (380 EUR), Verano (350 EUR), Otono (370 EUR), Invierno (340 EUR)
-- Renovated flat with elevator, AC, storage room
-- Amenities: WiFi, equipped kitchen, washer, dryer, heating, AC, elevator
+- [Rúa Irmandiños Flat](https://elbenxo.github.io/casas-vigo/en/pisos/irmandinhos/) — 4 rooms, 340-380 EUR/month, Casco Urbano
+- [Alfonso XIII 1º Derecha](https://elbenxo.github.io/casas-vigo/en/pisos/alfonso-1-derecha/) — 6 rooms, 300-360 EUR/month, near HST Station
+- [Alfonso XIII 3º Izquierda](https://elbenxo.github.io/casas-vigo/en/pisos/alfonso-3-izquierda/) — 6 rooms, 300-340 EUR/month, near HST Station
+- [Alfonso XIII 4º Derecha Ático](https://elbenxo.github.io/casas-vigo/en/pisos/alfonso-4-derecha-atico/) — 5 rooms, 340-370 EUR/month, Penthouse with terrace
+- [Alfonso XIII 4º Izquierda Ático](https://elbenxo.github.io/casas-vigo/en/pisos/alfonso-4-izquierda-atico/) — 2 rooms, 370-400 EUR/month, Attic with skylights
 
-### Flat 2: Alfonso XIII 9, 1st Right (HST Station area)
-- 6 rooms: Blue (350 EUR), Bambu (330 EUR), Estrella (360 EUR), Mundo (340 EUR), Arroba (320 EUR), Prensa (300 EUR)
-- Themed rooms, glazed gallery, private patio, 2 bathrooms
-- Amenities: WiFi, equipped kitchen, washer, heating
+## What's Included
 
-### Flat 3: Alfonso XIII 9, 3rd Left (HST Station area)
-- 6 rooms: Mar (340 EUR), Sol (320 EUR), Luna (330 EUR), Viento (310 EUR), Tierra (300 EUR), Fuego (320 EUR)
-- Panoramic views of Vigo estuary
-- Amenities: WiFi, equipped kitchen, washer, heating
-
-### Flat 4: Alfonso XIII 9, 4th Right Penthouse (HST Station area)
-- 5 rooms: Cielo (370 EUR), Nube (350 EUR), Aurora (360 EUR), Rayo (350 EUR), Trueno (340 EUR)
-- Penthouse with terrace and city views
-- Amenities: WiFi, equipped kitchen, washer, heating, terrace
-
-### Flat 5: Alfonso XIII 9, 4th Left Penthouse (HST Station area)
-- 2 rooms: Oceano (400 EUR), Galaxia (370 EUR)
-- Premium attic apartment
-- Amenities: WiFi, equipped kitchen, washer, heating
-
-## Location
-
-Vigo is the largest city in Galicia, northwestern Spain. Known for:
-- Cies Islands (Atlantic Islands National Park)
-- Excellent seafood and gastronomy
-- High-speed train (AVE) connection
-- University of Vigo
-- Mild Atlantic climate year-round
+- Furnished room (bed, desk, wardrobe, natural light)
+- High-speed WiFi (fibra)
+- All utilities (water, electricity, heating)
+- Equipped shared kitchen
+- Washing machine
+- Hot water heating
+- Common areas
 
 ## Contact
 
-- WhatsApp: Contact via website
-- Website: https://elbenxo.github.io/casas-vigo/
-- Languages: Spanish, English, Galician, French, German, Korean, Portuguese, Polish
+- WhatsApp: Available for inquiries
+- Website: https://elbenxo.github.io/casas-vigo/en/contacto/
+- Email: Contact via website
 
-## Structured Data
+## Languages
 
-- Total flats: 5
-- Total rooms: 27
-- Price range: 300-400 EUR/month
-- City: Vigo, Galicia, Spain
-- Addresses: Rua Irmandinhos 23; Alfonso XIII 9 (floors 1R, 3L, 4R, 4L)
-- Coordinates: 42.2318, -8.7154 (Alfonso XIII); 42.2365, -8.7145 (Irmandinhos)
+Available in Spanish (ES), English (EN), and Galician (GL).
+
+## Rental Terms
+
+- Monthly rental (flexible terms)
+- All-inclusive price (no hidden fees)
+- Furnished and ready to move in
+- Central Vigo locations
+- Near public transport
+
+## Detailed Information
+
+For complete property data including all room specifications, amenities, and coordinates, see [llms-full.txt](https://elbenxo.github.io/casas-vigo/llms-full.txt)

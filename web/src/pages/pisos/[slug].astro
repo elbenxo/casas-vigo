@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { t, getLocalePath } from '../../i18n/translations';
 import { flats } from '../../data/flats';
+import PricingTable from '../../components/PricingTable.astro';
 
 const lang = 'es';
 
@@ -47,7 +48,7 @@ const jsonLd = {
     <!-- Header -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
       <div class="aspect-[21/9] bg-primary-100 relative overflow-hidden">
-        <img src={flat.image} alt={flat.name[lang]} class="absolute inset-0 w-full h-full object-cover" />
+        <img src={flat.image} alt={`${flat.name[lang]} - ${flat.rooms.length} habitaciones amuebladas en ${flat.neighborhood[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" />
       </div>
       <div class="p-6 md:p-8">
         <h1 class="font-display text-3xl font-bold text-gray-900">{flat.name[lang]}</h1>
@@ -66,6 +67,9 @@ const jsonLd = {
       </div>
     </div>
 
+    <!-- Pricing Table -->
+    <PricingTable rooms={flat.rooms} lang={lang} />
+
     <!-- Rooms -->
     <div class="mt-10">
       <h2 class="font-display text-xl font-semibold text-gray-900 mb-6">{t(lang, 'flat.rooms')}</h2>
@@ -74,7 +78,7 @@ const jsonLd = {
           <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
             {room.images.length > 0 && (
               <div class="aspect-[16/10] bg-primary-50 relative overflow-hidden">
-                <img src={room.images[0]} alt={room.name[lang]} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                <img src={room.images[0]} alt={`${room.name[lang]} en ${flat.name[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
               </div>
             )}
             <div class="p-6">

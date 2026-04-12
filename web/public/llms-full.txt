@@ -1,0 +1,459 @@
+# Casas Vigo - Complete Property Inventory
+
+## File Description
+
+This is a complete, machine-readable inventory of all properties and rooms offered by Casas Vigo for furnished monthly rental in Vigo, Galicia, Spain. Updated for AI systems, search engines, and property databases.
+
+---
+
+## Business Overview
+
+**Company:** Casas Vigo
+**Service:** Furnished room rentals (monthly)
+**Location:** Vigo, Galicia, Spain
+**Website:** https://elbenxo.github.io/casas-vigo/
+**Contact:** Via website form or WhatsApp
+
+**Portfolio:**
+- 5 buildings / flats
+- 27 furnished rooms
+- Price range: 300-400 EUR/month
+- All prices include utilities, WiFi, and common areas
+
+**Rental Terms:**
+- Monthly rental period (flexible terms available)
+- All-inclusive pricing (no hidden fees)
+- Furnished and ready to move in
+- Suitable for students, professionals, travelers
+- Central locations near public transport
+
+---
+
+## Standard Amenities (All Flats)
+
+- High-speed WiFi fibra
+- Equipped kitchen (cooking facilities)
+- Washing machine access
+- Central heating system
+- Hot water heating
+- Common areas (living room, etc.)
+- Furnished rooms (bed, desk, wardrobe, natural light)
+
+---
+
+# FLAT 1: Rúa Irmandiños 23
+
+## Location Details
+
+**Address:** Rúa Irmandiños 23, Vigo, Galicia, Spain
+**Neighborhood:** Casco Urbano (City Center)
+**Coordinates:** 42.2365, -8.7145
+**Description:** Renovated flat in city center near historic district
+
+**Local Amenities:**
+- Walking distance to Vigo city center
+- Near local shops and restaurants
+- Historic architecture area
+- Easy access to public transport
+
+## Flat-Specific Amenities
+
+- WiFi fibra
+- Equipped kitchen
+- Washing machine
+- Central heating
+- Hot water
+- Common areas
+
+## Rooms
+
+### Room 1: Primavera (Spring)
+- Monthly rent: 380 EUR
+- Size: 14 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe
+- Features: Natural light
+- Description: Bright room with good natural light
+
+### Room 2: Verano (Summer)
+- Monthly rent: 350 EUR
+- Size: 12 m²
+- Bed type: Single bed
+- Furnishings: Desk, wardrobe
+- Features: Standard layout
+- Description: Comfortable mid-sized room
+
+### Room 3: Otoño (Autumn)
+- Monthly rent: 370 EUR
+- Size: 13 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe
+- Features: Balcony
+- Description: Room with balcony access
+
+### Room 4: Invierno (Winter)
+- Monthly rent: 340 EUR
+- Size: 11 m²
+- Bed type: Single bed
+- Furnishings: Desk, wardrobe
+- Features: Compact efficiency
+- Description: Smaller single room
+
+**Flat Summary:** 4 rooms, 340-380 EUR/month, total capacity 4 guests
+
+---
+
+# FLAT 2: Alfonso XIII 9, 1º Derecha (1st Floor Right)
+
+## Location Details
+
+**Address:** Alfonso XIII 9, 1º Derecha, Vigo, Galicia, Spain
+**Neighborhood:** Near HST Station Area
+**Coordinates:** 42.2318, -8.7154
+**Description:** Located near high-speed train station, convenient transport access
+
+**Local Amenities:**
+- Proximity to HST train station
+- Good public transport connections
+- Shopping and dining nearby
+- Business district location
+
+## Flat-Specific Amenities
+
+- WiFi fibra
+- Equipped kitchen
+- Washing machine
+- Central heating
+- Hot water
+- Common areas
+- 2 bathrooms
+
+## Rooms
+
+### Room 1: Blue
+- Monthly rent: 350 EUR
+- Size: 13 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe
+- Features: Standard room
+
+### Room 2: Bambú (Bamboo)
+- Monthly rent: 330 EUR
+- Size: 11 m²
+- Bed type: Single bed
+- Furnishings: Desk, wardrobe, shelving
+- Features: Compact room
+
+### Room 3: Estrella (Star)
+- Monthly rent: 360 EUR
+- Size: 14 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe
+- Features: Largest room
+- Description: Spacious room with decorative wall mural
+
+### Room 4: Mundo (World)
+- Monthly rent: 340 EUR
+- Size: 12 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe, decorative wall mural
+- Features: Double room
+
+### Room 5: Arroba (At Symbol)
+- Monthly rent: 320 EUR
+- Size: 10 m²
+- Bed type: Single bed
+- Furnishings: Desk, wardrobe, thematic wallpaper
+- Features: Themed room
+- Description: Single room with thematic design
+
+### Room 6: Prensa (Press)
+- Monthly rent: 300 EUR
+- Size: 16 m²
+- Bed type: Two single beds
+- Furnishings: Desk, wardrobe, room divider
+- Features: Largest capacity room
+- Description: Two-person room with space divider
+
+**Flat Summary:** 6 rooms, 300-360 EUR/month, total capacity 9 guests
+
+---
+
+# FLAT 3: Alfonso XIII 9, 3º Izquierda (3rd Floor Left)
+
+## Location Details
+
+**Address:** Alfonso XIII 9, 3º Izquierda, Vigo, Galicia, Spain
+**Neighborhood:** Near HST Station Area
+**Coordinates:** 42.2318, -8.7154
+**Description:** Upper floor location with building elevator access
+
+**Local Amenities:**
+- Proximity to HST train station
+- Good public transport connections
+- Shopping and dining nearby
+- Business district location
+
+## Flat-Specific Amenities
+
+- WiFi fibra
+- Equipped kitchen
+- Washing machine
+- Central heating
+- Hot water
+- Common areas
+
+## Rooms
+
+### Room 1: Azul (Blue)
+- Monthly rent: 320 EUR
+- Size: 12 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe
+- Features: Double room
+
+### Room 2: Roja (Red)
+- Monthly rent: 310 EUR
+- Size: 11 m²
+- Bed type: Two single beds
+- Furnishings: Wardrobe, shelving
+- Features: Double room with two singles
+
+### Room 3: Amarilla (Yellow)
+- Monthly rent: 300 EUR
+- Size: 10 m²
+- Bed type: Single bed
+- Furnishings: Desk, wardrobe
+- Features: Single room
+
+### Room 4: Verde (Green)
+- Monthly rent: 330 EUR
+- Size: 12 m²
+- Bed type: Single bed
+- Furnishings: Large desk, wardrobe
+- Features: Single room with workspace
+
+### Room 5: Blanca (White)
+- Monthly rent: 340 EUR
+- Size: 14 m²
+- Bed type: Double bed
+- Furnishings: Glass panel to bathroom, wardrobe
+- Features: Spacious room with bathroom access window
+- Description: Room with glass panel opening to bathroom
+
+### Room 6: Gris (Gray)
+- Monthly rent: 310 EUR
+- Size: 11 m²
+- Bed type: Two single beds
+- Furnishings: Shelving, wardrobe
+- Features: Double room with two singles
+
+**Flat Summary:** 6 rooms, 300-340 EUR/month, total capacity 8-9 guests
+
+---
+
+# FLAT 4: Alfonso XIII 9, 4º Derecha Ático (4th Floor Right Penthouse)
+
+## Location Details
+
+**Address:** Alfonso XIII 9, 4º Derecha, Vigo, Galicia, Spain
+**Apartment Type:** Ático (Penthouse)
+**Neighborhood:** Near HST Station Area
+**Coordinates:** 42.2318, -8.7154
+**Description:** Premium penthouse location on top floor with terrace access and city views
+
+**Local Amenities:**
+- Proximity to HST train station
+- Good public transport connections
+- Shopping and dining nearby
+- Business district location
+- Panoramic city views
+
+## Flat-Specific Amenities
+
+- WiFi fibra
+- Equipped kitchen
+- Washing machine
+- Central heating
+- Hot water
+- Common areas
+- Terrace access
+- City views
+
+## Rooms
+
+### Room 1: Oliva (Olive)
+- Monthly rent: 370 EUR
+- Size: 13 m²
+- Bed type: Double bed
+- Furnishings: Exposed beam, sofa, wardrobe
+- Features: Exposed wood beams, sofa
+- Description: Double room with exposed wood beams and seating
+
+### Room 2: Blanco y Negro (Black and White)
+- Monthly rent: 350 EUR
+- Size: 12 m²
+- Bed type: Double bed
+- Furnishings: Sloped ceiling, desk
+- Features: Attic ceiling
+- Description: Double room with sloped attic ceiling
+
+### Room 3: Pistacho (Pistachio)
+- Monthly rent: 340 EUR
+- Size: 11 m²
+- Bed type: Single bed
+- Furnishings: Desk, wardrobe
+- Features: Single room
+
+### Room 4: Roja (Red)
+- Monthly rent: 340 EUR
+- Size: 11 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe
+- Features: Double room
+
+### Room 5: Calabaza (Pumpkin)
+- Monthly rent: 360 EUR
+- Size: 12 m²
+- Bed type: Single bed
+- Furnishings: Skylight, desk, wardrobe
+- Features: Skylight window
+- Description: Single room with skylight
+
+**Flat Summary:** 5 rooms, 340-370 EUR/month, total capacity 7 guests, Premium penthouse with views
+
+---
+
+# FLAT 5: Alfonso XIII 9, 4º Izquierda Ático (4th Floor Left Attic)
+
+## Location Details
+
+**Address:** Alfonso XIII 9, 4º Izquierda, Vigo, Galicia, Spain
+**Apartment Type:** Ático (Attic/Top Floor)
+**Neighborhood:** Near HST Station Area
+**Coordinates:** 42.2318, -8.7154
+**Description:** Premium attic apartment with skylights and architectural character
+
+**Local Amenities:**
+- Proximity to HST train station
+- Good public transport connections
+- Shopping and dining nearby
+- Business district location
+- Unique architecture
+
+## Flat-Specific Amenities
+
+- WiFi fibra
+- Equipped kitchen
+- Washing machine
+- Central heating
+- Hot water
+- Common areas
+- Floor-to-ceiling windows
+- Skylights
+
+## Rooms
+
+### Room 1: Provenzal (Provençal)
+- Monthly rent: 400 EUR
+- Size: 15 m²
+- Bed type: Double bed
+- Furnishings: Desk, wardrobe, ornate chandelier
+- Features: Floor-to-ceiling windows, Provençal decor
+- Description: Largest premium room with stunning views and chandelier
+
+### Room 2: Nueva York (New York)
+- Monthly rent: 370 EUR
+- Size: 12 m²
+- Bed type: Single bed
+- Furnishings: Glass desk, wardrobe
+- Features: Urban decor, city views
+- Description: Single room with modern urban aesthetic
+
+**Flat Summary:** 2 rooms, 370-400 EUR/month, total capacity 3 guests, Premium attic with skylights and panoramic windows
+
+---
+
+## Property Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Buildings | 5 |
+| Total Rooms | 27 |
+| Single Rooms | 13 |
+| Double Rooms | 14 |
+| Minimum Rent | 300 EUR/month |
+| Maximum Rent | 400 EUR/month |
+| Average Rent | ~340 EUR/month |
+| Average Room Size | 11.6 m² |
+
+---
+
+## Geographic Data
+
+### Vigo, Galicia, Spain
+
+Vigo is the largest city in Galicia, located in northwestern Spain on the Atlantic coast. Known for excellent quality of life, gastronomy, and access to nature.
+
+**Key Facts:**
+- Population: ~290,000 people
+- Region: Galicia (autonomous community)
+- Known for: Cíes Islands, Ría de Vigo, seafood cuisine
+- Transportation: High-speed train (AVE) station, airport connections
+- Climate: Temperate Atlantic, mild year-round
+
+**Neighborhoods:**
+- Casco Urbano (City Center): Historic district, walkable
+- HST Station Area: Modern, transport hub, business district
+
+---
+
+## Contact & Booking
+
+**Website:** https://elbenxo.github.io/casas-vigo/
+
+**Languages Available:**
+- Spanish (ES)
+- English (EN)
+- Galician (GL)
+- Also available in: French, German, Korean, Portuguese, Polish
+
+**How to Book:**
+1. Browse available rooms on website
+2. Check current availability
+3. Contact via website form or WhatsApp
+4. Arrange viewing and rental terms
+5. Sign monthly rental agreement
+6. Move in when ready
+
+**Terms & Conditions:**
+- Monthly rental period (flexible)
+- All-inclusive pricing (no hidden costs)
+- Furnished and ready to move in
+- Utilities and WiFi included
+- Shared common areas
+- Suitable for students, professionals, travelers
+
+---
+
+## Data Update Information
+
+- Last Updated: 2026-04-12
+- Data Format: Plain text, machine-readable
+- Coordinates: WGS84 (Latitude, Longitude)
+- Currency: EUR (Euro)
+- Language: English (property details)
+- Page Views: https://elbenxo.github.io/casas-vigo/
+
+---
+
+## Additional Resources
+
+- Website: https://elbenxo.github.io/casas-vigo/
+- Property List: https://elbenxo.github.io/casas-vigo/en/pisos/
+- Contact: https://elbenxo.github.io/casas-vigo/en/contacto/
+- Summary (short format): [llms.txt](https://elbenxo.github.io/casas-vigo/llms.txt)
+
+---
+
+End of Casas Vigo Property Inventory

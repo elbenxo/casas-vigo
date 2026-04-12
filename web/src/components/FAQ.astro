@@ -1,0 +1,41 @@
+---
+import { t, type Lang } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const faqs = [
+  { q: t(lang, 'faq.q1'), a: t(lang, 'faq.a1') },
+  { q: t(lang, 'faq.q2'), a: t(lang, 'faq.a2') },
+  { q: t(lang, 'faq.q3'), a: t(lang, 'faq.a3') },
+  { q: t(lang, 'faq.q4'), a: t(lang, 'faq.a4') },
+  { q: t(lang, 'faq.q5'), a: t(lang, 'faq.a5') },
+  { q: t(lang, 'faq.q6'), a: t(lang, 'faq.a6') },
+];
+---
+
+<section class="py-16 bg-sand-50">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 class="text-3xl font-display font-bold text-center text-gray-900 mb-10">
+      {t(lang, 'faq.title')}
+    </h2>
+    <div class="space-y-4">
+      {faqs.map(({ q, a }) => (
+        <details class="group bg-white rounded-lg shadow-sm border border-gray-100">
+          <summary class="flex justify-between items-center cursor-pointer p-5 font-medium text-gray-900 hover:text-primary-600">
+            {q}
+            <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-5 pb-5 text-gray-600 leading-relaxed">
+            {a}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

@@ -16,16 +16,14 @@ Build the local read-only dashboard (dashboard/) for the property owner.
 - [x] Show annual cost totals ("Todo el año" filter + monthly average) — 2026-04-12
 - [x] Occupancy page: rooms grouped by flat, status badges, available_from dates — 2026-04-12
 - [x] Summary: current occupancy rate (global + per flat with progress bars) — 2026-04-12
-
-## In Progress
-_(none)_
-
-## Completed (Apr 12 batch 2)
 - [x] Rendimiento por m² (EUR/m²/mes) — ranking global + por piso + por tarjeta de habitación — 2026-04-12
 - [x] Mostrar "ocupada hasta" en tarjetas de habitación (contract_end desde contacts) — 2026-04-12
 - [x] Alertas de contratos por vencer (próximos 60 días, con urgencia visual) — 2026-04-12
 - [x] Calendario Gantt de alquileres (calendar.html) — timeline horizontal, barras por contrato, navegación por año — 2026-04-12
 - [x] Añadidas 2 nuevas páginas a navegación: Ocupación, Calendario — 2026-04-12
+
+## In Progress
+_(none)_
 
 ## Pending
 
@@ -33,7 +31,7 @@ _(none)_
 - [ ] Show occupancy rate per room/flat alongside income — medium
 
 ### Dashboard como CMS (gestión completa de contenido web)
-Objetivo: el dashboard es el único sitio desde donde se gestiona todo el contenido que aparece en la web pública. "Publicar" sincroniza todo y despliega.
+Objetivo: el dashboard es el único sitio desde donde se gestiona todo el contenido que aparece en la web pública. "Publicar" sincroniza todo y despliega. **Un solo click = las 72 páginas (8 idiomas × 9 tipos) se regeneran.**
 
 #### Gestión de pisos
 - [ ] CRUD pisos desde dashboard (nombre, dirección, barrio, descripción multiidioma, amenities, coordenadas) — high
@@ -54,20 +52,21 @@ Objetivo: el dashboard es el único sitio desde donde se gestiona todo el conten
 - [ ] Dashboard: descripción/alt text por foto (para SEO) — medium
 - [ ] Dashboard: elegir foto principal (portada) por piso y por habitación — medium
 
-#### Sync completo (flats.ts generado desde API)
-- [ ] Ampliar sync-availability.js → sync-web.js (genera flats.ts completo desde API + fotos) — high
+#### Sync completo (flats.ts 100% auto-generado desde API)
+El script sync-web.js reemplaza al actual sync-availability.js. Genera TODO el contenido web desde la API, para que un cambio en el dashboard se propague a los 8 idiomas automáticamente.
+
+- [ ] Crear sync-web.js que genera flats.ts completo desde API (pisos, habitaciones, precios, disponibilidad, fotos, descripciones multiidioma) — high
 - [ ] flats.ts pasa a ser 100% auto-generado (no editable manualmente) — high
-- [ ] Sync incluye: pisos, habitaciones, precios, disponibilidad, fotos activas, descripciones — high
-- [ ] deploy-web.js sincroniza fotos + datos + git push — high
+- [ ] Sync incluye: fotos activas con sort_order, alt texts para SEO — high
+- [ ] Generar llms.txt y llms-full.txt desde API (GEO siempre actualizado) — medium
+- [ ] deploy-web.js: sincroniza fotos + datos + git push → 72 páginas regeneradas — high
+- [ ] Flujo completo desde dashboard: Vista previa → Publicar/Cancelar — high (ya existe, conectar con sync-web.js)
 
 #### Reviews
 - [ ] CRUD reviews desde dashboard (nombre, texto multiidioma, piso) — low
-
-### Data (done)
-- [x] API endpoints for income/costs/receipts — 2026-04-12
-- [x] Dashboard reads from API — 2026-04-12
 
 ### Constraints
 - Runs on localhost only (NOT internet-facing)
 - Dashboard es read+write: CMS completo para el propietario
 - Simplest tech possible
+- Un rebuild genera las 72 páginas de los 8 idiomas (5.5s actualmente)

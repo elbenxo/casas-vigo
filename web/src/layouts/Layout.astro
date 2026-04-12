@@ -11,8 +11,8 @@ interface Props {
   ogImage?: string;
   /** Current path without lang prefix, e.g. '/pisos/' */
   path?: string;
-  /** JSON-LD structured data */
-  jsonLd?: Record<string, unknown>;
+  /** JSON-LD structured data (object or array of objects) */
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 const {
@@ -34,6 +34,11 @@ const defaultDescriptions: Record<Lang, string> = {
   es: 'Habitaciones amuebladas en alquiler en Vigo, Galicia. 5 pisos, 27 habitaciones, desde 300 EUR/mes. WiFi, todo incluido.',
   en: 'Furnished rooms for rent in Vigo, Galicia. 5 flats, 27 rooms, from 300 EUR/month. WiFi, all included.',
   gl: 'Habitacións amobladas en alugueiro en Vigo, Galicia. 5 pisos, 27 habitacións, dende 300 EUR/mes. WiFi, todo incluído.',
+  fr: 'Chambres meublées à louer à Vigo, Galice. 5 appartements, 27 chambres, à partir de 300 EUR/mois. WiFi, tout inclus.',
+  de: 'Möblierte Zimmer zur Miete in Vigo, Galicien. 5 Wohnungen, 27 Zimmer, ab 300 EUR/Monat. WiFi, alles inklusive.',
+  ko: '스페인 갈리시아 비고의 가구 완비 임대 객실. 5개 아파트, 27개 객실, 월 300 EUR부터. WiFi, 전부 포함.',
+  pt: 'Quartos mobilados para alugar em Vigo, Galiza. 5 apartamentos, 27 quartos, desde 300 EUR/mês. WiFi, tudo incluído.',
+  pl: 'Umeblowane pokoje do wynajęcia w Vigo, Galicja. 5 mieszkań, 27 pokoi, od 300 EUR/mies. WiFi, wszystko w cenie.',
 };
 const metaDescription = description || defaultDescriptions[lang];
 
@@ -43,6 +48,139 @@ function langUrl(l: Lang): string {
   return `${siteOrigin}${base}${langPrefix}${path}`;
 }
 const canonicalUrl = langUrl(lang);
+
+// Breadcrumb labels by language
+const breadcrumbLabels: Record<Lang, Record<string, string>> = {
+  es: {
+    home: 'Inicio',
+    pisos: 'Pisos',
+    vigo: 'Vigo',
+    contacto: 'Contacto',
+  },
+  en: {
+    home: 'Home',
+    pisos: 'Flats',
+    vigo: 'Vigo',
+    contacto: 'Contact',
+  },
+  gl: {
+    home: 'Inicio',
+    pisos: 'Pisos',
+    vigo: 'Vigo',
+    contacto: 'Contacto',
+  },
+  fr: {
+    home: 'Accueil',
+    pisos: 'Appartements',
+    vigo: 'Vigo',
+    contacto: 'Contact',
+  },
+  de: {
+    home: 'Startseite',
+    pisos: 'Wohnungen',
+    vigo: 'Vigo',
+    contacto: 'Kontakt',
+  },
+  ko: {
+    home: '홈',
+    pisos: '아파트',
+    vigo: '비고',
+    contacto: '연락처',
+  },
+  pt: {
+    home: 'Início',
+    pisos: 'Apartamentos',
+    vigo: 'Vigo',
+    contacto: 'Contacto',
+  },
+  pl: {
+    home: 'Strona główna',
+    pisos: 'Mieszkania',
+    vigo: 'Vigo',
+    contacto: 'Kontakt',
+  },
+};
+
+// Generate BreadcrumbList JSON-LD
+function generateBreadcrumbs(): Record<string, unknown> | null {
+  if (path === '/') {
+    return null; // Home page doesn't need breadcrumbs
+  }
+
+  const items: Array<{ position: number; name: string; url: string }> = [];
+  const pathSegments = path
+    .split('/')
+    .filter(segment => segment !== '')
+    .slice(0, 2); // Handle up to 2 segments (e.g., /pisos/ or /pisos/slug/)
+
+  // Always add Home as first item
+  items.push({
+    position: 1,
+    name: breadcrumbLabels[lang].home,
+    url: langUrl(lang).replace(path, '/'),
+  });
+
+  if (pathSegments.length === 0) {
+    return null;
+  }
+
+  const firstSegment = pathSegments[0];
+  const segmentLabels: Record<string, keyof typeof breadcrumbLabels['es']> = {
+    pisos: 'pisos',
+    vigo: 'vigo',
+    contacto: 'contacto',
+  };
+
+  // Add first-level segment (e.g., "Pisos")
+  const label = segmentLabels[firstSegment];
+  if (label) {
+    const langPrefix = lang === 'es' ? '' : `/${lang}`;
+    items.push({
+      position: items.length + 1,
+      name: breadcrumbLabels[lang][label],
+      url: `${siteOrigin}${base}${langPrefix}/${firstSegment}/`,
+    });
+  }
+
+  // Add second-level segment for flat detail pages (e.g., /pisos/irmandinhos/)
+  if (pathSegments.length === 2 && firstSegment === 'pisos') {
+    const flatSlug = pathSegments[1];
+    // Use the title as the flat name for breadcrumbs
+    // Extract the flat name from the title (remove the siteName part if present)
+    const flatName = title.split(' | ')[0] || title;
+    const langPrefix = lang === 'es' ? '' : `/${lang}`;
+    items.push({
+      position: items.length + 1,
+      name: flatName,
+      url: `${siteOrigin}${base}${langPrefix}${path}`,
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(item => ({
+      '@type': 'ListItem',
+      position: item.position,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+const breadcrumbsJsonLd = generateBreadcrumbs();
+
+const ogLocaleMap: Record<Lang, string> = {
+  es: 'es_ES',
+  en: 'en_GB',
+  gl: 'gl_ES',
+  fr: 'fr_FR',
+  de: 'de_DE',
+  ko: 'ko_KR',
+  pt: 'pt_PT',
+  pl: 'pl_PL',
+};
+const ogLocale = ogLocaleMap[lang];
 ---
 
 <!doctype html>
@@ -66,7 +204,7 @@ const canonicalUrl = langUrl(lang);
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : lang === 'gl' ? 'gl_ES' : 'en_GB'} />
+    <meta property="og:locale" content={ogLocale} />
     {ogImage && <meta property="og:image" content={`${siteOrigin}${base}${ogImage}`} />}
 
     {/* Twitter Card */}
@@ -80,6 +218,11 @@ const canonicalUrl = langUrl(lang);
     {/* JSON-LD structured data */}
     {jsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+
+    {/* BreadcrumbList JSON-LD */}
+    {breadcrumbsJsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsJsonLd)} />
     )}
   </head>
   <body class="min-h-screen flex flex-col bg-sand-50 text-gray-800 font-sans">
