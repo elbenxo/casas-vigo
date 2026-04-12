@@ -1,0 +1,120 @@
+{
+  "lastUpdated": "2026-04-12T17:33:40.217Z",
+  "rooms": {
+    "ir-primavera": {
+      "available": false,
+      "price": 380,
+      "available_from": null
+    },
+    "ir-verano": {
+      "available": false,
+      "price": 350,
+      "available_from": null
+    },
+    "ir-otono": {
+      "available": false,
+      "price": 370,
+      "available_from": null
+    },
+    "ir-invierno": {
+      "available": false,
+      "price": 340,
+      "available_from": null
+    },
+    "1d-blue": {
+      "available": false,
+      "price": 350,
+      "available_from": null
+    },
+    "1d-bambu": {
+      "available": false,
+      "price": 330,
+      "available_from": null
+    },
+    "1d-estrella": {
+      "available": false,
+      "price": 360,
+      "available_from": null
+    },
+    "1d-mundo": {
+      "available": false,
+      "price": 340,
+      "available_from": null
+    },
+    "1d-arroba": {
+      "available": false,
+      "price": 320,
+      "available_from": null
+    },
+    "1d-prensa": {
+      "available": false,
+      "price": 300,
+      "available_from": null
+    },
+    "3i-azul": {
+      "available": false,
+      "price": 320,
+      "available_from": null
+    },
+    "3i-roja": {
+      "available": false,
+      "price": 310,
+      "available_from": null
+    },
+    "3i-amarilla": {
+      "available": false,
+      "price": 300,
+      "available_from": null
+    },
+    "3i-verde": {
+      "available": false,
+      "price": 330,
+      "available_from": null
+    },
+    "3i-blanca": {
+      "available": false,
+      "price": 340,
+      "available_from": null
+    },
+    "3i-gris": {
+      "available": false,
+      "price": 310,
+      "available_from": null
+    },
+    "4d-oliva": {
+      "available": false,
+      "price": 370,
+      "available_from": null
+    },
+    "4d-blanco-negro": {
+      "available": true,
+      "price": 350,
+      "available_from": "2026-05-01"
+    },
+    "4d-pistacho": {
+      "available": true,
+      "price": 340,
+      "available_from": "2026-05-01"
+    },
+    "4d-roja": {
+      "available": true,
+      "price": 340,
+      "available_from": "2026-05-01"
+    },
+    "4d-calabaza": {
+      "available": true,
+      "price": 360,
+      "available_from": "2026-05-01"
+    },
+    "4i-provenzal": {
+      "available": true,
+      "price": 400,
+      "available_from": "2026-05-01"
+    },
+    "4i-nueva-york": {
+      "available": true,
+      "price": 370,
+      "available_from": "2026-05-01"
+    }
+  }
+}
