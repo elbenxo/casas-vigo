@@ -12,7 +12,7 @@ const _templateCache = new Map();
 function loadTemplate(lang) {
   if (_templateCache.has(lang)) return _templateCache.get(lang);
 
-  const templatesDir = path.resolve(__dirname, '../../../../templates/contracts');
+  const templatesDir = path.resolve(__dirname, '../../../templates/contracts');
   const langFile = path.join(templatesDir, `contract-${lang}.html`);
   const fallbackFile = path.join(templatesDir, 'contract-es.html');
 
