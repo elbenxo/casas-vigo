@@ -2,7 +2,7 @@
 
 Reference document with all confirmed product decisions. Read this before making any implementation or architecture suggestion.
 
-Last updated: 2026-03-29
+Last updated: 2026-04-12
 
 ---
 
@@ -20,8 +20,11 @@ Last updated: 2026-03-29
   - El sales agent debe ofrecer ambas opciones para este piso
   - Reservas de Airbnb/Booking: el propietario comunica al agente por WhatsApp manualmente. NO hay sincronizacion automatica con estas plataformas.
 - Precios: 300-400 EUR/mes, habitaciones 10-16 m2
-- Fianza: 1 mes, se paga por adelanto. El agent informa, el cobro se gestiona fuera del sistema.
-- Metodo de pago: Efectivo actualmente. Debe ser configurable (desde dashboard o via instruccion al agente) para cambiar a transferencia, Bizum, etc. en el futuro.
+- Fianza: 1 mes. Se devuelve al finalizar tras comprobar estado y que no haya cantidades pendientes.
+- Suministros: provision mensual de 25 EUR/mes por inquilino (agua, luz, gas). Se liquida al final del contrato.
+- Metodo de pago: Dentro de los 3 primeros dias del mes. Efectivo, transferencia o Bizum.
+- Horario silencio: 22:30-8:00. No fumar, no mascotas, no fiestas.
+- Limpieza: Devolver limpio o cargo minimo 50 EUR.
 - Control de pagos: manual. El propietario confirma al agente que se ha recibido el pago. El agente no tiene visibilidad directa sobre cobros.
 - Habitaciones con nombres tematicos (colores, estaciones, ciudades)
 
@@ -31,7 +34,7 @@ Last updated: 2026-03-29
 
 - **Stack**: Astro + Tailwind CSS, GitHub Pages
 - **Rol**: Escaparate con disponibilidad por fechas. NO reservas directas.
-- **Idiomas web**: ES (default), EN, GL ya implementados. Pendiente anadir: FR, DE, KO, PT, PL.
+- **Idiomas web**: ES (default), EN, GL, FR, DE, KO, PT, PL — 8 idiomas, 72 páginas estáticas.
 - **Disponibilidad**: Casi tiempo real, mecanismo barato. Script actualiza fichero de fechas y hace push. No backend.
 - **SEO**: Mejorar meta tags, Schema.org/JSON-LD, sitemap, OG tags
 - **GEO (Generative Engine Optimization)**: Adaptada para agentes AI (ChatGPT, Perplexity). Objetivo: que recomienden las habitaciones. Requiere: llms.txt, structured data, contenido semantico limpio.
@@ -51,9 +54,10 @@ Last updated: 2026-03-29
   - Fijar citas en calendario (Google Calendar u otro) para visitas. Huecos fijos configurables, intervalos de 15 min por visita.
   - Enviar enlace de la web (NO fotos directas por chat)
   - Adaptar idioma al interlocutor
-  - Datos del prospecto: durante la venta solo se guarda nombre y telefono (para contactar por WhatsApp). Datos personales completos (DNI, nacionalidad, etc.) solo se solicitan DESPUES de la visita, cuando el prospecto confirma que quiere la habitacion. Esos datos se usan unicamente para generar el borrador de contrato y NO se almacenan en el sistema.
-  - Enviar borradores de contrato (plantillas con placeholders sustituidos). NO vinculante, la firma se hace en persona en la visita.
-  - Contratos multiidioma. Contrato turistico distinto al de temporada.
+  - Datos del prospecto: durante la venta se guarda nombre, telefono, email. Datos personales para contrato (DNI, fecha nacimiento) se solicitan DESPUES de la visita, cuando el prospecto confirma que quiere la habitacion. Se almacenan en tabla `prospects` (campos dob, dni).
+  - Generar contratos desde plantilla real (15 cláusulas, basado en contrato legal del propietario). Plantillas en 8 idiomas con placeholders. Se generan como HTML, preview en dashboard, imprimibles.
+  - Flujo: Prospect → Contrato generado → Contrato firmado → se crea Contact (tenant) + se asigna Room (transacción atómica).
+  - Contratos multiidioma. Contrato turistico distinto al de temporada (pendiente).
   - Los datos del prospecto se recogen por el canal que sea (WhatsApp, Telegram, etc.), no asumir canal concreto
 - **Autonomia**: Info y citas autonomo. Dudas complejas escala al propietario por WhatsApp.
 - **Horario**: 8:00-23:00, 7 dias/semana. Fuera de horario: agente apagado, no lee de ningun canal. Los mensajes recibidos fuera de horario se procesan al reanudar a las 8:00.
@@ -99,7 +103,9 @@ Last updated: 2026-03-29
 - **Decision**: Dashboard local con lectura Y escritura
   - Ver: ingresos, costes, estado habitaciones, informes
   - Editar: corregir errores del agente, cambiar configuracion (metodo de pago, precios, disponibilidad), gestionar datos de inquilinos
-  - Imprimir borradores de contrato
+  - Prospect CRM: Kanban pipeline (Nuevo → Contactado → Visita → Contrato → Firmado/Perdido), estadísticas, interacciones
+  - Generar, previsualizar e imprimir contratos desde plantillas reales (8 idiomas)
+  - Firmar contrato = conversión atómica prospect → tenant
   - El propietario puede operar via WhatsApp al agente O desde el dashboard. Ambos canales de control.
 - **Usuario**: 1 propietario solo. NO es SaaS.
 - **Datos a mostrar**:
@@ -110,7 +116,7 @@ Last updated: 2026-03-29
 - **NO conectada a internet** (seguridad)
 - **Backup**: Sincronizacion con Google Drive
 - **Filosofia**: El software ayuda al propietario, no lo sustituye. Check-in, check-out, visitas, firma de contratos son presenciales.
-- **Privacidad**: Datos personales (DNI, etc.) solo se solicitan post-visita para generar contrato. No se almacenan. Solo se guarda nombre + telefono de contacto.
+- **Privacidad**: Datos personales (DNI, fecha nacimiento) se solicitan post-visita para generar contrato. Se almacenan en tabla prospects (necesarios para generar contratos). Solo se guarda nombre + telefono + email como datos iniciales de contacto.
 
 ---
 

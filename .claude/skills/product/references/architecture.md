@@ -2,7 +2,7 @@
 
 Documento canonico de arquitectura. Todas las decisiones de implementacion deben respetar este diseno.
 
-Last updated: 2026-03-29
+Last updated: 2026-04-12
 
 ---
 
@@ -223,8 +223,23 @@ GET    /api/config                   Toda la configuracion
 GET    /api/config/:key              Valor de una clave
 PUT    /api/config/:key              Actualizar clave
 
+# Prospects (CRM)
+GET    /api/prospects                Lista prospectos (filtros: status, channel, flat, lang)
+GET    /api/prospects/:id            Detalle de prospecto
+POST   /api/prospects                Crear prospecto
+PUT    /api/prospects/:id            Actualizar prospecto
+PUT    /api/prospects/:id/status     Cambiar estado en pipeline
+GET    /api/prospects/:id/interactions  Historial de interacciones
+POST   /api/prospects/:id/interactions  Registrar interaccion
+GET    /api/prospects/analytics/summary  Estadisticas CRM agregadas
+
 # Contratos
-POST   /api/contracts/draft          Generar borrador de contrato (datos + plantilla)
+GET    /api/contracts                Lista contratos (filtros: status, prospect, room)
+GET    /api/contracts/:id            Detalle de contrato
+POST   /api/contracts/generate       Generar contrato desde plantilla (prospect + room + lang)
+GET    /api/contracts/:id/download   Servir HTML del contrato (para preview/imprimir)
+PUT    /api/contracts/:id/sign       Firmar: prospect → tenant (transaccion atomica)
+PUT    /api/contracts/:id/status     Cambiar estado (draft → terminated)
 
 # Sistema
 GET    /health                       Health check (API + DB status)

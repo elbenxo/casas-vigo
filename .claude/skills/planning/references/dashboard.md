@@ -137,10 +137,19 @@ Objetivo: crear, almacenar e imprimir contratos desde el dashboard. Contratos ba
 
 #### Code quality (simplify 2026-04-12)
 - [x] contractGenerator.js: template cache + mkdirSync guard — 2026-04-12
-- [x] Shared constants.js (PROSPECT_STATUSES, PRE_CONTRACT_STATUSES) — 2026-04-12
+- [x] Shared constants.js (PROSPECT_STATUSES, PRE_CONTRACT_STATUSES, CONTRACT_STATUSES, DEFAULT_UTILITIES_PROVISION) — 2026-04-12
 - [x] Shared esc() in app.js (eliminadas 2 copias privadas) — 2026-04-12
 - [x] Fix: path depth bug en CONTRACTS_OUTPUT_DIR (5→4 niveles) — 2026-04-12
 - [x] Fix: _computeAnalytics variable 'signed' filtrando 'lost' — 2026-04-12
+- [x] Plantillas reescritas desde contrato real (PDF) — 15 cláusulas, provisión suministros, inventario anexo — 2026-04-12
+- [x] Fix: template path resolution (3 niveles no 4 desde services/) — 2026-04-12
+- [x] Fix: contract preview vacío — cambiado a srcdoc (fetch + inject) en vez de iframe src — 2026-04-12
+- [x] Fix: Content-Disposition inline (no attachment) para preview en iframe — 2026-04-12
+- [x] owner_name cargado desde config table (no desde request body) — 2026-04-12
+- [x] TOCTOU eliminado en loadTemplate (try/catch en vez de existsSync) — 2026-04-12
+- [x] Campos dob/dni añadidos a formulario de prospects — 2026-04-12
+- [x] Campos utilities_provision/sign_date añadidos a formulario de contratos — 2026-04-12
+- [x] Playwright smoke test: 13 tests cubriendo flujo completo prospect→contrato→tenant — 2026-04-12
 
 ### Constraints
 - Runs on localhost only (NOT internet-facing)
