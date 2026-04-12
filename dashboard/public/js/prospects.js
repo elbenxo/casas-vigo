@@ -356,6 +356,8 @@ async function editProspect(id) {
     el('edit-name').value = p.name || '';
     el('edit-phone').value = p.phone || '';
     el('edit-email').value = p.email || '';
+    el('edit-dob').value = p.dob || '';
+    el('edit-dni').value = p.dni || '';
     el('edit-lang').value = p.language || 'es';
     el('edit-channel').value = p.channel || 'whatsapp';
     el('edit-flat').value = p.flat_interest || '';
@@ -373,6 +375,8 @@ function openNewProspect() {
   el('edit-name').value = '';
   el('edit-phone').value = '';
   el('edit-email').value = '';
+  el('edit-dob').value = '';
+  el('edit-dni').value = '';
   el('edit-lang').value = 'es';
   el('edit-channel').value = 'whatsapp';
   el('edit-flat').value = '';
@@ -399,6 +403,8 @@ el('form-edit-prospect') && el('form-edit-prospect').addEventListener('submit', 
     name:         el('edit-name').value.trim() || null,
     phone:        el('edit-phone').value.trim() || null,
     email:        el('edit-email').value.trim() || null,
+    dob:          el('edit-dob').value || null,
+    dni:          el('edit-dni').value.trim() || null,
     language:     el('edit-lang').value,
     channel:      el('edit-channel').value,
     flat_interest: el('edit-flat').value ? parseInt(el('edit-flat').value) : null,

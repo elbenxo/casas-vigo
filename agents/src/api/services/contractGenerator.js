@@ -17,13 +17,18 @@ function loadTemplate(lang) {
   const fallbackFile = path.join(templatesDir, 'contract-es.html');
 
   let html;
-  if (fs.existsSync(langFile)) {
+  try {
     html = fs.readFileSync(langFile, 'utf8');
-  } else if (lang !== 'es' && fs.existsSync(fallbackFile)) {
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
+    if (lang === 'es') throw new Error('Contract template not found for lang="es"');
     console.warn(`[contractGenerator] Template for lang="${lang}" not found, falling back to "es"`);
-    html = fs.readFileSync(fallbackFile, 'utf8');
-  } else {
-    throw new Error(`Contract template not found for lang="${lang}" and no fallback available`);
+    try {
+      html = fs.readFileSync(fallbackFile, 'utf8');
+    } catch (fallbackErr) {
+      if (fallbackErr.code !== 'ENOENT') throw fallbackErr;
+      throw new Error(`Contract template not found for lang="${lang}" and no fallback available`);
+    }
   }
 
   _templateCache.set(lang, html);

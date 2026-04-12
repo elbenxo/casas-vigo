@@ -5,7 +5,7 @@ const path = require('path');
 const { getDb } = require('../db/connection');
 const asyncRoute = require('../middleware/asyncRoute');
 const { generateContract } = require('../services/contractGenerator');
-const { PRE_CONTRACT_STATUSES } = require('../constants');
+const { PRE_CONTRACT_STATUSES, DEFAULT_UTILITIES_PROVISION } = require('../constants');
 
 const router = Router();
 
@@ -58,11 +58,11 @@ router.get('/:id', asyncRoute((req, res) => {
 /**
  * POST /api/contracts/generate
  * Generate a contract from a template.
- * Body: { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit, owner_name, utilities_provision, sign_date }
+ * Body: { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit, utilities_provision, sign_date }
  */
 router.post('/generate', asyncRoute((req, res) => {
   const db = getDb();
-  const { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit, owner_name, utilities_provision, sign_date } = req.body;
+  const { prospect_id, room_id, lang, start_date, end_date, monthly_rent, deposit, utilities_provision, sign_date } = req.body;
 
   if (!prospect_id || !room_id) {
     return res.status(400).json({ error: 'prospect_id and room_id required' });
@@ -72,16 +72,15 @@ router.post('/generate', asyncRoute((req, res) => {
   if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
 
   const room = db.prepare(
-    'SELECT r.*, f.id AS flat_id, f.name AS flat_name, f.address AS flat_address, f.neighborhood AS flat_neighborhood FROM rooms r JOIN flats f ON f.id = r.flat_id WHERE r.id = ?'
+    'SELECT r.*, f.id AS flat_id, f.name AS flat_name, f.address AS flat_address FROM rooms r JOIN flats f ON f.id = r.flat_id WHERE r.id = ?'
   ).get(room_id);
   if (!room) return res.status(404).json({ error: 'Room not found' });
 
-  const flat = {
-    id: room.flat_id,
-    name: room.flat_name,
-    address: room.flat_address,
-    neighborhood: room.flat_neighborhood,
-  };
+  const flat = { id: room.flat_id, name: room.flat_name, address: room.flat_address };
+
+  // Owner name from config table (consistent across all contracts)
+  const ownerRow = db.prepare("SELECT value FROM config WHERE key = 'owner_name'").get();
+  const ownerName = ownerRow?.value ?? '';
 
   const effectiveLang = lang || prospect.language || 'es';
   const effectiveRent = monthly_rent ?? room.price_monthly;
@@ -95,8 +94,8 @@ router.post('/generate', asyncRoute((req, res) => {
     end_date: end_date ?? null,
     monthly_rent: effectiveRent,
     deposit: deposit ?? null,
-    owner_name: owner_name ?? null,
-    utilities_provision: utilities_provision ?? '25',
+    owner_name: ownerName,
+    utilities_provision: utilities_provision ?? String(DEFAULT_UTILITIES_PROVISION),
     sign_date: sign_date ?? null,
     outputDir: CONTRACTS_OUTPUT_DIR,
   });

@@ -221,13 +221,15 @@ const Contracts = (() => {
 
     try {
       const body = {
-        prospect_id:   parseInt(el('gen-prospect').value),
-        room_id:       parseInt(el('gen-room').value),
-        lang:          el('gen-lang').value,
-        start_date:    el('gen-start').value,
-        end_date:      el('gen-end').value,
-        monthly_rent:  parseFloat(el('gen-rent').value),
-        deposit:       parseFloat(el('gen-deposit').value) || parseFloat(el('gen-rent').value),
+        prospect_id:        parseInt(el('gen-prospect').value),
+        room_id:            parseInt(el('gen-room').value),
+        lang:               el('gen-lang').value,
+        start_date:         el('gen-start').value,
+        end_date:           el('gen-end').value,
+        monthly_rent:       parseFloat(el('gen-rent').value),
+        deposit:            parseFloat(el('gen-deposit').value) || parseFloat(el('gen-rent').value),
+        utilities_provision: el('gen-utilities')?.value || '25',
+        sign_date:          el('gen-sign-date')?.value || null,
       };
 
       const contract = await generateContract(body);
