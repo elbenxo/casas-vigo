@@ -17,11 +17,16 @@ function createApp() {
   app.use('/api/config', require('./routes/config'));
   app.use('/api/contracts', require('./routes/contracts'));
   app.use('/api/stats', require('./routes/stats'));
+  app.use('/api/deploy-web', require('./routes/deploy'));
   app.use('/', require('./routes/health'));
 
   // Dashboard static files
   const dashboardPath = path.join(__dirname, '..', '..', '..', 'dashboard', 'public');
   app.use('/dashboard', express.static(dashboardPath));
+
+  // Web preview (serves built Astro site at same base path as production)
+  const webDistPath = path.join(__dirname, '..', '..', '..', 'web', 'dist');
+  app.use('/casas-vigo', express.static(webDistPath));
 
   return app;
 }

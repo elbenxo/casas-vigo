@@ -34,8 +34,8 @@ _(none)_
 ## Pending
 
 ### CI/CD
-- [ ] Reconfigure GitHub Pages to deploy from web/ subfolder — high
-- [ ] Test web deployment from monorepo — high
+- [x] Reconfigure GitHub Pages to deploy from web/ subfolder — 2026-04-12 (deploy.yml ya configurado, Node 22)
+- [x] Test web deployment from monorepo — 2026-04-12 (push triggered GitHub Actions, deployed OK)
 
 ### MCP Server
 - [ ] Create casasvigo-mcp server (stdio, wrappea API REST) — medium
@@ -48,6 +48,12 @@ _(none)_
 
 ### Data (replaced by SQLite)
 - [x] ~~Define JSON schema for income/costs~~ — replaced by SQLite schema in architecture
-- [ ] Script sync-availability.js (API → availability.json) — medium
-- [ ] Script deploy-web.js (sync + git push) — medium
+- [x] Script sync-availability.js (API → web/src/data/availability.json) — 2026-04-12 (v1: solo disponibilidad+precios, será reemplazado por sync-web.js cuando se implemente el CMS completo)
+- [x] Script preview-web.js (sync + astro build) — 2026-04-12
+- [x] Script deploy-web.js (git commit + push) — 2026-04-12
+- [x] Shared scripts/lib/run.js (helper compartido para scripts) — 2026-04-12
+- [x] API: POST /api/deploy-web/{preview,publish,cancel,status} — 2026-04-12
+- [x] Web preview local: Express sirve web/dist en /casas-vigo/ — 2026-04-12
+- [x] Dashboard: flujo Vista previa → Publicar/Cancelar con estado persistente — 2026-04-12
+- [x] Web: flats.ts aplica overlay de disponibilidad desde availability.json — 2026-04-12
 - [ ] Script backup-db.js (DB → Google Drive) — low

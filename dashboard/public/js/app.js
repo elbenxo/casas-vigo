@@ -71,6 +71,9 @@ const ICONS = {
   plus:     'M12 4v16m8-8H4',
   edit:     'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
   check:    'M5 13l4 4L19 7',
+  eye:      'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
+  upload:   'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12',
+  spin:     'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
 };
 
 // ─── Navegacion ───────────────────────────────────────────────
@@ -111,7 +114,26 @@ function initNav(activeId) {
         <p class="text-slate-400 text-xs mt-0.5">Panel de Control</p>
       </div>
       <nav class="flex-1 p-3 space-y-1 overflow-y-auto mt-14 lg:mt-0">${links}</nav>
+      <div id="deploy-panel" class="p-3 border-t border-slate-700 space-y-2">
+        <button id="btn-preview" onclick="previewWeb()" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium bg-sky-600 text-white hover:bg-sky-500 transition-colors">
+          ${ico(ICONS.eye)} Vista previa
+        </button>
+        <div id="deploy-confirm" class="hidden space-y-2">
+          <a href="/casas-vigo/" target="_blank" class="block text-center text-xs text-sky-400 hover:text-sky-300 underline">Abrir preview &rarr;</a>
+          <button id="btn-publish" onclick="publishWeb()" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-500 transition-colors">
+            ${ico(ICONS.upload)} Publicar
+          </button>
+          <button id="btn-cancel" onclick="cancelDeploy()" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+            ${ico(ICONS.x)} Cancelar
+          </button>
+        </div>
+      </div>
     </aside>`;
+
+  // Restore deploy state if preview was active
+  fetch(`${API}/deploy-web/status`).then(r => r.json()).then(d => {
+    if (d.state === 'previewing') setDeployState('previewing');
+  }).catch(() => {});
 }
 
 function toggleNav() {
@@ -240,4 +262,71 @@ function groupByKey(arr, keyFn) {
     m[k].push(item);
   });
   return m;
+}
+
+// ─── Deploy Web (preview → publish/cancel) ──────────────────
+function setDeployState(mode) {
+  const btnPreview = el('btn-preview');
+  const confirmPanel = el('deploy-confirm');
+  if (mode === 'idle') {
+    btnPreview.classList.remove('hidden');
+    btnPreview.disabled = false;
+    btnPreview.innerHTML = `${ico(ICONS.eye)} Vista previa`;
+    btnPreview.classList.replace('bg-slate-600', 'bg-sky-600');
+    confirmPanel.classList.add('hidden');
+  } else if (mode === 'building') {
+    btnPreview.disabled = true;
+    btnPreview.innerHTML = `${ico(ICONS.spin)} Construyendo\u2026`;
+    btnPreview.classList.replace('bg-sky-600', 'bg-slate-600');
+    confirmPanel.classList.add('hidden');
+  } else if (mode === 'previewing') {
+    btnPreview.classList.add('hidden');
+    confirmPanel.classList.remove('hidden');
+  } else if (mode === 'publishing') {
+    el('btn-publish').disabled = true;
+    el('btn-publish').innerHTML = `${ico(ICONS.spin)} Publicando\u2026`;
+    el('btn-cancel').classList.add('hidden');
+  }
+}
+
+async function previewWeb() {
+  setDeployState('building');
+  try {
+    const res = await fetch(`${API}/deploy-web/preview`, { method: 'POST' });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || `Error ${res.status}`);
+    setDeployState('previewing');
+    notify('Preview listo — revisa la web antes de publicar', 'info');
+    window.open('/casas-vigo/', '_blank');
+  } catch (err) {
+    setDeployState('idle');
+    notify(`Error al construir preview: ${err.message}`, 'error');
+  }
+}
+
+async function publishWeb() {
+  setDeployState('publishing');
+  try {
+    const res = await fetch(`${API}/deploy-web/publish`, { method: 'POST' });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || `Error ${res.status}`);
+    if (json.output && json.output.includes('No changes')) {
+      notify('Sin cambios — web ya actualizada', 'info');
+    } else {
+      notify('Web publicada — GitHub Actions desplegara en ~1 min');
+    }
+  } catch (err) {
+    notify(`Error al publicar: ${err.message}`, 'error');
+  }
+  setDeployState('idle');
+}
+
+async function cancelDeploy() {
+  try {
+    await fetch(`${API}/deploy-web/cancel`, { method: 'POST' });
+    notify('Publicacion cancelada', 'info');
+  } catch (err) {
+    notify(`Error al cancelar: ${err.message}`, 'error');
+  }
+  setDeployState('idle');
 }

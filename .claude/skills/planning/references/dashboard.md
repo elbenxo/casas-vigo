@@ -32,11 +32,42 @@ _(none)_
 ### Income View
 - [ ] Show occupancy rate per room/flat alongside income — medium
 
+### Dashboard como CMS (gestión completa de contenido web)
+Objetivo: el dashboard es el único sitio desde donde se gestiona todo el contenido que aparece en la web pública. "Publicar" sincroniza todo y despliega.
+
+#### Gestión de pisos
+- [ ] CRUD pisos desde dashboard (nombre, dirección, barrio, descripción multiidioma, amenities, coordenadas) — high
+- [ ] Formulario crear/editar piso con todos los campos — high
+
+#### Gestión de habitaciones
+- [ ] CRUD habitaciones desde dashboard (nombre, precio, tamaño, tipo cama, features, estado) — high
+- [ ] Asignar habitación a piso — high
+
+#### Gestión de fotos
+- [ ] API: endpoint upload fotos `POST /api/photos` (guardar en `web/public/images/`) — high
+- [ ] API: endpoint listar/editar/borrar fotos por piso/habitación — high
+- [ ] DB: tabla `photos` (id, flat_id, room_id nullable, filename, description, active, sort_order, uploaded_at) — high
+- [ ] Dashboard: galería de fotos por piso con drag-and-drop para reordenar — high
+- [ ] Dashboard: subir fotos desde el navegador (dropzone o input file) — high
+- [ ] Dashboard: asignar fotos a habitaciones o zonas comunes — high
+- [ ] Dashboard: activar/desactivar fotos individuales — medium
+- [ ] Dashboard: descripción/alt text por foto (para SEO) — medium
+- [ ] Dashboard: elegir foto principal (portada) por piso y por habitación — medium
+
+#### Sync completo (flats.ts generado desde API)
+- [ ] Ampliar sync-availability.js → sync-web.js (genera flats.ts completo desde API + fotos) — high
+- [ ] flats.ts pasa a ser 100% auto-generado (no editable manualmente) — high
+- [ ] Sync incluye: pisos, habitaciones, precios, disponibilidad, fotos activas, descripciones — high
+- [ ] deploy-web.js sincroniza fotos + datos + git push — high
+
+#### Reviews
+- [ ] CRUD reviews desde dashboard (nombre, texto multiidioma, piso) — low
+
 ### Data (done)
 - [x] API endpoints for income/costs/receipts — 2026-04-12
 - [x] Dashboard reads from API — 2026-04-12
 
 ### Constraints
 - Runs on localhost only (NOT internet-facing)
-- Read-only (owner modifies data via WhatsApp to agents)
+- Dashboard es read+write: CMS completo para el propietario
 - Simplest tech possible
