@@ -38,8 +38,9 @@ _(none yet)_
 ### Shared Infrastructure
 - [ ] Refactor existing WhatsApp API (agents/services/whatsapp-api/) for multi-agent use — high
 - [ ] Shared conversation routing: owner commands vs prospect inquiries vs tenant messages — high
-- [ ] Contract templates in multiple languages (assets/) — medium
-- [ ] Invoice/receipt templates (assets/) — medium
+- [ ] Contract templates in `agents/templates/contracts/` — 8 idiomas, con placeholders (ver Dashboard → Gestión de contratos) — high
+- [ ] Invoice/receipt templates in `agents/templates/receipts/` — medium
+- [ ] Sales agent auto-crea prospect + registra interacciones en DB (ver Dashboard → Prospect CRM) — high
 
 ### Constraints
 - Reuse existing Express + whatsapp-web.js infrastructure

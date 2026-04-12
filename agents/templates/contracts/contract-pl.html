@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Umowa Najmu Pokoju — {{tenant_name}}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.65;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .doc-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    .doc-header h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .section-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #333;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ccc;
+    }
+    .clause { margin-top: 18px; }
+    .clause-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline;
+    }
+    .clause p { margin-top: 4px; text-align: justify; }
+    ul.clause-list { margin-top: 6px; padding-left: 20px; }
+    ul.clause-list li { margin-bottom: 4px; }
+    .notice-box {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-left: 4px solid #555;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      margin-top: 12px;
+      font-style: italic;
+      color: #555;
+    }
+    .signature-section { margin-top: 60px; padding-top: 20px; }
+    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-block { text-align: center; }
+    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-block .role {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .signature-block .name { font-size: 0.9rem; }
+    .doc-footer {
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+    }
+    @media print {
+      html { font-size: 12px; }
+      body { padding: 0; max-width: none; }
+      @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .clause { page-break-inside: avoid; }
+      .signature-section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-header">
+    <h1>Umowa Najmu Pokoju</h1>
+    <p>Najem do cel&#xF3;w innych ni&#x17C; sta&#x142;e zamieszkanie &mdash; Vigo, Pontevedra, Hiszpania</p>
+  </div>
+
+  <div class="notice-box">
+    Uwaga: Niniejszy dokument stanowi t&#x142;umaczenie na j&#x119;zyk polski dla lepszego zrozumienia
+    przez najemc&#x119;. Obowi&#x105;zuje prawo hiszpa&#x144;skie (Ley de Arrendamientos Urbanos).
+    Wszelkie spory b&#x119;d&#x105; rozstrzygane przez s&#x105;dy w Vigo, Hiszpania.
+  </div>
+
+  <div class="section-title">Strony umowy</div>
+
+  <p>W Vigo, dnia <strong>{{sign_date}}</strong></p>
+
+  <p style="margin-top:14px;">
+    <strong>Z jednej strony</strong>: Pan/Pani <strong>{{owner_name}}</strong>,
+    numer identyfikacyjny <strong>{{owner_dni}}</strong>,
+    zwany(a) dalej <strong>&bdquo;WYNAJMUJ&#x104;CYM&ldquo;</strong>.
+  </p>
+
+  <p style="margin-top:10px;">
+    <strong>Z drugiej strony</strong>: Pan/Pani <strong>{{tenant_name}}</strong>,
+    numer paszportu/dowodu to&#x17C;samo&#x15B;ci <strong>{{tenant_dni}}</strong>,
+    obywatelstwo <strong>{{tenant_nationality}}</strong>,
+    zwany(a) dalej <strong>&bdquo;NAJEMCA&ldquo;</strong>.
+  </p>
+
+  <div class="section-title">Preambu&#x142;a</div>
+
+  <p>
+    WYNAJMUJ&#x104;CY jest w&#x142;a&#x15B;cicielem nieruchomo&#x15B;ci po&#x142;o&#x17C;onej pod adresem
+    <strong>{{flat_address}}</strong>, Vigo, Hiszpania, w kt&#xF3;rej znajduje si&#x119;
+    pok&#xF3;j b&#x119;d&#x105;cy przedmiotem niniejszej umowy.
+  </p>
+  <p style="margin-top:8px;">
+    Obie strony zawieraj&#x105; niniejsz&#x105; umow&#x119; najmu pokoju na nast&#x119;puj&#x105;cych warunkach:
+  </p>
+
+  <div class="section-title">Warunki Umowy</div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 1 &mdash; Przedmiot umowy.</span>
+    <p>
+      WYNAJMUJ&#x104;CY wynajmuje NAJEMCY pok&#xF3;j o nazwie
+      <strong>&bdquo;{{room_name}}&ldquo;</strong>, znajduj&#x105;cy si&#x119; w mieszkaniu
+      <strong>{{flat_name}}</strong> pod adresem {{flat_address}}, Vigo. Najem obejmuje
+      prawo do korzystania z cz&#x119;&#x15B;ci wsp&#xF3;lnych (kuchnia, &#x142;azienka,
+      salon i inne wsp&#xF3;lne przestrzenie).
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 2 &mdash; Czas trwania.</span>
+    <p>
+      Niniejsza umowa obowi&#x105;zuje od <strong>{{start_date}}</strong> do
+      <strong>{{end_date}}</strong>. Po up&#x142;ywie tego okresu umowa wygasa, chyba &#x17C;e
+      strony wyra&#x17A;nie uzgodni&#x105; przed&#x142;u&#x17C;enie na pi&#x15B;mie.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 3 &mdash; Czynsz.</span>
+    <p>
+      Uzgodniony miesi&#x119;czny czynsz wynosi <strong>{{monthly_rent}} EUR</strong>,
+      p&#x142;atny w ci&#x105;gu pierwszych pi&#x119;ciu (5) dni ka&#x17C;dego miesi&#x105;ca
+      przelewem bankowym, Bizum lub got&#xF3;wk&#x105; wed&#x142;ug uzgodnienia stron.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 4 &mdash; Kaucja.</span>
+    <p>
+      NAJEMCA przekazuje niniejszym WYNAJMUJ&#x104;CEMU kwot&#x119;
+      <strong>{{deposit}} EUR</strong> tytu&#x142;em kaucji. Kwota ta zostanie zwr&#xF3;cona
+      po zako&#x144;czeniu umowy, po sprawdzeniu stanu pokoju i potraceniu ewentualnych
+      szkod przez NAJEMCE spowodowanych.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 5 &mdash; Us&#x142;ugi w cenie.</span>
+    <p>
+      Czynsz obejmuje: wod&#x119;, pr&#x105;d (rozs&#x105;dne zu&#x17C;ycie), po&#x142;&#x105;czenie
+      WiFi z internetem oraz regularne sprz&#x105;tanie cz&#x119;&#x15B;ci wsp&#xF3;lnych.
+      Nadmierne zu&#x17C;ycie energii elektrycznej mo&#x17C;e skutkowa&#x107; dodatkow&#x105; op&#x142;at&#x105;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 6 &mdash; Regulamin domu.</span>
+    <p>NAJEMCA zobowi&#x105;zuje si&#x119; przestrzega&#x107; nast&#x119;puj&#x105;cych zasad:</p>
+    <ul class="clause-list">
+      <li>Palenie tytoniu wewn&#x105;trz nieruchomo&#x15B;ci jest bezwzgl&#x119;dnie zabronione.</li>
+      <li>Nale&#x17C;y przestrzega&#x107; ciszy nocnej w godzinach od 23:00 do 08:00.</li>
+      <li>Zwierz&#x119;ta domowe s&#x105; niedozwolone bez uprzedniej pisemnej zgody WYNAJMUJ&#x104;CEGO.</li>
+      <li>Go&#x15B;cie musz&#x105; by&#x107; zg&#x142;oszeni i zaaprobowani przez WYNAJMUJ&#x104;CEGO z wyprzedzeniem.</li>
+      <li>NAJEMCA jest zobowi&#x105;zany utrzymywa&#x107; pok&#xF3;j i cz&#x119;&#x15B;ci wsp&#xF3;lne w czystos&#x107;ci i porz&#x105;dku.</li>
+      <li>Podnajem pokoju lub udost&#x119;pnianie go osobom trzecim jest bezwzgl&#x119;dnie zabronione.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 7 &mdash; Rozwi&#x105;zanie umowy.</span>
+    <p>
+      Ka&#x17C;da ze stron mo&#x17C;e rozwi&#x105;za&#x107; umow&#x119; z zachowaniem minimum
+      <strong>trzydziestodniowego (30) okresu wypowiedzenia</strong> zg&#x142;oszonego na
+      pi&#x15B;mie. Powa&#x17C;ne naruszenie regulaminu lub zobowi&#x105;za&#x144; p&#x142;atniczych
+      uprawnia WYNAJMUJ&#x104;CEGO do natychmiastowego rozwi&#x105;zania umowy.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xA7; 8 &mdash; Jurysdykcja.</span>
+    <p>
+      W przypadku jakichkolwiek spor&#xF3;w wynikaj&#x105;cych z niniejszej umowy
+      obie strony poddaj&#x105; si&#x119; wyra&#x17A;nie jurysdykcji s&#x105;d&#xF3;w miasta
+      Vigo, Hiszpania, rezygnuj&#x105;c z wszelkich innych w&#x142;a&#x15B;ciwych im jurysdykcji.
+    </p>
+  </div>
+
+  <div class="signature-section">
+    <p>
+      Na dow&#xF3;d zgodno&#x15B;ci obie strony podpisuj&#x105; niniejsz&#x105; umow&#x119; w dw&#xF3;ch
+      egzemplarzach w Vigo, dnia <strong>{{sign_date}}</strong>.
+    </p>
+    <div class="signature-grid">
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">Wynajmuj&#x105;cy</div>
+          <div class="name">{{owner_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">Nr identyfikacyjny: {{owner_dni}}</div>
+        </div>
+      </div>
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">Najemca</div>
+          <div class="name">{{tenant_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">Paszport/Dow&#xF3;d: {{tenant_dni}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    Casas Vigo &mdash; {{flat_address}}, Vigo, Hiszpania &mdash; Umowa wygenerowana dnia {{sign_date}}
+  </div>
+
+</body>
+</html>

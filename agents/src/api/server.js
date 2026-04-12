@@ -15,6 +15,7 @@ function createApp() {
   app.use('/api/messages', require('./routes/messages'));
   app.use('/api/appointments', require('./routes/appointments'));
   app.use('/api/config', require('./routes/config'));
+  app.use('/api/prospects', require('./routes/prospects'));
   app.use('/api/contracts', require('./routes/contracts'));
   app.use('/api/stats', require('./routes/stats'));
   app.use('/api/deploy-web', require('./routes/deploy'));

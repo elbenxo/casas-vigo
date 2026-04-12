@@ -112,3 +112,47 @@ CREATE TABLE IF NOT EXISTS config (
   value TEXT,
   updated_at TEXT DEFAULT (datetime('now'))
 );
+
+-- Prospects (pre-venta / CRM)
+CREATE TABLE IF NOT EXISTS prospects (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  phone TEXT,
+  email TEXT,
+  language TEXT DEFAULT 'es',
+  channel TEXT DEFAULT 'whatsapp',  -- whatsapp, telegram, web, idealista, referral, other
+  status TEXT DEFAULT 'new',        -- new, contacted, visit_scheduled, visit_done, contract_sent, signed, lost
+  flat_interest INTEGER REFERENCES flats(id),
+  room_interest INTEGER REFERENCES rooms(id),
+  loss_reason TEXT,                  -- price, location, timing, other (only when status=lost)
+  notes TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  updated_at TEXT DEFAULT (datetime('now'))
+);
+
+-- Prospect interactions
+CREATE TABLE IF NOT EXISTS prospect_interactions (
+  id INTEGER PRIMARY KEY,
+  prospect_id INTEGER NOT NULL REFERENCES prospects(id),
+  type TEXT NOT NULL,          -- message, call, visit, email, note
+  direction TEXT DEFAULT 'in', -- in, out
+  summary TEXT NOT NULL,
+  channel TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+-- Contracts
+CREATE TABLE IF NOT EXISTS contracts (
+  id INTEGER PRIMARY KEY,
+  prospect_id INTEGER NOT NULL REFERENCES prospects(id),
+  room_id INTEGER NOT NULL REFERENCES rooms(id),
+  template_lang TEXT NOT NULL DEFAULT 'es',
+  file_path TEXT,              -- path to generated HTML file
+  status TEXT DEFAULT 'draft', -- draft, signed, terminated
+  monthly_rent REAL,
+  deposit REAL,
+  start_date TEXT,
+  end_date TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  signed_at TEXT
+);

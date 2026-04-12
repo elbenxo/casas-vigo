@@ -52,5 +52,16 @@ Make the Astro web (web/) SEO and GEO (Generative Engine Optimization) compatibl
 - [ ] Replace Formspree placeholder con WhatsApp link — high
 - [ ] Update astro.config.mjs site URL — medium
 
+### Next available date (para prospects)
+Objetivo: un prospect que ve una habitación ocupada debe saber cuándo estará libre, sin tener que preguntar.
+
+- [ ] `availability.json` incluye `available_from` (fecha) para habitaciones ocupadas — high
+- [ ] `sync-availability.js` calcula `available_from` desde `contract_end` en contacts — high
+- [ ] Web: componente muestra "Disponible desde: DD/MM/YYYY" en habitaciones ocupadas — high
+- [ ] Web: badge diferenciado "Disponible pronto" si `available_from` < 30 días — medium
+- [ ] Web: ordenar habitaciones: disponibles primero, luego por fecha más cercana — medium
+- [ ] Web: texto multiidioma para "Disponible desde" en 8 idiomas — high
+- [ ] Schema.org: añadir `availabilityStarts` en structured data de habitaciones — medium
+
 ### GEO maintenance
 - [ ] Actualizar llms.txt y llms-full.txt cuando cambie inventario (integrar en sync-web.js) — medium

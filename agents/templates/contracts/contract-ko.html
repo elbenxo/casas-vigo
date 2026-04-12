@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&#xBC29; &#xC784;&#xB300;&#xCC28; &#xACC4;&#xC57D;&#xC11C; — {{tenant_name}}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.7;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .doc-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    .doc-header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #333;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ccc;
+    }
+    .clause { margin-top: 18px; }
+    .clause-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline;
+    }
+    .clause p { margin-top: 4px; text-align: justify; }
+    ul.clause-list { margin-top: 6px; padding-left: 20px; }
+    ul.clause-list li { margin-bottom: 4px; }
+    .notice-box {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-left: 4px solid #555;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      margin-top: 12px;
+      font-style: normal;
+      color: #555;
+    }
+    .bilingual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 0.83rem;
+    }
+    .bilingual .ko { font-weight: 500; }
+    .bilingual .es { color: #888; font-style: italic; }
+    .signature-section { margin-top: 60px; padding-top: 20px; }
+    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-block { text-align: center; }
+    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-block .role {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #555;
+    }
+    .signature-block .name { font-size: 0.9rem; }
+    .doc-footer {
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+    }
+    @media print {
+      html { font-size: 12px; }
+      body { padding: 0; max-width: none; }
+      @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .clause { page-break-inside: avoid; }
+      .signature-section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-header">
+    <h1>&#xBC29; &#xC784;&#xB300;&#xCC28; &#xACC4;&#xC57D;&#xC11C; / Contrato de Arrendamiento de Habitaci&#xF3;n</h1>
+    <p>&#xC2A4;&#xD398;&#xC778; &#xBE44;&#xACE0; &#xC784;&#xB300; &mdash; Arrendamiento en Vigo, Pontevedra, Espa&#xF1;a</p>
+  </div>
+
+  <div class="notice-box">
+    &#xC548;&#xB0B4;: &#xC774; &#xBB38;&#xC11C;&#xB294; &#xC784;&#xCC28;&#xC778;&#xC758; &#xC774;&#xD574;&#xB97C; &#xB3D5;&#xAE30; &#xC704;&#xD55C; &#xD55C;&#xAD6D;&#xC5B4; &#xBC88;&#xC5ED;&#xBCF8;&#xC785;&#xB2C8;&#xB2E4;.
+    &#xC801;&#xC6A9; &#xBC95;&#xB960;&#xC740; &#xC2A4;&#xD398;&#xC778; &#xBC95;&#xB960;(Ley de Arrendamientos Urbanos)&#xC774;&#xBA70;,
+    &#xBD84;&#xC7C1; &#xBC1C;&#xC0DD; &#xC2DC; &#xBE44;&#xACE0; &#xBC95;&#xC6D0;&#xC5D0; &#xD22C;&#xD558;&#xD569;&#xB2C8;&#xB2E4;.
+    <br><br>
+    Note: This is a Korean translation for the tenant's understanding. Spanish law applies.
+  </div>
+
+  <div class="section-title">&#xACC4;&#xC57D; &#xB2F9;&#xC0AC;&#xC790; / Partes</div>
+
+  <p>&#xBE44;&#xACE0;&#xC5D0;&#xC11C;, <strong>{{sign_date}}</strong></p>
+
+  <p style="margin-top:14px;">
+    <strong>&#xC784;&#xB300;&#xC778; (Arrendador)</strong>: <strong>{{owner_name}}</strong>,
+    &#xC2E0;&#xBD84;&#xC99D; &#xBC88;&#xD638; <strong>{{owner_dni}}</strong>
+  </p>
+
+  <p style="margin-top:10px;">
+    <strong>&#xC784;&#xCC28;&#xC778; (Arrendatario)</strong>: <strong>{{tenant_name}}</strong>,
+    &#xC5EC;&#xAD8C;/&#xC2E0;&#xBD84;&#xC99D; <strong>{{tenant_dni}}</strong>,
+    &#xAD6D;&#xC801; <strong>{{tenant_nationality}}</strong>
+  </p>
+
+  <div class="section-title">&#xACC4;&#xC57D; &#xB0B4;&#xC6A9; / Condiciones</div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;1&#xC870; &mdash; &#xACC4;&#xC57D; &#xB300;&#xC0C1; (Objeto)</span>
+    <p>
+      &#xC784;&#xB300;&#xC778;&#xC740; <strong>{{flat_name}}</strong>({{flat_address}}, &#xBE44;&#xACE0;)&#xC5D0;
+      &#xC704;&#xCE58;&#xD55C; <strong>&ldquo;{{room_name}}&rdquo;</strong> &#xBC29;&#xC744;
+      &#xC784;&#xCC28;&#xC778;&#xC5D0;&#xAC8C; &#xC784;&#xB300;&#xD569;&#xB2C8;&#xB2E4;.
+      &#xC784;&#xB300;&#xCC28;&#xC5D0;&#xB294; &#xACF5;&#xC720; &#xACF5;&#xAC04;(&#xC8FC;&#xBC29;,
+      &#xC695;&#xC2E4;, &#xAC70;&#xC2E4; &#xB4F1;) &#xC0AC;&#xC6A9;&#xAD8C;&#xC774; &#xD3EC;&#xD568;&#xB429;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;2&#xC870; &mdash; &#xACC4;&#xC57D; &#xAE30;&#xAC04; (Duraci&#xF3;n)</span>
+    <p>
+      &#xACC4;&#xC57D; &#xAE30;&#xAC04;&#xC740; <strong>{{start_date}}</strong>&#xBD80;&#xD130;
+      <strong>{{end_date}}</strong>&#xAE4C;&#xC9C0;&#xC785;&#xB2C8;&#xB2E4;.
+      &#xACC4;&#xC57D; &#xAE30;&#xAC04; &#xC885;&#xB8CC; &#xD6C4; &#xC591;&#xC0AC;&#xAC00; &#xC11C;&#xBA74;&#xC73C;&#xB85C;
+      &#xC5F0;&#xC7A5;&#xC5D0; &#xD569;&#xC758;&#xD558;&#xC9C0; &#xC54A;&#xB294; &#xD55C; &#xACC4;&#xC57D;&#xC740;
+      &#xC885;&#xB8CC;&#xB429;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;3&#xC870; &mdash; &#xC784;&#xB300;&#xB8CC; (Renta)</span>
+    <p>
+      &#xC6D4; &#xC784;&#xB300;&#xB8CC;&#xB294; <strong>{{monthly_rent}} EUR</strong>&#xC774;&#xBA70;,
+      &#xB9E4;&#xC6D4; &#xC2DC;&#xC791; &#xD6C4; 5&#xC77C; &#xC774;&#xB0B4;&#xC5D0; &#xC740;&#xD589;
+      &#xC774;&#xCCB4;, Bizum &#xB610;&#xB294; &#xD604;&#xAE08;&#xC73C;&#xB85C; &#xB0A9;&#xBD80;&#xD569;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;4&#xC870; &mdash; &#xBCF4;&#xC99D;&#xAE08; (Fianza)</span>
+    <p>
+      &#xC784;&#xCC28;&#xC778;&#xC740; &#xBCF4;&#xC99D;&#xAE08;&#xC73C;&#xB85C; <strong>{{deposit}} EUR</strong>&#xB97C;
+      &#xC784;&#xB300;&#xC778;&#xC5D0;&#xAC8C; &#xC9C0;&#xAE09;&#xD569;&#xB2C8;&#xB2E4;. &#xC774; &#xAE08;&#xC561;&#xC740;
+      &#xACC4;&#xC57D; &#xC885;&#xB8CC; &#xD6C4; &#xBC29; &#xC0C1;&#xD0DC;&#xB97C; &#xD655;&#xC778;&#xD55C; &#xD6C4;
+      &#xBC18;&#xD658;&#xB429;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;5&#xC870; &mdash; &#xD3EC;&#xD568; &#xC11C;&#xBE44;&#xC2A4; (Servicios incluidos)</span>
+    <p>
+      &#xC784;&#xB300;&#xB8CC;&#xC5D0; &#xD3EC;&#xD568;&#xB41C; &#xC11C;&#xBE44;&#xC2A4;: &#xC218;&#xB3C4;,
+      &#xC804;&#xAE30; (&#xD569;&#xB9AC;&#xC801; &#xC0AC;&#xC6A9;), WiFi &#xC778;&#xD130;&#xB137;,
+      &#xACF5;&#xC720; &#xAD81;&#xAC04; &#xC8FC;&#xAE30;&#xC801; &#xCCAD;&#xC18C;.
+      &#xAD6C;&#xB3C4;&#xC801; &#xC804;&#xAE30; &#xC0AC;&#xC6A9; &#xC2DC; &#xCD94;&#xAC00; &#xBE44;&#xC6A9;&#xC774;
+      &#xCCAD;&#xAD6C;&#xB420; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;6&#xC870; &mdash; &#xC2E4;&#xB0B4; &#xADDC;&#xCE59; (Normas de convivencia)</span>
+    <p>&#xC784;&#xCC28;&#xC778;&#xC740; &#xB2E4;&#xC74C; &#xADDC;&#xCE59;&#xC744; &#xC900;&#xC218;&#xD574;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;:</p>
+    <ul class="clause-list">
+      <li>&#xC2E4;&#xB0B4; &#xD718;&#xC5F0;&#xC740; &#xC808;&#xB300; &#xAE08;&#xC9C0;&#xB429;&#xB2C8;&#xB2E4;.</li>
+      <li>&#xC800;&#xB140; 11&#xC2DC;&#xBD80;&#xD130; &#xC624;&#xC804; 8&#xC2DC;&#xAE4C;&#xC9C0; &#xC870;&#xC6A9;&#xD55C; &#xC2DC;&#xAC04;&#xC744; &#xC9C0;&#xCF1C;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</li>
+      <li>&#xBC18;&#xB824;&#xB3D9;&#xBB3C;&#xC740; &#xC784;&#xB300;&#xC778;&#xC758; &#xC0AC;&#xC804; &#xC11C;&#xBA74; &#xB3D9;&#xC758; &#xC5C6;&#xC774; &#xD5C8;&#xC6A9;&#xB418;&#xC9C0; &#xC54A;&#xC2B5;&#xB2C8;&#xB2E4;.</li>
+      <li>&#xBC29;&#xBB38;&#xAC1D;&#xC740; &#xC784;&#xB300;&#xC778;&#xC5D0;&#xAC8C; &#xC0AC;&#xC804;&#xC5D0; &#xC54C;&#xB9AC;&#xACE0; &#xD5C8;&#xAC00;&#xB97C; &#xBC1B;&#xC544;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</li>
+      <li>&#xBC29;&#xACFC; &#xACF5;&#xC720; &#xACF5;&#xAC04;&#xC744; &#xD56D;&#xC0C1; &#xAE68;&#xB057;&#xD558;&#xAC8C; &#xC720;&#xC9C0;&#xD574;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</li>
+      <li>&#xC804;&#xC14B; &#xB610;&#xB294; &#xC81C;3&#xC790;&#xC5D0;&#xAC8C; &#xBC29;&#xC744; &#xBE8C;&#xB824;&#xC8FC;&#xB294; &#xAC83;&#xC740; &#xC808;&#xB300; &#xAE08;&#xC9C0;&#xB429;&#xB2C8;&#xB2E4;.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;7&#xC870; &mdash; &#xACC4;&#xC57D; &#xD574;&#xC9C0; (Rescisi&#xF3;n)</span>
+    <p>
+      &#xC591;&#xC0AC; &#xC5B4;&#xB290; &#xCE21;&#xC774;&#xB4E0; <strong>30&#xC77C; &#xC804; &#xC11C;&#xBA74;&#xD1B5;&#xBCF4;</strong>&#xB85C;
+      &#xACC4;&#xC57D;&#xC744; &#xD574;&#xC9C0;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+      &#xC2E4;&#xB0B4; &#xADDC;&#xCE59; &#xC704;&#xBC18; &#xB610;&#xB294; &#xC784;&#xB300;&#xB8CC; &#xBBF8;&#xB0A9; &#xC2DC;
+      &#xC784;&#xB300;&#xC778;&#xC740; &#xC989;&#xC2DC; &#xACC4;&#xC57D;&#xC744; &#xD574;&#xC9C0;&#xD560; &#xC218;
+      &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">&#xC81C;8&#xC870; &mdash; &#xC7AC;&#xD310; &#xAD00;&#xD560; (Jurisdicci&#xF3;n)</span>
+    <p>
+      &#xBCF8; &#xACC4;&#xC57D;&#xC5D0;&#xC11C; &#xBC1C;&#xC0DD;&#xD558;&#xB294; &#xBAA8;&#xB4E0; &#xBD84;&#xC7C1;&#xC740;
+      &#xC2A4;&#xD398;&#xC778; &#xBE44;&#xACE0; &#xC2DC; &#xBC95;&#xC6D0;&#xC5D0; &#xD22C;&#xD558;&#xD558;&#xBA70;,
+      &#xB2E4;&#xB978; &#xC7AC;&#xD310; &#xAD00;&#xD560;&#xAD8C;&#xC744; &#xD3EC;&#xAE30;&#xD569;&#xB2C8;&#xB2E4;.
+    </p>
+  </div>
+
+  <div class="signature-section">
+    <p>
+      &#xC591;&#xC0AC;&#xB294; &#xBE44;&#xACE0;&#xC5D0;&#xC11C; <strong>{{sign_date}}</strong>&#xC5D0;
+      &#xBCF8; &#xACC4;&#xC57D;&#xC11C;&#xB97C; 2&#xBD80; &#xC791;&#xC131;&#xD558;&#xC5EC; &#xC11C;&#xBA85;&#xD569;&#xB2C8;&#xB2E4;.
+    </p>
+    <div class="signature-grid">
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">&#xC784;&#xB300;&#xC778; / Arrendador</div>
+          <div class="name">{{owner_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">DNI: {{owner_dni}}</div>
+        </div>
+      </div>
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">&#xC784;&#xCC28;&#xC778; / Arrendatario</div>
+          <div class="name">{{tenant_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">&#xC5EC;&#xAD8C;/&#xC2E0;&#xBD84;&#xC99D;: {{tenant_dni}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    Casas Vigo &mdash; {{flat_address}}, Vigo, Espa&#xF1;a &mdash; {{sign_date}} &#xC791;&#xC131;
+  </div>
+
+</body>
+</html>

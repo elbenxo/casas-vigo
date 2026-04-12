@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrato de Arrendamento de Habitaci&#xF3;n — {{tenant_name}}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.65;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .doc-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    .doc-header h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .section-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #333;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ccc;
+    }
+    .clause { margin-top: 18px; }
+    .clause-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline;
+    }
+    .clause p { margin-top: 4px; text-align: justify; }
+    ul.clause-list { margin-top: 6px; padding-left: 20px; }
+    ul.clause-list li { margin-bottom: 4px; }
+    .signature-section { margin-top: 60px; padding-top: 20px; }
+    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-block { text-align: center; }
+    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-block .role {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .signature-block .name { font-size: 0.9rem; }
+    .doc-footer {
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+    }
+    @media print {
+      html { font-size: 12px; }
+      body { padding: 0; max-width: none; }
+      @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .clause { page-break-inside: avoid; }
+      .signature-section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-header">
+    <h1>Contrato de Arrendamento de Habitaci&#xF3;n</h1>
+    <p>Arrendamento de uso distinto da vivenda habitual &mdash; Vigo, Pontevedra</p>
+  </div>
+
+  <div class="section-title">Comp&#xE1;recen</div>
+
+  <p>En Vigo, o d&#xED;a <strong>{{sign_date}}</strong></p>
+
+  <p style="margin-top:14px;">
+    <strong>Dunha parte</strong>, D./D&#xE3;. <strong>{{owner_name}}</strong>, con DNI <strong>{{owner_dni}}</strong>,
+    en calidade de propietario do inmoble, en diante <strong>&laquo;O ARRENDADOR&raquo;</strong>.
+  </p>
+
+  <p style="margin-top:10px;">
+    <strong>Doutra parte</strong>, D./D&#xE3;. <strong>{{tenant_name}}</strong>, con DNI/Pasaporte <strong>{{tenant_dni}}</strong>,
+    de nacionalidade <strong>{{tenant_nationality}}</strong>,
+    en diante <strong>&laquo;O ARRENDATARIO&raquo;</strong>.
+  </p>
+
+  <div class="section-title">Exp&#xF5;en</div>
+
+  <p>
+    Que o ARRENDADOR &#xE9; propietario do inmoble sito en <strong>{{flat_address}}</strong>, Vigo,
+    no que se atopa a habitaci&#xF3;n obxecto do presente contrato.
+  </p>
+  <p style="margin-top:8px;">
+    Que ambas partes acordan celebrar o presente contrato de arrendamento de habitaci&#xF3;n,
+    con arranxo &#xE1;s seguintes:
+  </p>
+
+  <div class="section-title">Estipulaci&#xF3;ns</div>
+
+  <div class="clause">
+    <span class="clause-title">Primeira &mdash; Obxecto.</span>
+    <p>
+      O ARRENDADOR arrenda ao ARRENDATARIO a habitaci&#xF3;n denominada
+      <strong>&laquo;{{room_name}}&raquo;</strong>, pertencente ao piso <strong>{{flat_name}}</strong>,
+      sito en {{flat_address}}, Vigo, con acceso &#xE1;s zonas com&#xFA;ns do inmoble.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Segunda &mdash; Duraci&#xF3;n.</span>
+    <p>
+      O presente contrato ter&#xE1; unha duraci&#xF3;n dende o <strong>{{start_date}}</strong>
+      ata o <strong>{{end_date}}</strong>. &#xC1; finalizaci&#xF3;n do prazo pactado, o contrato
+      extinguirase, aga&#xF1;o acordo expreso de pr&#xF3;rroga entre as partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Terceira &mdash; Renda.</span>
+    <p>
+      A renda mensual acordada &#xE9; de <strong>{{monthly_rent}} EUR</strong>, pagadeiros dentro
+      dos primeiros cinco (5) d&#xED;as de cada mes mediante transferencia bancaria, Bizum ou
+      efectivo segundo acordo entre as partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cuarta &mdash; Fianza.</span>
+    <p>
+      O ARRENDATARIO fai entrega neste acto ao ARRENDADOR da cantidade de
+      <strong>{{deposit}} EUR</strong> en concepto de fianza. Dito importe ser&#xE1; devolto
+      ao finalizar o contrato, previa comprobaci&#xF3;n do estado da habitaci&#xF3;n.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Quinta &mdash; Servizos inclu&#xED;dos.</span>
+    <p>
+      A renda incl&#xFA;e: auga, electricidade (uso razoable), conexi&#xF3;n WiFi e limpeza
+      peri&#xF3;dica das zonas com&#xFA;ns. O uso excesivo da electricidade poder&#xE1; supor
+      un cargo adicional.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Sexta &mdash; Normas de convivencia.</span>
+    <p>O ARRENDATARIO comp&#xF3;mete a respectar as seguintes normas:</p>
+    <ul class="clause-list">
+      <li>Queda prohibido fumar no interior do inmoble.</li>
+      <li>Deber&#xE1; respectarse o horario de silencio entre as 23:00 e as 08:00 horas.</li>
+      <li>Non se permiten mascotas sen autorizaci&#xF3;n previa e por escrito do ARRENDADOR.</li>
+      <li>As visitas deber&#xE1;n ser comunicadas e aprobadas polo ARRENDADOR con antelaci&#xF3;n.</li>
+      <li>O ARRENDATARIO deber&#xE1; manter a habitaci&#xF3;n e as zonas com&#xFA;ns en bo estado de limpeza.</li>
+      <li>Queda prohibido subarrendar a habitaci&#xF3;n ou ceder o seu uso a terceiros.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">S&#xE9;ptima &mdash; Rescisi&#xF3;n.</span>
+    <p>
+      Calquera das partes poder&#xE1; resolver o contrato cun preaviso m&#xED;nimo de
+      <strong>trinta (30) d&#xED;as</strong> comunicado por escrito. O incumprimento grave
+      das normas de convivencia ou das obrigas de pago facultar&#xE1; ao ARRENDADOR para
+      resolver o contrato de forma inmediata.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Oitava &mdash; Xurisdici&#xF3;n.</span>
+    <p>
+      Para a resoluci&#xF3;n de calquera controversia derivada do presente contrato, ambas partes
+      som&#xE9;tense expresamente aos Xulgados e Tribunais da cidade de Vigo, con renuncia a
+      calquera outro foro que puidera corresponderlles.
+    </p>
+  </div>
+
+  <div class="signature-section">
+    <p>
+      En proba de conformidade, ambas partes asinan o presente contrato por duplicado
+      en Vigo, o d&#xED;a <strong>{{sign_date}}</strong>.
+    </p>
+    <div class="signature-grid">
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">O Arrendador</div>
+          <div class="name">{{owner_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">DNI: {{owner_dni}}</div>
+        </div>
+      </div>
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">O Arrendatario</div>
+          <div class="name">{{tenant_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">DNI/Pasaporte: {{tenant_dni}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    Casas Vigo &mdash; {{flat_address}}, Vigo &mdash; Contrato xerado o {{sign_date}}
+  </div>
+
+</body>
+</html>

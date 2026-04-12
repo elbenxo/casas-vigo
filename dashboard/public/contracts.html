@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contratos — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Contratos</h2>
+        <p class="text-slate-500 text-sm mt-1">Generar, firmar y gestionar contratos de arrendamiento</p>
+      </div>
+      <button onclick="Contracts.openGenerateForm()" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Nuevo contrato
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 mb-6">
+      <div class="flex flex-wrap gap-3 items-end">
+        <div class="w-44">
+          <label class="block text-xs text-slate-500 mb-1">Estado</label>
+          <select id="f-status" onchange="Contracts.loadContracts()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="">Todos</option>
+            <option value="draft">Borrador</option>
+            <option value="signed">Firmado</option>
+            <option value="terminated">Terminado</option>
+          </select>
+        </div>
+        <div class="w-48">
+          <label class="block text-xs text-slate-500 mb-1">Piso</label>
+          <select id="f-flat" onchange="Contracts.loadContracts()" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="">Todos los pisos</option>
+          </select>
+        </div>
+        <div id="contracts-count" class="text-sm text-slate-400 pb-2 ml-auto"></div>
+      </div>
+    </div>
+
+    <!-- Contract table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-50 text-left text-xs text-slate-500 uppercase tracking-wider">
+              <th class="px-4 py-3">Prospecto</th>
+              <th class="px-4 py-3">Habitacion</th>
+              <th class="px-4 py-3">Piso</th>
+              <th class="px-4 py-3">Idioma</th>
+              <th class="px-4 py-3">Estado</th>
+              <th class="px-4 py-3">Creado</th>
+              <th class="px-4 py-3">Firmado</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody id="contracts-table"></tbody>
+        </table>
+      </div>
+      <div id="contracts-empty" class="hidden text-center py-12 text-slate-400">Sin contratos</div>
+      <div id="contracts-loading" class="text-center py-12 text-slate-400">Cargando...</div>
+    </div>
+  </main>
+
+  <!-- ─── Modal: Generate Contract ─────────────────────────── -->
+  <div id="modal-generate" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-generate')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg relative z-10 p-6">
+      <div class="flex items-center justify-between mb-5">
+        <h3 class="text-lg font-semibold text-slate-800">Generar contrato</h3>
+        <button onclick="cerrarModal('modal-generate')" class="text-slate-400 hover:text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form id="form-generate" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2">
+            <label class="block text-sm font-medium text-slate-700 mb-1">Prospecto</label>
+            <select id="gen-prospect" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="">Seleccionar prospecto...</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label class="block text-sm font-medium text-slate-700 mb-1">Habitacion</label>
+            <select id="gen-room" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="">Seleccionar habitacion...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Idioma</label>
+            <select id="gen-lang" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="es">Espanol</option>
+              <option value="en">English</option>
+              <option value="gl">Galego</option>
+              <option value="fr">Francais</option>
+              <option value="de">Deutsch</option>
+              <option value="ko">Korean / 한국어</option>
+              <option value="pt">Portugues</option>
+              <option value="pl">Polski</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Renta mensual (EUR)</label>
+            <input type="number" id="gen-rent" step="0.01" min="0" required placeholder="0.00" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Inicio</label>
+            <input type="date" id="gen-start" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Fin</label>
+            <input type="date" id="gen-end" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Fianza (EUR)</label>
+            <input type="number" id="gen-deposit" step="0.01" min="0" placeholder="0.00" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+        </div>
+        <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
+          <button type="button" onclick="cerrarModal('modal-generate')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+          <button type="submit" id="btn-generate" class="flex items-center gap-2 px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Generar contrato
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── Modal: Preview Contract ──────────────────────────── -->
+  <div id="modal-preview" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-preview')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl h-[90vh] relative z-10 flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
+        <h3 class="text-lg font-semibold text-slate-800">Vista previa del contrato</h3>
+        <div class="flex items-center gap-3">
+          <button onclick="Contracts.printContract()" class="flex items-center gap-2 px-4 py-2 text-sm bg-slate-800 text-white rounded-lg hover:bg-slate-700 font-medium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            Imprimir
+          </button>
+          <button onclick="cerrarModal('modal-preview')" class="text-slate-400 hover:text-slate-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-hidden">
+        <iframe id="preview-iframe" class="w-full h-full border-0 rounded-b-xl" title="Vista previa contrato"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Modal: Sign Confirmation ─────────────────────────── -->
+  <div id="modal-sign" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-sign')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm relative z-10 p-6">
+      <h3 class="text-lg font-semibold text-slate-800 mb-2">Confirmar firma</h3>
+      <p id="sign-msg" class="text-sm text-slate-600 mb-5"></p>
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-5 text-xs text-amber-800">
+        Esta accion convertira al prospecto en inquilino y asignara la habitacion de forma permanente.
+      </div>
+      <div class="flex justify-end gap-3">
+        <button onclick="cerrarModal('modal-sign')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+        <button id="btn-sign-confirm" class="flex items-center gap-2 px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Firmar contrato
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Modal: Terminate Confirmation ────────────────────── -->
+  <div id="modal-terminate" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-terminate')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm relative z-10 p-6">
+      <h3 class="text-lg font-semibold text-slate-800 mb-2">Terminar contrato</h3>
+      <p id="terminate-msg" class="text-sm text-slate-600 mb-5"></p>
+      <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-5 text-xs text-red-800">
+        Esta accion marcara el contrato como terminado. El inquilino pasara a ser ex-inquilino.
+      </div>
+      <div class="flex justify-end gap-3">
+        <button onclick="cerrarModal('modal-terminate')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+        <button id="btn-terminate-confirm" class="flex items-center gap-2 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          Terminar contrato
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script src="/dashboard/js/contracts.js"></script>
+  <script>
+    initNav('contracts');
+    Contracts.init();
+  </script>
+</body>
+</html>

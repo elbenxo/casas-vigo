@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrato de Arrendamento de Quarto — {{tenant_name}}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.65;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .doc-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    .doc-header h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .doc-header p { font-size: 0.9rem; color: #555; margin-top: 6px; }
+    .section-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #333;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ccc;
+    }
+    .clause { margin-top: 18px; }
+    .clause-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline;
+    }
+    .clause p { margin-top: 4px; text-align: justify; }
+    ul.clause-list { margin-top: 6px; padding-left: 20px; }
+    ul.clause-list li { margin-bottom: 4px; }
+    .notice-box {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-left: 4px solid #555;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      margin-top: 12px;
+      font-style: italic;
+      color: #555;
+    }
+    .signature-section { margin-top: 60px; padding-top: 20px; }
+    .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 16px; }
+    .signature-block { text-align: center; }
+    .signature-line { border-top: 1px solid #1a1a1a; margin-top: 60px; padding-top: 8px; }
+    .signature-block .role {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .signature-block .name { font-size: 0.9rem; }
+    .doc-footer {
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+    }
+    @media print {
+      html { font-size: 12px; }
+      body { padding: 0; max-width: none; }
+      @page { size: A4; margin: 20mm 20mm 25mm 20mm; }
+      .clause { page-break-inside: avoid; }
+      .signature-section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="doc-header">
+    <h1>Contrato de Arrendamento de Quarto</h1>
+    <p>Arrendamento para uso diferente da habita&#xE7;&#xE3;o permanente &mdash; Vigo, Pontevedra, Espanha</p>
+  </div>
+
+  <div class="notice-box">
+    Nota: Este documento &#xE9; uma tradu&#xE7;&#xE3;o em portugu&#xEA;s para compreens&#xE3;o do arrendat&#xE1;rio.
+    A legisla&#xE7;&#xE3;o aplic&#xE1;vel &#xE9; a lei espanhola (Ley de Arrendamientos Urbanos).
+    Qualquer lit&#xED;gio ser&#xE1; submetido aos tribunais de Vigo, Espanha.
+  </div>
+
+  <div class="section-title">Partes</div>
+
+  <p>Em Vigo, em <strong>{{sign_date}}</strong></p>
+
+  <p style="margin-top:14px;">
+    <strong>Por uma parte</strong>, o/a Sr./Sr&#xE3;. <strong>{{owner_name}}</strong>,
+    n&#xFA;mero de identifica&#xE7;&#xE3;o <strong>{{owner_dni}}</strong>,
+    doravante denominado(a) <strong>&laquo;O SENHORIO&raquo;</strong>.
+  </p>
+
+  <p style="margin-top:10px;">
+    <strong>Por outra parte</strong>, o/a Sr./Sr&#xE3;. <strong>{{tenant_name}}</strong>,
+    passaporte/documento de identidade n&#xBA; <strong>{{tenant_dni}}</strong>,
+    de nacionalidade <strong>{{tenant_nationality}}</strong>,
+    doravante denominado(a) <strong>&laquo;O ARRENDAT&#xC1;RIO&raquo;</strong>.
+  </p>
+
+  <div class="section-title">Preambulo</div>
+
+  <p>
+    O SENHORIO &#xE9; propriet&#xE1;rio do im&#xF3;vel situado em <strong>{{flat_address}}</strong>,
+    Vigo, Espanha, onde se encontra o quarto objeto deste contrato.
+  </p>
+  <p style="margin-top:8px;">
+    Ambas as partes acordam celebrar o presente contrato de arrendamento de quarto
+    de acordo com as seguintes cl&#xE1;usulas:
+  </p>
+
+  <div class="section-title">Clausulas</div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 1 &mdash; Objeto.</span>
+    <p>
+      O SENHORIO arrenda ao ARRENDAT&#xC1;RIO o quarto denominado
+      <strong>&laquo;{{room_name}}&raquo;</strong>, pertencente ao apartamento
+      <strong>{{flat_name}}</strong> em {{flat_address}}, Vigo. O arrendamento inclui
+      acesso &#xE0;s zonas comuns (cozinha, casa de banho, sala de estar e outras &#xE1;reas partilhadas).
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 2 &mdash; Dura&#xE7;&#xE3;o.</span>
+    <p>
+      O presente contrato vigorar&#xE1; de <strong>{{start_date}}</strong> a
+      <strong>{{end_date}}</strong>. Findo este prazo, o contrato extingue-se, salvo
+      acordo expresso de prorroga&#xE7;&#xE3;o entre as partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 3 &mdash; Renda.</span>
+    <p>
+      A renda mensal acordada &#xE9; de <strong>{{monthly_rent}} EUR</strong>, pag&#xE1;vel
+      nos primeiros cinco (5) dias de cada m&#xEA;s por transfer&#xEA;ncia banc&#xE1;ria,
+      Bizum ou dinheiro, conforme acordo entre as partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 4 &mdash; Cau&#xE7;&#xE3;o.</span>
+    <p>
+      O ARRENDAT&#xC1;RIO entrega neste ato ao SENHORIO o montante de
+      <strong>{{deposit}} EUR</strong> a t&#xED;tulo de cau&#xE7;&#xE3;o. Este valor ser&#xE1;
+      devolvido no final do contrato, ap&#xF3;s verifica&#xE7;&#xE3;o do estado do quarto
+      e dedu&#xE7;&#xE3;o de eventuais danos.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 5 &mdash; Servi&#xE7;os Incluidos.</span>
+    <p>
+      A renda inclui: &#xE1;gua, eletricidade (uso razo&#xE1;vel), liga&#xE7;&#xE3;o WiFi &#xE0;
+      internet e limpeza peri&#xF3;dica das zonas comuns. O uso excessivo de eletricidade
+      poder&#xE1; implicar uma cobran&#xE7;a adicional.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 6 &mdash; Regras da Casa.</span>
+    <p>O ARRENDAT&#xC1;RIO compromete-se a cumprir as seguintes regras:</p>
+    <ul class="clause-list">
+      <li>&#xC9; terminantemente proibido fumar no interior do im&#xF3;vel.</li>
+      <li>O hor&#xE1;rio de sil&#xEA;ncio entre as 23h00 e as 08h00 deve ser respeitado.</li>
+      <li>N&#xE3;o s&#xE3;o permitidos animais de estima&#xE7;&#xE3;o sem autoriza&#xE7;&#xE3;o pr&#xE9;via por escrito do SENHORIO.</li>
+      <li>As visitas devem ser comunicadas e aprovadas pelo SENHORIO com anteced&#xEA;ncia.</li>
+      <li>O ARRENDAT&#xC1;RIO deve manter o quarto e as zonas comuns limpos e arrumados.</li>
+      <li>&#xC9; proibido subarrendar o quarto ou ceder a sua utiliza&#xE7;&#xE3;o a terceiros.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 7 &mdash; Rescis&#xE3;o.</span>
+    <p>
+      Qualquer das partes pode rescindir o contrato com um pr&#xE9;-aviso m&#xED;nimo de
+      <strong>trinta (30) dias</strong>, comunicado por escrito. O incumprimento grave
+      das regras da casa ou das obriga&#xE7;&#xF5;es de pagamento permite ao SENHORIO
+      a rescis&#xE3;o imediata do contrato.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cl&#xE1;usula 8 &mdash; Jurisdi&#xE7;&#xE3;o.</span>
+    <p>
+      Para a resolu&#xE7;&#xE3;o de qualquer lit&#xED;gio decorrente do presente contrato, ambas
+      as partes submetem-se expressamente aos tribunais da cidade de Vigo, Espanha,
+      renunciando a qualquer outro foro que lhes pudesse corresponder.
+    </p>
+  </div>
+
+  <div class="signature-section">
+    <p>
+      Em prova de conformidade, ambas as partes assinam o presente contrato em duplicado
+      em Vigo, em <strong>{{sign_date}}</strong>.
+    </p>
+    <div class="signature-grid">
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">O Senhorio</div>
+          <div class="name">{{owner_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">N&#xBA; identificac&#xE3;o: {{owner_dni}}</div>
+        </div>
+      </div>
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">O Arrendat&#xE1;rio</div>
+          <div class="name">{{tenant_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">Passaporte/BI: {{tenant_dni}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    Casas Vigo &mdash; {{flat_address}}, Vigo, Espanha &mdash; Contrato gerado em {{sign_date}}
+  </div>
+
+</body>
+</html>

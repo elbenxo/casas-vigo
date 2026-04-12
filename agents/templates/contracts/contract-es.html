@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrato de Arrendamiento — {{tenant_name}}</title>
+  <style>
+    /* ── Reset ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Page ─────────────────────────────────────── */
+    html { font-size: 14px; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.65;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ───────────────────────────────────── */
+    .doc-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    .doc-header h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .doc-header p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    /* ── Section titles ───────────────────────────── */
+    .section-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #333;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* ── Clause ───────────────────────────────────── */
+    .clause {
+      margin-top: 18px;
+    }
+    .clause-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline;
+    }
+    .clause p {
+      margin-top: 4px;
+      text-align: justify;
+    }
+    ul.clause-list {
+      margin-top: 6px;
+      padding-left: 20px;
+    }
+    ul.clause-list li {
+      margin-bottom: 4px;
+    }
+
+    /* ── Parties table ────────────────────────────── */
+    .parties-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .parties-table td {
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+    .parties-table .label {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+      width: 36%;
+    }
+
+    /* ── Signature section ────────────────────────── */
+    .signature-section {
+      margin-top: 60px;
+      padding-top: 20px;
+    }
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 16px;
+    }
+    .signature-block {
+      text-align: center;
+    }
+    .signature-line {
+      border-top: 1px solid #1a1a1a;
+      margin-top: 60px;
+      padding-top: 8px;
+    }
+    .signature-block .role {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .signature-block .name {
+      font-size: 0.9rem;
+    }
+
+    /* ── Footer ───────────────────────────────────── */
+    .doc-footer {
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+    }
+
+    /* ── Print ────────────────────────────────────── */
+    @media print {
+      html { font-size: 12px; }
+      body { padding: 0; max-width: none; }
+      @page {
+        size: A4;
+        margin: 20mm 20mm 25mm 20mm;
+      }
+      .no-print { display: none !important; }
+      .clause { page-break-inside: avoid; }
+      .signature-section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Document header ──────────────────────────────── -->
+  <div class="doc-header">
+    <h1>Contrato de Arrendamiento de Habitacion</h1>
+    <p>Arrendamiento de uso distinto del de vivienda habitual &mdash; Vigo, Pontevedra</p>
+  </div>
+
+  <!-- ── Parties ──────────────────────────────────────── -->
+  <div class="section-title">Comparecen</div>
+
+  <p>En Vigo, a <strong>{{sign_date}}</strong></p>
+
+  <p style="margin-top:14px;">
+    <strong>De una parte</strong>, D./D&#xE3;. <strong>{{owner_name}}</strong>, con DNI <strong>{{owner_dni}}</strong>,
+    en calidad de propietario del inmueble, en adelante <strong>&laquo;EL ARRENDADOR&raquo;</strong>.
+  </p>
+
+  <p style="margin-top:10px;">
+    <strong>De otra parte</strong>, D./D&#xE3;. <strong>{{tenant_name}}</strong>, con DNI/Pasaporte <strong>{{tenant_dni}}</strong>,
+    de nacionalidad <strong>{{tenant_nationality}}</strong>,
+    en adelante <strong>&laquo;EL ARRENDATARIO&raquo;</strong>.
+  </p>
+
+  <!-- ── Expose ────────────────────────────────────────── -->
+  <div class="section-title">Exponen</div>
+
+  <p>
+    Que el ARRENDADOR es propietario del inmueble sito en <strong>{{flat_address}}</strong>, Vigo,
+    en el que se encuentra la habitaci&#xF3;n objeto del presente contrato.
+  </p>
+  <p style="margin-top:8px;">
+    Que ambas partes, en la representaci&#xF3;n que ostentan, acuerdan celebrar el presente
+    contrato de arrendamiento de habitaci&#xF3;n, con arreglo a las siguientes:
+  </p>
+
+  <!-- ── Clauses ───────────────────────────────────────── -->
+  <div class="section-title">Estipulaciones</div>
+
+  <div class="clause">
+    <span class="clause-title">Primera &mdash; Objeto.</span>
+    <p>
+      El ARRENDADOR arrienda al ARRENDATARIO la habitaci&#xF3;n denominada
+      <strong>&laquo;{{room_name}}&raquo;</strong>, perteneciente al piso <strong>{{flat_name}}</strong>,
+      sito en {{flat_address}}, Vigo, con acceso a las zonas comunes del inmueble (cocina, ba&#xF1;o,
+      sal&#xF3;n y zonas de uso compartido).
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Segunda &mdash; Duraci&#xF3;n.</span>
+    <p>
+      El presente contrato tendr&#xE1; una duraci&#xF3;n desde el <strong>{{start_date}}</strong>
+      hasta el <strong>{{end_date}}</strong>. A la finalizaci&#xF3;n del plazo pactado, el contrato
+      se extinguir&#xE1; salvo acuerdo expreso de pr&#xF3;rroga entre las partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Tercera &mdash; Renta.</span>
+    <p>
+      La renta mensual acordada es de <strong>{{monthly_rent}} EUR</strong>, pagaderos dentro de los
+      primeros cinco (5) d&#xED;as de cada mes, mediante transferencia bancaria, Bizum o efectivo
+      a convenir entre las partes.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Cuarta &mdash; Fianza.</span>
+    <p>
+      El ARRENDATARIO hace entrega en este acto al ARRENDADOR de la cantidad de
+      <strong>{{deposit}} EUR</strong> en concepto de fianza. Dicho importe ser&#xE1; devuelto al
+      finalizar el contrato, previa comprobaci&#xF3;n del estado de la habitaci&#xF3;n y deducci&#xF3;n
+      de los da&#xF1;os que, en su caso, hubieran podido producirse.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Quinta &mdash; Servicios incluidos.</span>
+    <p>
+      La renta incluye los siguientes servicios: suministro de agua, electricidad (uso razonable),
+      conexi&#xF3;n a internet WiFi y limpieza peri&#xF3;dica de las zonas comunes del inmueble.
+      El uso excesivo o abusivo de la electricidad podr&#xE1; suponer un cargo adicional.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Sexta &mdash; Normas de convivencia.</span>
+    <p>El ARRENDATARIO se compromete a respetar las siguientes normas:</p>
+    <ul class="clause-list">
+      <li>Queda prohibido fumar en el interior del inmueble.</li>
+      <li>Se deber&#xE1; respetar el horario de silencio entre las 23:00 y las 08:00 horas.</li>
+      <li>No se permite la presencia de mascotas sin autorizaci&#xF3;n previa y por escrito del ARRENDADOR.</li>
+      <li>Las visitas deber&#xE1;n ser comunicadas y aprobadas por el ARRENDADOR con antelaci&#xF3;n.</li>
+      <li>El ARRENDATARIO deber&#xE1; mantener la habitaci&#xF3;n y las zonas comunes en correcto estado de limpieza.</li>
+      <li>Queda prohibido subarrendar la habitaci&#xF3;n o ceder su uso a terceros.</li>
+    </ul>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">S&#xE9;ptima &mdash; Rescisi&#xF3;n.</span>
+    <p>
+      Cualquiera de las partes podr&#xE1; resolver el contrato con un preaviso m&#xED;nimo de
+      <strong>treinta (30) d&#xED;as</strong> comunicado por escrito. El incumplimiento grave
+      de las normas de convivencia o de las obligaciones de pago facultar&#xE1; al ARRENDADOR
+      para resolver el contrato de forma inmediata.
+    </p>
+  </div>
+
+  <div class="clause">
+    <span class="clause-title">Octava &mdash; Jurisdicci&#xF3;n.</span>
+    <p>
+      Para la resoluci&#xF3;n de cualquier controversia derivada del presente contrato, ambas partes
+      se someten expresamente a los Juzgados y Tribunales de la ciudad de Vigo, con renuncia a
+      cualquier otro fuero que pudiera corresponderles.
+    </p>
+  </div>
+
+  <!-- ── Signatures ────────────────────────────────────── -->
+  <div class="signature-section">
+    <p>
+      En prueba de conformidad, ambas partes firman el presente contrato por duplicado
+      en Vigo, a <strong>{{sign_date}}</strong>.
+    </p>
+
+    <div class="signature-grid">
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">El Arrendador</div>
+          <div class="name">{{owner_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">DNI: {{owner_dni}}</div>
+        </div>
+      </div>
+      <div class="signature-block">
+        <div class="signature-line">
+          <div class="role">El Arrendatario</div>
+          <div class="name">{{tenant_name}}</div>
+          <div style="font-size:0.78rem;color:#888;">DNI/Pasaporte: {{tenant_dni}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────── -->
+  <div class="doc-footer">
+    Casas Vigo &mdash; {{flat_address}}, Vigo &mdash; Contrato generado el {{sign_date}}
+  </div>
+
+</body>
+</html>

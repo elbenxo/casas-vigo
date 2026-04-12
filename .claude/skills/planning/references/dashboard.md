@@ -65,8 +65,80 @@ El script sync-web.js reemplaza al actual sync-availability.js. Genera TODO el c
 #### Reviews
 - [ ] CRUD reviews desde dashboard (nombre, texto multiidioma, piso) — low
 
+### Prospect CRM & Analytics (prospects.html)
+Objetivo: visibilidad completa del funnel comercial — quién pregunta, por dónde, en qué estado está, y métricas de conversión. Sin CRM externo, todo local.
+
+#### Base de datos de prospects
+- [ ] DB: tabla `prospects` (id, name, phone, email, language, channel, status, flat_interest, room_interest, notes, created_at, updated_at) — high
+- [ ] DB: tabla `prospect_interactions` (id, prospect_id, type [message/call/visit/email], direction [in/out], summary, channel, created_at) — high
+- [ ] DB: tabla `web_hits` (id, page, referrer, utm_source, utm_medium, utm_campaign, language, user_agent, ip_hash, created_at) — medium
+- [ ] API: CRUD endpoints /api/prospects, /api/prospects/:id/interactions — high
+- [ ] API: GET /api/analytics/prospects (stats agregadas: por canal, por estado, conversión) — high
+- [ ] API: POST /api/hits (pixel tracking desde la web) — medium
+
+#### Pipeline de ventas
+- [ ] Dashboard: vista Kanban del funnel: Nuevo → Contactado → Visita programada → Visita hecha → Contrato enviado → Firmado / Perdido — high
+- [ ] Dashboard: ficha de prospect con historial de interacciones (timeline) — high
+- [ ] Dashboard: crear prospect manualmente + auto-crear desde mensajes WhatsApp — high
+- [ ] Dashboard: mover prospects entre estados con drag-and-drop o botones — medium
+- [ ] Dashboard: filtrar por piso de interés, idioma, canal — medium
+- [ ] Dashboard: campo "motivo de pérdida" cuando se marca como Perdido (precio, ubicación, timing, otro) — medium
+
+#### Estadísticas y métricas
+- [ ] Dashboard: KPIs en cabecera — leads activos, tasa de conversión, tiempo medio hasta firma — high
+- [ ] Dashboard: gráfico leads por canal por mes (WhatsApp, Telegram, Web, Idealista, boca a boca, otro) — high
+- [ ] Dashboard: gráfico funnel de conversión (cuántos pasan de cada etapa a la siguiente) — medium
+- [ ] Dashboard: tiempo medio en cada etapa del funnel — medium
+- [ ] Dashboard: ranking de habitaciones más demandadas — medium
+- [ ] Dashboard: mapa de calor por idioma/nacionalidad de los prospects — low
+
+#### Tracking web (analytics propios)
+- [ ] Web: pixel tracker ligero (1 JS, envía a /api/hits) — sin cookies, solo page+referrer+UTM — medium
+- [ ] Web: UTM params en links de WhatsApp/Telegram para atribución de canal — medium
+- [ ] Dashboard: visitas por página, por idioma, por referrer — medium
+- [ ] Dashboard: tendencia de visitas diarias/semanales — low
+
+#### Integración con agentes
+- [ ] Sales agent auto-crea prospect + interaction al recibir primer mensaje — high
+- [ ] Sales agent actualiza estado del prospect según conversación — medium
+- [ ] Sales agent registra cada interacción en prospect_interactions — high
+
+### Gestión de contratos (contracts.html)
+Objetivo: crear, almacenar e imprimir contratos desde el dashboard. Contratos basados en plantillas con placeholders, multi-idioma, guardados en filesystem.
+
+**Flujo clave**: el contrato se genera desde el **prospect**, no desde el inquilino. La firma del contrato es lo que convierte un prospect en tenant (contact). El ciclo es: Prospect → Contrato generado → Contrato firmado → se crea Contact + se asigna Room.
+
+#### Plantillas de contrato
+- [ ] Crear plantillas base en `agents/templates/contracts/` — una por idioma (ES, EN, GL, FR, DE, KO, PT, PL) — high
+- [ ] Plantilla usa placeholders: {{tenant_name}}, {{tenant_dni}}, {{tenant_nationality}}, {{room_name}}, {{flat_address}}, {{monthly_rent}}, {{deposit}}, {{start_date}}, {{end_date}}, {{owner_name}}, {{owner_dni}}, etc. — high
+- [ ] Plantilla incluye: datos del inmueble, condiciones generales, normas de la casa, cláusulas legales, espacio para firmas — high
+- [ ] DB: tabla `contracts` (id, prospect_id, room_id, template_lang, file_path, status [draft/signed/terminated], created_at, signed_at) — high
+
+#### Dashboard: generación de contratos (desde prospect)
+- [ ] Dashboard: desde ficha de prospect → botón "Generar contrato" — high
+- [ ] Dashboard: seleccionar habitación + elegir idioma → auto-rellenar placeholders con datos del prospect — high
+- [ ] Dashboard: preview del contrato antes de generar — high
+- [ ] Dashboard: generar contrato → guardar como HTML en `data/contracts/{prospect_id}_{room}_{date}.html` — high
+- [ ] Dashboard: botón imprimir (window.print() con CSS @media print optimizado) — high
+- [ ] Dashboard: lista de contratos generados con filtros (piso, prospect, estado, fecha) — medium
+- [ ] Dashboard: marcar contrato como "firmado" → auto-crear contact en DB + asignar room + mover prospect a estado "Firmado" — high
+- [ ] Dashboard: re-generar contrato si cambian condiciones antes de firmar — medium
+
+#### También accesible desde Kanban
+- [ ] Pipeline Kanban: en estado "Contrato enviado" mostrar link directo al contrato generado — medium
+- [ ] Pipeline Kanban: acción rápida "Firmado" que ejecuta la conversión prospect → tenant — medium
+
+#### API
+- [ ] API: POST /api/contracts/generate (recibe prospect_id, room_id, lang → genera HTML) — high
+- [ ] API: GET /api/contracts (lista), GET /api/contracts/:id (detalle + file_path) — high
+- [ ] API: PUT /api/contracts/:id/sign → crea contact, asigna room, actualiza prospect status — high
+- [ ] API: PUT /api/contracts/:id/status (draft → terminated para cancelaciones) — medium
+- [ ] API: GET /api/contracts/:id/download (sirve el HTML guardado) — medium
+
 ### Constraints
 - Runs on localhost only (NOT internet-facing)
 - Dashboard es read+write: CMS completo para el propietario
 - Simplest tech possible
 - Un rebuild genera las 72 páginas de los 8 idiomas (5.5s actualmente)
+- Contratos en filesystem (no en DB), indexados en tabla `contracts`
+- Analytics sin cookies ni servicios externos — todo local
