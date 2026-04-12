@@ -63,5 +63,12 @@ Repo setup, CI/CD, shared data, deployment.
 - [ ] Script backup-db.js (DB → Google Drive) — low
 - [ ] sync-web.js: reemplaza sync-availability.js, genera flats.ts completo desde API (ver Dashboard CMS) — high
 
+### Dominio & DNS
+- [ ] Buscar proveedor DNS gratis o muy barato para dominio propio apuntando a GitHub Pages — high
+  - Opciones a evaluar: Cloudflare (DNS gratis), Freenom, Porkbun, Namecheap, deSEC
+  - Requisito: CNAME record hacia elbenxo.github.io + HTTPS automático via GitHub Pages
+  - Actualizar astro.config.mjs site URL y base path cuando se tenga dominio
+  - Configurar custom domain en GitHub Pages settings
+
 ### Web multi-idioma: mantenimiento
 - [ ] Cuando se añada un nuevo idioma: crear 5 pages + traducciones + datos. Todo lo demás (Layout, Nav, hreflang) es automático — low (documentar proceso)
