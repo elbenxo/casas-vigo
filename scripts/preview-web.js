@@ -2,7 +2,8 @@
  * preview-web.js
  *
  * 1. Runs sync-availability.js to update availability data
- * 2. Builds the Astro site (web/dist)
+ * 2. Runs sync-llms.js to regenerate llms.txt/llms-full.txt from API
+ * 3. Builds the Astro site (web/dist)
  *
  * After this, the built site can be previewed at localhost:3000/casas-vigo/
  *
@@ -20,13 +21,19 @@ const apiArgs = process.argv.includes('--api')
 
 function main() {
   // 1. Sync availability from API
-  console.log('1/2 Syncing availability from API...');
+  console.log('1/3 Syncing availability from API...');
   const syncScript = path.join(__dirname, 'sync-availability.js');
   const syncOut = run(process.execPath, [syncScript, ...apiArgs]);
   console.log(`     ${syncOut}`);
 
-  // 2. Build Astro site
-  console.log('2/2 Building web...');
+  // 2. Regenerate llms.txt / llms-full.txt from API
+  console.log('2/3 Syncing llms.txt / llms-full.txt from API...');
+  const llmsScript = path.join(__dirname, 'sync-llms.js');
+  const llmsOut = run(process.execPath, [llmsScript, ...apiArgs]);
+  console.log(`     ${llmsOut}`);
+
+  // 3. Build Astro site
+  console.log('3/3 Building web...');
   const astroBin = path.join(WEB_DIR, 'node_modules', '.bin', 'astro');
   const astroCmd = process.platform === 'win32' ? astroBin + '.cmd' : astroBin;
   run(astroCmd, ['build'], { cwd: WEB_DIR, timeout: 120000, shell: true });

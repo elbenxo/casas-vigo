@@ -50,7 +50,7 @@ Make the Astro web (web/) SEO and GEO (Generative Engine Optimization) compatibl
 - [ ] Dar de alta: número WhatsApp Business, email, bot Telegram — high
 - [ ] Replace placeholders con datos reales en las 8 páginas de contacto — high
 - [ ] Replace Formspree placeholder con WhatsApp link — high
-- [ ] Update astro.config.mjs site URL — medium
+- [x] Update astro.config.mjs site URL — 2026-04-16 (SITE_URL + BASE_PATH env overrides con defaults a GitHub Pages)
 
 ### Next available date (para prospects) — 2026-04-12
 Objetivo: un prospect que ve una habitación ocupada debe saber cuándo estará libre, sin tener que preguntar.
@@ -65,4 +65,4 @@ Objetivo: un prospect que ve una habitación ocupada debe saber cuándo estará 
 - [x] FlatCard.astro: badge "disponible pronto" en cards de listado (ventana 60 días) — 2026-04-12
 
 ### GEO maintenance
-- [ ] Actualizar llms.txt y llms-full.txt cuando cambie inventario (integrar en sync-web.js) — medium
+- [x] Actualizar llms.txt y llms-full.txt cuando cambie inventario — 2026-04-16 (scripts/sync-llms.js regenera desde API, integrado en preview-web.js y deploy-web.js, revert en /api/deploy-web/cancel)

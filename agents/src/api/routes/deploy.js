@@ -75,15 +75,20 @@ router.post('/cancel', (req, res) => {
     return res.status(409).json({ error: `Nothing to cancel: state is ${state}` });
   }
 
-  // Revert availability.json to last committed version
+  // Revert synced files to last committed version
+  const SYNCED_FILES = [
+    'web/src/data/availability.json',
+    'web/public/llms.txt',
+    'web/public/llms-full.txt',
+  ];
   try {
-    execFileSync('git', ['checkout', '--', 'web/src/data/availability.json'], {
+    execFileSync('git', ['checkout', '--', ...SYNCED_FILES], {
       cwd: REPO_ROOT,
       windowsHide: true,
       encoding: 'utf-8',
     });
   } catch (e) {
-    // Expected if file is untracked or already clean
+    // Expected if files are untracked or already clean
     console.warn('deploy/cancel git checkout:', e.message);
   }
 
