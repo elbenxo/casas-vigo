@@ -11,6 +11,7 @@ interface Props {
 const { flat, lang } = Astro.props;
 const availableCount = flat.rooms.filter(r => r.available).length;
 const minPrice = Math.min(...flat.rooms.map(r => r.price));
+const isWholeFlat = !!flat.wholeFlatPrice;
 
 // Wider window (2x SOON_DAYS) for listing cards — shows "coming soon" badge earlier
 const today = new Date();
@@ -21,25 +22,48 @@ const soonCount = flat.rooms.filter(r =>
   r.available_from &&
   (new Date(r.available_from).getTime() - today.getTime()) <= soonMs
 ).length;
+
+// For whole-flat rentals, the unit is the whole flat: available only when all rooms are.
+const wholeFlatAvailable = isWholeFlat && flat.rooms.every(r => r.available);
+const wholeFlatSoon = isWholeFlat && !wholeFlatAvailable && flat.rooms.every(r =>
+  r.available || (r.available_from && (new Date(r.available_from).getTime() - today.getTime()) <= soonMs)
+);
 ---
 
 <a href={getLocalePath(lang, `/pisos/${flat.slug}/`)} class="group block bg-white rounded-xl shadow-soft hover:shadow-lift hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100/80">
   <div class="aspect-[16/10] bg-primary-100 relative overflow-hidden img-zoom">
     <img src={flat.image} alt={`${flat.name[lang]} - ${flat.rooms.length} ${t(lang, 'flats.rooms')} - ${flat.neighborhood[lang]}, Vigo`} class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-    {availableCount > 0 && (
-      <span class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-        {availableCount} {t(lang, 'flats.available').toLowerCase()}
-      </span>
-    )}
-    {availableCount === 0 && soonCount > 0 && (
-      <span class="absolute top-3 right-3 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-        {soonCount} {t(lang, 'flats.availableSoon').toLowerCase()}
-      </span>
-    )}
-    {availableCount > 0 && soonCount > 0 && (
-      <span class="absolute top-3 left-3 bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded-full">
-        +{soonCount} {t(lang, 'flats.availableSoon').toLowerCase()}
-      </span>
+    {isWholeFlat ? (
+      <>
+        {wholeFlatAvailable && (
+          <span class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+            {t(lang, 'flats.available')}
+          </span>
+        )}
+        {!wholeFlatAvailable && wholeFlatSoon && (
+          <span class="absolute top-3 right-3 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+            {t(lang, 'flats.availableSoon')}
+          </span>
+        )}
+      </>
+    ) : (
+      <>
+        {availableCount > 0 && (
+          <span class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+            {availableCount} {t(lang, 'flats.available').toLowerCase()}
+          </span>
+        )}
+        {availableCount === 0 && soonCount > 0 && (
+          <span class="absolute top-3 right-3 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+            {soonCount} {t(lang, 'flats.availableSoon').toLowerCase()}
+          </span>
+        )}
+        {availableCount > 0 && soonCount > 0 && (
+          <span class="absolute top-3 left-3 bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded-full">
+            +{soonCount} {t(lang, 'flats.availableSoon').toLowerCase()}
+          </span>
+        )}
+      </>
     )}
   </div>
   <div class="p-5">
@@ -49,10 +73,10 @@ const soonCount = flat.rooms.filter(r =>
     <p class="text-sm text-gray-500 mt-1.5">{flat.neighborhood[lang]} &mdash; {flat.address}</p>
     <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
       <span class="text-sm text-gray-500">
-        {flat.rooms.length} {t(lang, 'flats.rooms')}
+        {flat.wholeFlatPrice ? t(lang, 'flats.wholeFlat') : `${flat.rooms.length} ${t(lang, 'flats.rooms')}`}
       </span>
       <span class="text-primary-700 font-bold text-lg">
-        {t(lang, 'flats.from')} {minPrice}&euro;<span class="text-sm font-normal text-gray-500">{t(lang, 'flats.month')}</span>
+        {isWholeFlat ? `${flat.wholeFlatPrice}` : `${t(lang, 'flats.from')} ${minPrice}`}&euro;<span class="text-sm font-normal text-gray-500">{t(lang, 'flats.month')}</span>
       </span>
     </div>
   </div>

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-12T17:47:51.156Z",
+  "lastUpdated": "2026-04-18T00:00:00.000Z",
   "rooms": {
     "ir-primavera": {
       "available": false,
@@ -28,7 +28,7 @@
     },
     "1d-bambu": {
       "available": false,
-      "price": 330,
+      "price": 350,
       "available_from": null
     },
     "1d-estrella": {
@@ -38,47 +38,47 @@
     },
     "1d-mundo": {
       "available": false,
-      "price": 340,
+      "price": 350,
       "available_from": null
     },
     "1d-arroba": {
       "available": false,
-      "price": 320,
+      "price": 350,
       "available_from": null
     },
     "1d-prensa": {
       "available": false,
-      "price": 300,
+      "price": 350,
       "available_from": null
     },
     "3i-azul": {
       "available": false,
-      "price": 320,
+      "price": 350,
       "available_from": null
     },
     "3i-roja": {
       "available": false,
-      "price": 310,
+      "price": 350,
       "available_from": null
     },
     "3i-amarilla": {
       "available": false,
-      "price": 300,
+      "price": 350,
       "available_from": null
     },
     "3i-verde": {
       "available": false,
-      "price": 330,
+      "price": 350,
       "available_from": null
     },
     "3i-blanca": {
       "available": false,
-      "price": 340,
+      "price": 350,
       "available_from": null
     },
     "3i-gris": {
       "available": false,
-      "price": 310,
+      "price": 350,
       "available_from": null
     },
     "4d-oliva": {
@@ -93,12 +93,12 @@
     },
     "4d-pistacho": {
       "available": true,
-      "price": 340,
+      "price": 350,
       "available_from": "2026-05-01"
     },
     "4d-roja": {
       "available": true,
-      "price": 340,
+      "price": 350,
       "available_from": "2026-05-01"
     },
     "4d-calabaza": {

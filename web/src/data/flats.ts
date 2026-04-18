@@ -29,6 +29,8 @@ export interface Flat {
   amenities: string[];
   coordinates: { lat: number; lng: number };
   reviews: Review[];
+  /** If set, the flat is rented as a whole at this monthly price (rooms are not rented individually). */
+  wholeFlatPrice?: number;
 }
 
 const IMG = '/casas-vigo/images';
@@ -125,9 +127,9 @@ export const flats: Flat[] = [
       pl: 'Mieszkanie Alfonso XIII – 1. Prawe',
     },
     address: 'Alfonso XIII, 9, Vigo',
-    neighborhood: { es: 'Estación AVE', en: 'HST Station Area', gl: 'Estación AVE', fr: 'Gare TGV', de: 'Hochgeschwindigkeitsbahnhof', ko: '고속철도역 지역', pt: 'Estação de Alta Velocidade', pl: 'Dworzec Szybkiej Kolei' },
+    neighborhood: { es: 'Estación AVE y autobuses', en: 'AVE & Bus Stations', gl: 'Estación AVE e autobuses', fr: 'Gares AVE et routière', de: 'AVE- & Busbahnhof', ko: '고속철도 및 버스터미널', pt: 'Estação AVE e autocarros', pl: 'Dworzec AVE i autobusowy' },
     description: {
-      es: 'Amplio piso de seis habitaciones en primera planta con galería acristalada y vistas a la ciudad. Decoración temática única en cada habitación, dos baños completos, salón luminoso y patio privado. A un paso de la estación de alta velocidad y del centro.',
+      es: 'Amplio piso de seis habitaciones en primera planta con galería acristalada y vistas a la ciudad. Decoración temática única en cada habitación, dos baños completos, salón luminoso y patio privado. A un paso de la estación de alta velocidad y de la estación de autobuses.',
       en: 'Spacious six-bedroom first-floor flat with a glazed gallery and city views. Each room features unique themed décor, two full bathrooms, a bright living room, and a private courtyard. Steps from the high-speed train station and the city center.',
       gl: 'Amplo piso de seis habitacións na primeira planta con galería acristalada e vistas á cidade. Decoración temática única en cada habitación, dous baños completos, salón luminoso e patio privado. A un paso da estación de alta velocidade e do centro.',
       fr: 'Spacieux appartement de six chambres au premier étage avec galerie vitrée et vues sur la ville. Décoration thématique unique dans chaque chambre, deux salles de bains complètes, salon lumineux et cour privée. À deux pas de la gare à grande vitesse et du centre-ville.',
@@ -159,7 +161,7 @@ export const flats: Flat[] = [
       {
         id: '1d-bambu',
         name: { es: 'Habitación Bambú', en: 'Bamboo Room', gl: 'Habitación Bambú', fr: 'Chambre Bambou', de: 'Bambus-Zimmer', ko: '대나무 객실', pt: 'Quarto Bambu', pl: 'Pokój Bambusowy' },
-        price: 330, available: true, size: '11m²',
+        price: 350, available: true, size: '11m²',
         features: ['Cama individual', 'Escritorio', 'Armario', 'Estantería'],
         images: [`${IMG}/1-derecha/hab-bambu.jpg`],
       },
@@ -173,21 +175,21 @@ export const flats: Flat[] = [
       {
         id: '1d-mundo',
         name: { es: 'Habitación Mundo', en: 'World Room', gl: 'Habitación Mundo', fr: 'Chambre Monde', de: 'Welt-Zimmer', ko: '세계 객실', pt: 'Quarto Mundo', pl: 'Pokój Świat' },
-        price: 340, available: true, size: '12m²',
+        price: 350, available: true, size: '12m²',
         features: ['Cama doble', 'Escritorio', 'Armario empotrado', 'Mural decorativo'],
         images: [`${IMG}/1-derecha/hab-mundo.jpg`],
       },
       {
         id: '1d-arroba',
         name: { es: 'Habitación Arroba', en: 'Arroba Room', gl: 'Habitación Arroba', fr: 'Chambre Arobase', de: 'Arroba-Zimmer', ko: '아로바 객실', pt: 'Quarto Arroba', pl: 'Pokój Arroba' },
-        price: 320, available: true, size: '10m²',
+        price: 350, available: true, size: '10m²',
         features: ['Cama individual', 'Escritorio', 'Armario', 'Papel pintado temático'],
         images: [`${IMG}/1-derecha/hab-arroba.jpg`],
       },
       {
         id: '1d-prensa',
         name: { es: 'Habitación Prensa', en: 'Press Room', gl: 'Habitación Prensa', fr: 'Chambre Presse', de: 'Presse-Zimmer', ko: '프레스 객실', pt: 'Quarto Imprensa', pl: 'Pokój Prasa' },
-        price: 300, available: true, size: '16m²',
+        price: 350, available: true, size: '16m²',
         features: ['Dos camas individuales', 'Escritorio', 'Armario', 'Separador de ambientes'],
         images: [`${IMG}/1-derecha/hab-prensa.jpg`],
       },
@@ -216,7 +218,7 @@ export const flats: Flat[] = [
       pl: 'Mieszkanie Alfonso XIII – 3. Lewe',
     },
     address: 'Alfonso XIII, 9, Vigo',
-    neighborhood: { es: 'Estación AVE', en: 'HST Station Area', gl: 'Estación AVE', fr: 'Gare TGV', de: 'Hochgeschwindigkeitsbahnhof', ko: '고속철도역 지역', pt: 'Estação de Alta Velocidade', pl: 'Dworzec Szybkiej Kolei' },
+    neighborhood: { es: 'Estación AVE y autobuses', en: 'AVE & Bus Stations', gl: 'Estación AVE e autobuses', fr: 'Gares AVE et routière', de: 'AVE- & Busbahnhof', ko: '고속철도 및 버스터미널', pt: 'Estação AVE e autocarros', pl: 'Dworzec AVE i autobusowy' },
     description: {
       es: 'Piso señorial de seis habitaciones en tercera planta con salón con chimenea de mármol y vistas panorámicas a la ría de Vigo. Reformado con baño nuevo en 2025. Habitaciones amplias con decoración por colores, comedor para ocho personas y cocina equipada.',
       en: 'Stately six-bedroom flat on the third floor with a marble fireplace lounge and panoramic views of the Vigo estuary. Renovated with a new bathroom in 2025. Spacious color-themed rooms, an eight-seat dining room, and a fully equipped kitchen.',
@@ -239,42 +241,42 @@ export const flats: Flat[] = [
       {
         id: '3i-azul',
         name: { es: 'Habitación Azul', en: 'Blue Room', gl: 'Habitación Azul', fr: 'Chambre Bleue', de: 'Blaues Zimmer', ko: '파란 객실', pt: 'Quarto Azul', pl: 'Pokój Niebieski' },
-        price: 320, available: true, size: '12m²',
+        price: 350, available: true, size: '12m²',
         features: ['Cama doble', 'Escritorio', 'Armario empotrado'],
         images: [`${IMG}/3-izquierda/hab-azul-1.jpg`, `${IMG}/3-izquierda/hab-azul-2.jpg`],
       },
       {
         id: '3i-roja',
         name: { es: 'Habitación Roja', en: 'Red Room', gl: 'Habitación Vermella', fr: 'Chambre Rouge', de: 'Rotes Zimmer', ko: '빨간 객실', pt: 'Quarto Vermelho', pl: 'Pokój Czerwony' },
-        price: 310, available: true, size: '11m²',
+        price: 350, available: true, size: '11m²',
         features: ['Dos camas individuales', 'Armario empotrado'],
         images: [`${IMG}/3-izquierda/hab-roja.jpg`],
       },
       {
         id: '3i-amarilla',
         name: { es: 'Habitación Amarilla', en: 'Yellow Room', gl: 'Habitación Amarela', fr: 'Chambre Jaune', de: 'Gelbes Zimmer', ko: '노란 객실', pt: 'Quarto Amarelo', pl: 'Pokój Żółty' },
-        price: 300, available: true, size: '10m²',
+        price: 350, available: true, size: '10m²',
         features: ['Cama individual', 'Escritorio', 'Armario'],
         images: [],
       },
       {
         id: '3i-verde',
         name: { es: 'Habitación Verde', en: 'Green Room', gl: 'Habitación Verde', fr: 'Chambre Verte', de: 'Grünes Zimmer', ko: '초록 객실', pt: 'Quarto Verde', pl: 'Pokój Zielony' },
-        price: 330, available: true, size: '12m²',
+        price: 350, available: true, size: '12m²',
         features: ['Cama individual', 'Escritorio grande', 'Armario empotrado'],
         images: [`${IMG}/3-izquierda/hab-verde.jpg`, `${IMG}/3-izquierda/hab-verde-escritorio.jpg`],
       },
       {
         id: '3i-blanca',
         name: { es: 'Habitación Blanca', en: 'White Room', gl: 'Habitación Branca', fr: 'Chambre Blanche', de: 'Weißes Zimmer', ko: '하얀 객실', pt: 'Quarto Branco', pl: 'Pokój Biały' },
-        price: 340, available: true, size: '14m²',
+        price: 350, available: true, size: '14m²',
         features: ['Cama doble', 'Cristalera al baño', 'Armario empotrado'],
         images: [`${IMG}/3-izquierda/hab-blanca.jpg`, `${IMG}/3-izquierda/hab-blanca-2.jpg`],
       },
       {
         id: '3i-gris',
         name: { es: 'Habitación Gris', en: 'Grey Room', gl: 'Habitación Gris', fr: 'Chambre Grise', de: 'Graues Zimmer', ko: '회색 객실', pt: 'Quarto Cinzento', pl: 'Pokój Szary' },
-        price: 310, available: true, size: '11m²',
+        price: 350, available: true, size: '11m²',
         features: ['Dos camas individuales', 'Estantería', 'Armario'],
         images: [`${IMG}/3-izquierda/hab-gris.jpg`, `${IMG}/3-izquierda/hab-gris-2.jpg`],
       },
@@ -303,7 +305,7 @@ export const flats: Flat[] = [
       pl: 'Penthouse Alfonso XIII – 4. Prawe',
     },
     address: 'Alfonso XIII, 9, Vigo',
-    neighborhood: { es: 'Estación AVE', en: 'HST Station Area', gl: 'Estación AVE', fr: 'Gare TGV', de: 'Hochgeschwindigkeitsbahnhof', ko: '고속철도역 지역', pt: 'Estação de Alta Velocidade', pl: 'Dworzec Szybkiej Kolei' },
+    neighborhood: { es: 'Estación AVE y autobuses', en: 'AVE & Bus Stations', gl: 'Estación AVE e autobuses', fr: 'Gares AVE et routière', de: 'AVE- & Busbahnhof', ko: '고속철도 및 버스터미널', pt: 'Estação AVE e autocarros', pl: 'Dworzec AVE i autobusowy' },
     description: {
       es: 'Ático único con vistas panorámicas espectaculares de Vigo, la ría y las montañas. Cinco habitaciones con personalidad propia, techos abuhardillados con encanto, dos baños modernos y cocina totalmente equipada. Desde el balcón se disfruta de uno de los mejores miradores de la ciudad.',
       en: 'Unique penthouse with spectacular panoramic views of Vigo, the estuary, and the mountains. Five bedrooms with distinct personalities, charming sloped ceilings, two modern bathrooms, and a fully equipped kitchen. The balcony offers one of the best viewpoints in the city.',
@@ -342,14 +344,14 @@ export const flats: Flat[] = [
       {
         id: '4d-pistacho',
         name: { es: 'Habitación Pistacho', en: 'Pistachio Room', gl: 'Habitación Pistacho', fr: 'Chambre Pistache', de: 'Pistazien-Zimmer', ko: '피스타치오 객실', pt: 'Quarto Pistáchio', pl: 'Pokój Pistacjowy' },
-        price: 340, available: true, size: '11m²',
+        price: 350, available: true, size: '11m²',
         features: ['Cama individual', 'Armario empotrado', 'Escritorio'],
         images: [`${IMG}/4-derecha-atico/hab-pistacho.jpg`],
       },
       {
         id: '4d-roja',
         name: { es: 'Habitación Roja', en: 'Red Room', gl: 'Habitación Vermella', fr: 'Chambre Rouge', de: 'Rotes Zimmer', ko: '빨간 객실', pt: 'Quarto Vermelho', pl: 'Pokój Czerwony' },
-        price: 340, available: true, size: '11m²',
+        price: 350, available: true, size: '11m²',
         features: ['Cama doble', 'Escritorio', 'Armario'],
         images: [`${IMG}/4-derecha-atico/hab-roja.jpg`, `${IMG}/4-derecha-atico/hab-roja-escritorio.jpg`],
       },
@@ -374,6 +376,7 @@ export const flats: Flat[] = [
   // ─────────────────────────────────────────────
   {
     slug: 'alfonso-4-izquierda-atico',
+    wholeFlatPrice: 1300,
     name: {
       es: 'Ático Alfonso XIII – 4º Izquierda',
       en: 'Alfonso XIII Penthouse – 4th Left',
@@ -385,7 +388,7 @@ export const flats: Flat[] = [
       pl: 'Penthouse Alfonso XIII – 4. Lewe',
     },
     address: 'Alfonso XIII, 9, Vigo',
-    neighborhood: { es: 'Estación AVE', en: 'HST Station Area', gl: 'Estación AVE', fr: 'Gare TGV', de: 'Hochgeschwindigkeitsbahnhof', ko: '고속철도역 지역', pt: 'Estação de Alta Velocidade', pl: 'Dworzec Szybkiej Kolei' },
+    neighborhood: { es: 'Estación AVE y autobuses', en: 'AVE & Bus Stations', gl: 'Estación AVE e autobuses', fr: 'Gares AVE et routière', de: 'AVE- & Busbahnhof', ko: '고속철도 및 버스터미널', pt: 'Estação AVE e autocarros', pl: 'Dworzec AVE i autobusowy' },
     description: {
       es: 'Espectacular ático abuhardillado con enormes ventanales de suelo a techo y vistas a la ría de Vigo. Salón-comedor diáfano con cocina americana, terraza privada, dos habitaciones con decoración única y baño moderno. La joya de la corona del edificio.',
       en: 'Spectacular attic penthouse with huge floor-to-ceiling windows and views of the Vigo estuary. Open-plan living-dining room with an American kitchen, private terrace, two uniquely decorated bedrooms, and a modern bathroom. The crown jewel of the building.',
