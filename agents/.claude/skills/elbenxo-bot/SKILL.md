@@ -62,10 +62,10 @@ node E:\Claude\CasasVigo\.claude\skills\elbenxo-bot\scripts\scheduler.js
 node E:\Claude\CasasVigo\.claude\skills\elbenxo-bot\scripts\scheduler.js --once
 
 # Single check on one conversation
-node E:\Claude\CasasVigo\.claude\skills\elbenxo-bot\scripts\run-once.js 34646104683
+node E:\Claude\CasasVigo\.claude\skills\elbenxo-bot\scripts\run-once.js XXXXXXX
 
 # Introduce BenxaBOT + start continuous loop for one conversation
-node E:\Claude\CasasVigo\.claude\skills\elbenxo-bot\scripts\scheduler.js --start --conversation 34646104683
+node E:\Claude\CasasVigo\.claude\skills\elbenxo-bot\scripts\scheduler.js --start --conversation XXXXXXXX
 ```
 
 ### View active contacts
