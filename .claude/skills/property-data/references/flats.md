@@ -131,4 +131,4 @@ Last updated: 2026-04-12
 | 3o Izq | Alfonso XIII 9 | 6 | 300-340 EUR |
 | 4o Dcha Atico | Alfonso XIII 9 | 5 | 340-370 EUR |
 | 4o Izq Atico | Alfonso XIII 9 | 2 | 370-400 EUR |
-| **Total** | | **27** | **300-400 EUR** |
+| **Total** | | **23** | **300-400 EUR** |

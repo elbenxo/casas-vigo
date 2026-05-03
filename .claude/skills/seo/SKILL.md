@@ -54,7 +54,7 @@ Habitaciones en Vigo - Alquiler desde 300EUR | Casas Vigo
 
 ### Meta descriptions (120-160 chars)
 ```
-Alquila una habitacion en Vigo centro desde 300 EUR/mes. 27 habitaciones amuebladas con wifi y gastos incluidos.
+Alquila una habitacion en Vigo centro desde 300 EUR/mes. 23 habitaciones amuebladas con wifi y gastos incluidos.
 ```
 
 ### Headings

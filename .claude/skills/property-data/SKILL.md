@@ -9,7 +9,7 @@ This skill provides structured data about all properties and rooms. Agents and o
 
 ## Quick reference
 
-- **5 flats, 27 rooms** in Vigo
+- **5 flats, 23 rooms** in Vigo
 - **Addresses**: Alfonso XIII 9 (4 flats), Irmandinos 23 (1 flat)
 - **Monthly price range**: 300-400 EUR/month
 - **Room sizes**: 10-16 m2
@@ -54,7 +54,7 @@ These are critical for agents answering prospect questions:
 3. Script pushes change -> web rebuilds
 
 ### For the web:
-The web reads from `web/src/data/flats.ts`. When room data changes (price, description), update both `flats.ts` and `references/flats.md` to keep them in sync.
+The web reads from `web/src/data/flats.ts`, **AUTO-GENERADO** desde la DB por `scripts/sync-web.js`. No editar `flats.ts` a mano: hacer cambios vía dashboard (`/dashboard/flats.html`, `/dashboard/rooms.html`, `/dashboard/photos.html`) o API REST. El flujo "Vista previa → Publicar" regenera el fichero y lo despliega.
 
 ## Bathrooms
 
@@ -66,4 +66,4 @@ No cleaning service currently contracted for any flat. Tenants are responsible f
 
 ## Language
 
-Room names and flat names stay in their original language (Spanish). Goal is to support as many languages as possible across web and agents. Currently: ES, EN, GL on web; agents support ES, EN, GL, FR, DE, KO, PT, PL.
+Room names and flat names stay in their original language (Spanish). Web y agentes soportan los 8 idiomas: ES, EN, GL, FR, DE, KO, PT, PL. Las traducciones de pisos/habitaciones/descripciones/reviews viven en la DB (`name_i18n`, `description_i18n`, etc.) y se editan vía `dashboard/flats.html`.

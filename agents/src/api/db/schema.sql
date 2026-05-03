@@ -7,6 +7,15 @@ CREATE TABLE IF NOT EXISTS flats (
   neighborhood TEXT,
   amenities TEXT,              -- JSON array of strings
   has_tourist_license INTEGER DEFAULT 0,
+  -- Web-facing identifiers (used for URLs and room id prefix in flats.ts)
+  web_slug TEXT,               -- URL slug used by Astro (e.g. 'irmandinhos', 'alfonso-1-derecha')
+  web_id_prefix TEXT,          -- room id prefix (e.g. 'ir', '1d', '3i', '4d', '4i')
+  -- Multilingual content for the public web (JSON {es,en,gl,fr,de,ko,pt,pl})
+  name_i18n TEXT,
+  neighborhood_i18n TEXT,
+  description_i18n TEXT,
+  coordinates TEXT,            -- JSON {"lat":..., "lng":...}
+  whole_flat_price REAL,       -- if set, the flat is rented as a whole at this price/month
   created_at TEXT DEFAULT (datetime('now'))
 );
 
@@ -24,6 +33,9 @@ CREATE TABLE IF NOT EXISTS rooms (
   available INTEGER DEFAULT 1,
   available_from TEXT,
   note TEXT,
+  -- Web-facing identifiers
+  web_id TEXT,                  -- e.g. 'ir-primavera', '4i-nueva-york'
+  name_i18n TEXT,               -- JSON {es,en,gl,...}
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now')),
   UNIQUE(flat_id, slug)
@@ -142,6 +154,33 @@ CREATE TABLE IF NOT EXISTS prospect_interactions (
   channel TEXT,
   created_at TEXT DEFAULT (datetime('now'))
 );
+
+-- Reviews (testimonios mostrados en la web pública, multilingües)
+CREATE TABLE IF NOT EXISTS reviews (
+  id INTEGER PRIMARY KEY,
+  flat_id INTEGER NOT NULL REFERENCES flats(id),
+  reviewer_name TEXT NOT NULL,
+  text_i18n TEXT NOT NULL,        -- JSON {es,en,gl,fr,de,ko,pt,pl}
+  sort_order INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_reviews_flat ON reviews(flat_id, sort_order);
+
+-- Photos
+CREATE TABLE IF NOT EXISTS photos (
+  id INTEGER PRIMARY KEY,
+  flat_id INTEGER NOT NULL REFERENCES flats(id),
+  room_id INTEGER REFERENCES rooms(id),  -- NULL = zona común del piso
+  filename TEXT NOT NULL,                -- ruta relativa a web/public/images/, ej: "1-derecha/salon.jpg"
+  description TEXT,                      -- alt text para SEO
+  active INTEGER DEFAULT 1,
+  is_cover INTEGER DEFAULT 0,            -- portada del piso o de la habitación
+  sort_order INTEGER DEFAULT 0,
+  uploaded_at TEXT DEFAULT (datetime('now')),
+  UNIQUE(filename)
+);
+CREATE INDEX IF NOT EXISTS idx_photos_flat ON photos(flat_id, active, sort_order);
+CREATE INDEX IF NOT EXISTS idx_photos_room ON photos(room_id, active, sort_order);
 
 -- Contracts
 CREATE TABLE IF NOT EXISTS contracts (

@@ -8,7 +8,7 @@ Last updated: 2026-04-12
 
 ## Properties
 
-- **5 pisos, 27 habitaciones** en Vigo
+- **5 pisos, 23 habitaciones** en Vigo
 - 4 pisos en Alfonso XIII 9 (1o Dcha, 3o Izq, 4o Dcha Atico, 4o Izq Atico)
 - 1 piso en Irmandinos 23
 - Alquiler por temporada: tipicamente curso academico (~10 meses, sept-junio) para estudiantes, o periodos mas largos (~1 ano) para trabajadores.

@@ -34,36 +34,38 @@ _(none)_
 Objetivo: el dashboard es el único sitio desde donde se gestiona todo el contenido que aparece en la web pública. "Publicar" sincroniza todo y despliega. **Un solo click = las 72 páginas (8 idiomas × 9 tipos) se regeneran.**
 
 #### Gestión de pisos
-- [ ] CRUD pisos desde dashboard (nombre, dirección, barrio, descripción multiidioma, amenities, coordenadas) — high
-- [ ] Formulario crear/editar piso con todos los campos — high
+- [x] CRUD pisos desde dashboard (nombre, dirección, barrio, descripción multiidioma, amenities, coordenadas) — 2026-05-03 (flats.html, /api/flats con i18n + web_slug + web_id_prefix + coordinates + whole_flat_price)
+- [x] Formulario crear/editar piso con todos los campos — 2026-05-03
 
 #### Gestión de habitaciones
-- [ ] CRUD habitaciones desde dashboard (nombre, precio, tamaño, tipo cama, features, estado) — high
-- [ ] Asignar habitación a piso — high
+- [x] CRUD habitaciones desde dashboard (nombre, precio, tamaño, tipo cama, features, estado) — 2026-05-03 (rooms.html refactorizado, web_id + name_i18n, DELETE con guardas)
+- [x] Asignar habitación a piso — 2026-05-03 (selector de piso en form)
+- [x] DELETE rooms con cascade de photos y guardas (contracts/income/contacts → 409) — 2026-05-03
 
 #### Gestión de fotos
-- [ ] API: endpoint upload fotos `POST /api/photos` (guardar en `web/public/images/`) — high
-- [ ] API: endpoint listar/editar/borrar fotos por piso/habitación — high
-- [ ] DB: tabla `photos` (id, flat_id, room_id nullable, filename, description, active, sort_order, uploaded_at) — high
-- [ ] Dashboard: galería de fotos por piso con drag-and-drop para reordenar — high
-- [ ] Dashboard: subir fotos desde el navegador (dropzone o input file) — high
-- [ ] Dashboard: asignar fotos a habitaciones o zonas comunes — high
-- [ ] Dashboard: activar/desactivar fotos individuales — medium
-- [ ] Dashboard: descripción/alt text por foto (para SEO) — medium
-- [ ] Dashboard: elegir foto principal (portada) por piso y por habitación — medium
+- [x] API: endpoint upload fotos `POST /api/photos` (guardar en `web/public/images/<flat.slug>/`) — 2026-05-03 (multer 2.x, validación ext + MIME, 10MB)
+- [x] API: endpoints listar/editar/borrar/reorder fotos por piso/habitación — 2026-05-03 (GET, PUT, DELETE, POST /reorder)
+- [x] DB: tabla `photos` (id, flat_id, room_id nullable, filename UNIQUE, description, active, is_cover, sort_order, uploaded_at) + índices — 2026-05-03
+- [x] Script `scripts/import-photos.js` — escanea web/public/images/, mapea dirs legacy → flat.slug, infiere room por filename `hab-<slug>`, idempotente — 2026-05-03 (67 fotos importadas)
+- [x] Dashboard: galería de fotos por piso (`photos.html`) con drag-and-drop nativo para reordenar — 2026-05-03
+- [x] Dashboard: subir fotos desde el navegador (dropzone con drag&drop + input file, multi-upload) — 2026-05-03
+- [x] Dashboard: asignar fotos a habitaciones o zonas comunes (selector en upload + modal edit) — 2026-05-03
+- [x] Dashboard: activar/desactivar fotos individuales (checkbox modal, badge "Oculta") — 2026-05-03
+- [x] Dashboard: descripción/alt text por foto (para SEO) — 2026-05-03
+- [x] Dashboard: elegir foto principal (portada) por piso y por habitación (auto-desmarca el resto del scope) — 2026-05-03
+- [x] Server: mount `/images` static para preview en dashboard sin necesidad de build — 2026-05-03
 
 #### Sync completo (flats.ts 100% auto-generado desde API)
-El script sync-web.js reemplaza al actual sync-availability.js. Genera TODO el contenido web desde la API, para que un cambio en el dashboard se propague a los 8 idiomas automáticamente.
-
-- [ ] Crear sync-web.js que genera flats.ts completo desde API (pisos, habitaciones, precios, disponibilidad, fotos, descripciones multiidioma) — high
-- [ ] flats.ts pasa a ser 100% auto-generado (no editable manualmente) — high
-- [ ] Sync incluye: fotos activas con sort_order, alt texts para SEO — high
-- [ ] Generar llms.txt y llms-full.txt desde API (GEO siempre actualizado) — medium
-- [ ] deploy-web.js: sincroniza fotos + datos + git push → 72 páginas regeneradas — high
-- [ ] Flujo completo desde dashboard: Vista previa → Publicar/Cancelar — high (ya existe, conectar con sync-web.js)
+- [x] Crear sync-web.js que genera flats.ts completo desde API (pisos, habitaciones, precios, disponibilidad, fotos, descripciones multiidioma) — 2026-05-03 (lee /api/flats|rooms|photos|reviews, emite TS tipado)
+- [x] flats.ts pasa a ser 100% auto-generado (no editable manualmente) — 2026-05-03 (cabecera AUTO-GENERATED)
+- [x] Sync incluye: fotos activas con sort_order, covers primero, IMG paths — 2026-05-03
+- [x] deploy-web.js: incluye flats.ts en TRACKED_FILES → 72 páginas regeneradas en cada publish — 2026-05-03
+- [x] preview-web.js: sync-availability + sync-web + sync-llms + astro build — 2026-05-03
+- [x] Dashboard: Vista previa → Publicar/Cancelar conecta con el flujo completo — 2026-05-03 (ya existía y se mantiene; el cancel revierte flats.ts también)
+- [ ] Generar llms.txt y llms-full.txt desde API (ya en sync-llms.js, mantener actualizado al cambiar contenido) — low
 
 #### Reviews
-- [ ] CRUD reviews desde dashboard (nombre, texto multiidioma, piso) — low
+- [x] CRUD reviews desde dashboard (nombre, texto multiidioma, piso) — 2026-05-03 (panel inline en flats.html con add/edit/delete; API /api/reviews completa)
 
 ### Prospect CRM & Analytics (prospects.html) — 2026-04-12
 Objetivo: visibilidad completa del funnel comercial — quién pregunta, por dónde, en qué estado está, y métricas de conversión. Sin CRM externo, todo local.

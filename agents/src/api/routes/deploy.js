@@ -78,6 +78,7 @@ router.post('/cancel', (req, res) => {
   // Revert synced files to last committed version
   const SYNCED_FILES = [
     'web/src/data/availability.json',
+    'web/src/data/flats.ts',
     'web/public/llms.txt',
     'web/public/llms-full.txt',
   ];

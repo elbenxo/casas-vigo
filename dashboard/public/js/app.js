@@ -76,12 +76,16 @@ const ICONS = {
   eye:      'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
   upload:   'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12',
   spin:     'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+  photos:   'M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z',
+  building: 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z',
 };
 
 // ─── Navegacion ───────────────────────────────────────────────
 const NAV_ITEMS = [
   { id: 'home',      href: '/dashboard/',                label: 'Inicio',        icon: 'home' },
+  { id: 'flats',     href: '/dashboard/flats.html',      label: 'Pisos',         icon: 'building' },
   { id: 'rooms',     href: '/dashboard/rooms.html',      label: 'Habitaciones',  icon: 'rooms' },
+  { id: 'photos',    href: '/dashboard/photos.html',     label: 'Fotos',         icon: 'photos' },
   { id: 'occupancy', href: '/dashboard/occupancy.html',  label: 'Ocupacion',     icon: 'occupancy' },
   { id: 'calendar',  href: '/dashboard/calendar.html',   label: 'Calendario',    icon: 'calendar' },
   { id: 'income',    href: '/dashboard/income.html',     label: 'Ingresos',      icon: 'income' },
@@ -277,6 +281,12 @@ function esc(s) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// ─── Parse JSON column from DB row, returning fallback on error/empty
+function parseJson(s, fallback) {
+  if (!s) return fallback;
+  try { return JSON.parse(s); } catch { return fallback; }
 }
 
 // ─── Deploy Web (preview → publish/cancel) ──────────────────

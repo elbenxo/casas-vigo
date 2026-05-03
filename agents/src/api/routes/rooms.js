@@ -47,19 +47,25 @@ router.get('/:id', asyncRoute((req, res) => {
 
 router.post('/', asyncRoute((req, res) => {
   const db = getDb();
-  const { flat_id, slug, name, price_monthly, price_nightly, size_m2, bed_type, features, available, available_from, note } = req.body;
+  const {
+    flat_id, slug, name, price_monthly, price_nightly, size_m2, bed_type,
+    features, available, available_from, note, web_id, name_i18n,
+  } = req.body;
   if (!flat_id || !slug || !name || price_monthly === undefined) {
     return res.status(400).json({ error: 'flat_id, slug, name, price_monthly required' });
   }
   const result = db.prepare(
-    `INSERT INTO rooms (flat_id, slug, name, price_monthly, price_nightly, size_m2, bed_type, features, available, available_from, note)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO rooms (flat_id, slug, name, price_monthly, price_nightly, size_m2, bed_type,
+                        features, available, available_from, note, web_id, name_i18n)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     flat_id, slug, name, price_monthly,
     price_nightly ?? null, size_m2 ?? null, bed_type ?? null,
     features ? JSON.stringify(features) : null,
     available !== undefined ? (available ? 1 : 0) : 1,
-    available_from ?? null, note ?? null
+    available_from ?? null, note ?? null,
+    web_id ?? null,
+    name_i18n ? JSON.stringify(name_i18n) : null,
   );
   const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(result.lastInsertRowid);
   res.status(201).json({ data: room });
@@ -72,15 +78,18 @@ router.put('/:id', asyncRoute((req, res) => {
   const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(req.params.id);
   if (!room) return res.status(404).json({ error: 'Room not found' });
 
-  const fields = ['flat_id', 'slug', 'name', 'price_monthly', 'price_nightly', 'size_m2', 'bed_type', 'features', 'available', 'available_from', 'note'];
+  const fields = [
+    'flat_id', 'slug', 'name', 'price_monthly', 'price_nightly', 'size_m2', 'bed_type',
+    'features', 'available', 'available_from', 'note', 'web_id', 'name_i18n',
+  ];
   const updates = [];
   const params = [];
 
   for (const field of fields) {
     if (req.body[field] !== undefined) {
       updates.push(`${field} = ?`);
-      if (field === 'features') {
-        params.push(JSON.stringify(req.body[field]));
+      if (field === 'features' || field === 'name_i18n') {
+        params.push(req.body[field] === null ? null : JSON.stringify(req.body[field]));
       } else if (field === 'available') {
         params.push(req.body[field] ? 1 : 0);
       } else {
@@ -96,6 +105,32 @@ router.put('/:id', asyncRoute((req, res) => {
   const updated = db.prepare('SELECT * FROM rooms WHERE id = ?').get(req.params.id);
   res.json({ data: updated });
   // Trigger availability sync in background
+  triggerAvailabilitySync();
+}));
+
+// DELETE /api/rooms/:id — only if no contracts reference it
+router.delete('/:id', asyncRoute((req, res) => {
+  const db = getDb();
+  const room = db.prepare('SELECT * FROM rooms WHERE id = ?').get(req.params.id);
+  if (!room) return res.status(404).json({ error: 'Room not found' });
+
+  const refs = db.prepare(
+    'SELECT (SELECT COUNT(*) FROM contracts WHERE room_id = ?) AS contracts, ' +
+    '(SELECT COUNT(*) FROM income WHERE room_id = ?) AS income, ' +
+    '(SELECT COUNT(*) FROM contacts WHERE room_id = ?) AS contacts'
+  ).get(req.params.id, req.params.id, req.params.id);
+
+  if (refs.contracts || refs.income || refs.contacts) {
+    return res.status(409).json({
+      error: 'Cannot delete: room is referenced',
+      contracts: refs.contracts, income: refs.income, contacts: refs.contacts,
+    });
+  }
+
+  // Cascade delete photos for this room
+  db.prepare('DELETE FROM photos WHERE room_id = ?').run(req.params.id);
+  db.prepare('DELETE FROM rooms WHERE id = ?').run(req.params.id);
+  res.json({ data: { deleted: true } });
   triggerAvailabilitySync();
 }));
 

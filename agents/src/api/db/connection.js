@@ -20,6 +20,9 @@ function initDb() {
   const database = getDb();
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
   database.exec(schema);
+  // Idempotent ALTER TABLE migrations for installations predating new columns
+  const { migrate } = require('./migrations');
+  migrate(database);
   return database;
 }
 
