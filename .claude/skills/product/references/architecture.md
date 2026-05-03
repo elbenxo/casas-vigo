@@ -2,7 +2,7 @@
 
 Documento canonico de arquitectura. Todas las decisiones de implementacion deben respetar este diseno.
 
-Last updated: 2026-04-12
+Last updated: 2026-05-03
 
 ---
 
@@ -16,6 +16,7 @@ Last updated: 2026-04-12
 6. **Servicio Windows**: NSSM para auto-arranque al encender el PC
 7. **Hibernate/Sleep**: Deteccion de wake + reconexion automatica de WhatsApp
 8. **MCP Server**: Servidor MCP que wrappea la API REST, permitiendo gestion via Claude Code
+9. **Web auto-generada**: `web/src/data/flats.ts` se regenera 100% desde la DB via `scripts/sync-web.js`. No se edita a mano. El dashboard es el único CMS
 
 ---
 
@@ -75,9 +76,14 @@ Last updated: 2026-04-12
 │  └──────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 │  Scripts auxiliares (tambien usan API, no DB directa):              │
-│    sync-availability.js  →  GET /api/rooms → availability.json      │
-│    deploy-web.js         →  git push → GitHub Pages                 │
-│    backup-db.js          →  copia casasvigo.db → Google Drive       │
+│    sync-availability.js  →  /api/rooms → availability.json (overlay) │
+│    sync-web.js           →  /api/{flats,rooms,photos,reviews}        │
+│                              → web/src/data/flats.ts (autogenerado)  │
+│    sync-llms.js          →  /api → llms.txt + llms-full.txt (GEO)    │
+│    import-photos.js      →  web/public/images → tabla photos          │
+│    preview-web.js        →  sync-* + astro build (vista previa)      │
+│    deploy-web.js         →  git push → GitHub Pages                  │
+│    backup-db.js          →  copia casasvigo.db → Google Drive (TODO) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -191,9 +197,33 @@ Unico punto de acceso a SQLite. Todos los demas componentes consumen esta API.
 ```
 # Propiedades
 GET    /api/flats                    Lista pisos
+GET    /api/flats/:id                Detalle de un piso
 GET    /api/flats/:id/rooms          Habitaciones de un piso
+POST   /api/flats                    Crear piso (con i18n: name_i18n, neighborhood_i18n,
+                                     description_i18n, coordinates, web_slug, etc.)
+PUT    /api/flats/:id                Actualizar piso (escalares + JSON i18n)
+
 GET    /api/rooms                    Todas las habitaciones (con filtros)
-PUT    /api/rooms/:id                Actualizar habitacion (precio, disponibilidad)
+POST   /api/rooms                    Crear habitacion (con web_id + name_i18n)
+PUT    /api/rooms/:id                Actualizar habitacion
+DELETE /api/rooms/:id                Eliminar habitacion (409 si tiene contracts/income/contacts;
+                                     cascade de photos)
+
+# Fotos (web/public/images servido por la API en /images/*)
+GET    /api/photos                   Lista fotos (filtros: flat_id, room_id, room_id=null, active)
+GET    /api/photos/:id               Detalle
+POST   /api/photos                   Upload multipart (multer 2.x, ext+MIME, 10MB,
+                                     guarda en web/public/images/<flat_slug>/)
+PUT    /api/photos/:id               Actualizar (description, active, is_cover, sort_order, room)
+POST   /api/photos/reorder           Bulk reorder por array de ids
+DELETE /api/photos/:id               Borra fila + fichero del disco
+
+# Reviews (testimonios multilingues)
+GET    /api/reviews                  Lista (filtro flat_id)
+GET    /api/reviews/:id              Detalle
+POST   /api/reviews                  Crear (text_i18n requerido)
+PUT    /api/reviews/:id              Actualizar
+DELETE /api/reviews/:id              Eliminar
 
 # Contactos
 GET    /api/contacts                 Lista contactos (filtrable por role)
@@ -244,6 +274,17 @@ PUT    /api/contracts/:id/status     Cambiar estado (draft → terminated)
 # Sistema
 GET    /health                       Health check (API + DB status)
 GET    /api/stats                    Estadisticas generales (para dashboard home)
+GET    /api/deploy-web/status        Estado del flujo preview/publish
+POST   /api/deploy-web/preview       sync + astro build → /casas-vigo/ servido localmente
+POST   /api/deploy-web/publish       git commit + push de los TRACKED_FILES
+POST   /api/deploy-web/cancel        git checkout -- de los TRACKED_FILES (revierte preview)
+```
+
+**Static mounts (no API REST):**
+```
+GET    /dashboard/*                  Ficheros estaticos del dashboard
+GET    /images/*                     web/public/images/* (para preview en dashboard)
+GET    /casas-vigo/*                 web/dist/* (preview tras astro build)
 ```
 
 ### B) Dashboard
@@ -253,7 +294,15 @@ Servido por el mismo Express en `/dashboard/*`.
 - HTML estatico desde `dashboard/public/`
 - Cada pagina usa `fetch('/api/...')` para leer/escribir datos
 - Tailwind CSS via CDN (sin build step)
-- Paginas: Home (resumen), Habitaciones, Ingresos, Costes, Contactos, Config
+- Paginas: Home (resumen), Pisos, Habitaciones, Fotos, Ocupación, Calendario,
+  Ingresos, Costes, Contactos, Prospects, Contratos, Configuración
+
+**CMS de la web pública:** El dashboard es la única forma de editar el contenido
+mostrado en la web. CRUD de pisos (incluido contenido i18n: nombre, barrio,
+descripción en 8 idiomas, coordenadas, amenidades), CRUD de habitaciones
+(incluido i18n del nombre, features, web_id), CRUD de fotos (upload/edit/cover/
+reorder/delete), CRUD de reviews (multilingüe). El flujo "Vista previa →
+Publicar/Cancelar" en el sidebar dispara `sync-web.js` y publica vía git push.
 
 ### C) Agent System
 
@@ -369,117 +418,54 @@ Los 3 canales acceden a la misma API y al mismo SQLite. Son intercambiables.
 
 ## SQLite Schema
 
-```sql
--- Pisos
-CREATE TABLE flats (
-  id INTEGER PRIMARY KEY,
-  slug TEXT UNIQUE NOT NULL,
-  name TEXT NOT NULL,
-  address TEXT NOT NULL,
-  has_tourist_license INTEGER DEFAULT 0,
-  created_at TEXT DEFAULT (datetime('now'))
-);
+Fuente canónica: `agents/src/api/db/schema.sql`. Migraciones idempotentes (ALTER
+TABLE si falta columna) en `agents/src/api/db/migrations.js`. Contenido i18n
+inicial en `agents/src/api/db/content.js` (aplicado por `seed.js`).
 
--- Habitaciones
-CREATE TABLE rooms (
-  id INTEGER PRIMARY KEY,
-  flat_id INTEGER NOT NULL REFERENCES flats(id),
-  slug TEXT NOT NULL,
-  name TEXT NOT NULL,
-  price_monthly REAL NOT NULL,
-  price_nightly REAL,              -- solo para piso turistico
-  size_m2 REAL,
-  available INTEGER DEFAULT 1,
-  available_from TEXT,              -- fecha ISO
-  note TEXT,
-  created_at TEXT DEFAULT (datetime('now')),
-  updated_at TEXT DEFAULT (datetime('now')),
-  UNIQUE(flat_id, slug)
-);
+**Tablas principales:**
 
--- Contactos (routing + CRM basico)
-CREATE TABLE contacts (
-  id INTEGER PRIMARY KEY,
-  phone TEXT UNIQUE NOT NULL,
-  name TEXT,
-  role TEXT NOT NULL DEFAULT 'prospect',  -- owner|tenant|prospect|ex-tenant
-  flat_id INTEGER REFERENCES flats(id),
-  room_id INTEGER REFERENCES rooms(id),
-  contract_start TEXT,
-  contract_end TEXT,
-  language TEXT DEFAULT 'es',
-  created_at TEXT DEFAULT (datetime('now')),
-  updated_at TEXT DEFAULT (datetime('now'))
-);
-
--- Ingresos
-CREATE TABLE income (
-  id INTEGER PRIMARY KEY,
-  contact_id INTEGER REFERENCES contacts(id),
-  room_id INTEGER NOT NULL REFERENCES rooms(id),
-  amount REAL NOT NULL,
-  month INTEGER NOT NULL,           -- 1-12
-  year INTEGER NOT NULL,
-  payment_method TEXT DEFAULT 'efectivo',
-  confirmed INTEGER DEFAULT 0,
-  confirmed_at TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
-);
-
--- Costes (suministros, IBI, seguros, reparaciones)
-CREATE TABLE costs (
-  id INTEGER PRIMARY KEY,
-  flat_id INTEGER NOT NULL REFERENCES flats(id),
-  type TEXT NOT NULL,               -- agua|luz|gas|internet|ibi|seguro|reparacion|otro
-  description TEXT,
-  amount REAL NOT NULL,
-  month INTEGER NOT NULL,
-  year INTEGER NOT NULL,
-  invoice_file TEXT,                -- ruta al fichero de factura
-  created_at TEXT DEFAULT (datetime('now'))
-);
-
--- Recibos mensuales (alquiler + suministros)
-CREATE TABLE receipts (
-  id INTEGER PRIMARY KEY,
-  contact_id INTEGER NOT NULL REFERENCES contacts(id),
-  month INTEGER NOT NULL,
-  year INTEGER NOT NULL,
-  rent_amount REAL NOT NULL,
-  utilities_amount REAL NOT NULL,
-  total REAL NOT NULL,
-  sent_at TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
-);
-
--- Mensajes (historial de conversaciones)
-CREATE TABLE messages (
-  id INTEGER PRIMARY KEY,
-  contact_id INTEGER NOT NULL REFERENCES contacts(id),
-  channel TEXT NOT NULL DEFAULT 'whatsapp',
-  direction TEXT NOT NULL,          -- in|out
-  content TEXT NOT NULL,
-  timestamp TEXT DEFAULT (datetime('now'))
-);
-
--- Citas (visitas)
-CREATE TABLE appointments (
-  id INTEGER PRIMARY KEY,
-  contact_id INTEGER REFERENCES contacts(id),
-  flat_id INTEGER NOT NULL REFERENCES flats(id),
-  datetime TEXT NOT NULL,
-  duration_min INTEGER DEFAULT 15,
-  status TEXT DEFAULT 'scheduled',  -- scheduled|completed|cancelled|no-show
-  notes TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
-);
-
--- Configuracion clave-valor
-CREATE TABLE config (
-  key TEXT PRIMARY KEY,
-  value TEXT,
-  updated_at TEXT DEFAULT (datetime('now'))
-);
+```
+flats                Pisos. Incluye contenido web multilingüe:
+                       slug, name, address, neighborhood, amenities (JSON),
+                       has_tourist_license, web_slug, web_id_prefix,
+                       name_i18n, neighborhood_i18n, description_i18n (JSON
+                       {es,en,gl,fr,de,ko,pt,pl}), coordinates (JSON {lat,lng}),
+                       whole_flat_price (si se alquila como un todo)
+rooms                Habitaciones. flat_id, slug, name, price_monthly,
+                       price_nightly, size_m2, bed_type, features (JSON),
+                       available, available_from, note, web_id, name_i18n
+                       UNIQUE(flat_id, slug)
+photos               Fotos. flat_id, room_id (NULL = común), filename UNIQUE
+                       (relativo a web/public/images/), description (alt SEO),
+                       active, is_cover, sort_order, uploaded_at
+                       Índices: (flat_id, active, sort_order), (room_id, ...)
+reviews              Testimonios multilingües. flat_id, reviewer_name,
+                       text_i18n (JSON), sort_order
+contacts             Routing + CRM. phone UNIQUE, name, role (owner|tenant|
+                       prospect|ex-tenant), flat_id, room_id, contract_start,
+                       contract_end, language
+prospects            Pipeline pre-venta. name, phone, email, dob, dni,
+                       language, channel, status (new→contacted→
+                       visit_scheduled→visit_done→contract_sent→signed/lost),
+                       flat_interest, room_interest, loss_reason, notes
+prospect_interactions Histórico por prospect. type (message|call|visit|email|
+                       note), direction, summary, channel
+contracts            Contratos generados. prospect_id, room_id, template_lang,
+                       file_path, status (draft|signed|terminated), monthly_rent,
+                       deposit, start_date, end_date, signed_at
+income               Ingresos. contact_id, room_id, amount, month, year,
+                       payment_method, confirmed, confirmed_at
+costs                Costes. flat_id, type (agua|luz|gas|internet|ibi|seguro|
+                       reparacion|otro), description, amount, month, year,
+                       invoice_file
+receipts             Recibos mensuales. contact_id, month, year, rent_amount,
+                       utilities_amount, total, sent_at
+messages             Histórico de conversaciones. contact_id, channel,
+                       direction (in|out), content, timestamp
+appointments         Citas/visitas. contact_id, flat_id, datetime, duration_min,
+                       status (scheduled|completed|cancelled|no-show), notes
+config               Clave-valor (owner_phone, agent_hours_*, default_language,
+                       supported_languages, owner_name, ...)
 ```
 
 ---
@@ -495,10 +481,14 @@ casas-vigo/
 │   │   ├── index.js                  # Entry point: API → health check → WhatsApp → agentes
 │   │   │
 │   │   ├── api/                      # CAPA 1: Core API (unico acceso a SQLite)
-│   │   │   ├── server.js             # Express app setup
+│   │   │   ├── server.js             # Express app setup (mounts /api/*, /dashboard,
+│   │   │   │                         #   /casas-vigo, /images)
+│   │   │   ├── constants.js          # PROSPECT_STATUSES, IMAGES_DIR, PHOTO_*, etc.
 │   │   │   ├── routes/
-│   │   │   │   ├── flats.js
-│   │   │   │   ├── rooms.js
+│   │   │   │   ├── flats.js          # CRUD + i18n + coordinates + whole_flat_price
+│   │   │   │   ├── rooms.js          # CRUD + i18n + DELETE con guardas
+│   │   │   │   ├── photos.js         # Multer upload + reorder + delete
+│   │   │   │   ├── reviews.js        # CRUD multilingüe
 │   │   │   │   ├── contacts.js
 │   │   │   │   ├── income.js
 │   │   │   │   ├── costs.js
@@ -506,12 +496,17 @@ casas-vigo/
 │   │   │   │   ├── messages.js
 │   │   │   │   ├── appointments.js
 │   │   │   │   ├── config.js
-│   │   │   │   ├── contracts.js
+│   │   │   │   ├── prospects.js      # CRM pipeline + analytics + interactions
+│   │   │   │   ├── contracts.js      # Generate + sign (transacción atómica)
+│   │   │   │   ├── deploy.js         # preview/publish/cancel/status
+│   │   │   │   ├── stats.js          # Resumen para dashboard
 │   │   │   │   └── health.js
 │   │   │   └── db/
-│   │   │       ├── connection.js     # better-sqlite3 init + WAL mode
+│   │   │       ├── connection.js     # better-sqlite3 init + WAL mode + invoca migrations
 │   │   │       ├── schema.sql        # DDL completo
-│   │   │       └── seed.js           # Datos iniciales (5 pisos, 27 habitaciones)
+│   │   │       ├── migrations.js     # ALTER TABLE idempotente para DBs preexistentes
+│   │   │       ├── content.js        # Contenido i18n (nombres/descripciones/reviews)
+│   │   │       └── seed.js           # Datos iniciales (5 pisos, 23 habitaciones, 11 reviews)
 │   │   │
 │   │   ├── agents/                   # CAPA 2: Agent System
 │   │   │   ├── router.js             # Phone lookup → delega a agente
@@ -557,15 +552,24 @@ casas-vigo/
 ├── dashboard/
 │   └── public/                       # Servido por Express del proceso principal
 │       ├── index.html                # Home: resumen ocupacion + finanzas
-│       ├── rooms.html                # Gestion habitaciones
+│       ├── flats.html                # CRUD pisos + i18n + reviews inline
+│       ├── rooms.html                # CRUD habitaciones + i18n + DELETE
+│       ├── photos.html               # Upload + grid + reorder + cover/active/SEO
+│       ├── occupancy.html            # Ocupacion por piso (estado y libre desde)
+│       ├── calendar.html             # Calendario Gantt de alquileres
 │       ├── income.html               # Ingresos
 │       ├── costs.html                # Costes
 │       ├── contacts.html             # Contactos
+│       ├── prospects.html            # Kanban CRM + ficha + analytics
+│       ├── contracts.html            # Generar/firmar/imprimir contratos
 │       ├── config.html               # Configuracion
 │       ├── js/
-│       │   ├── app.js                # Router SPA + shared utils
-│       │   ├── rooms.js
-│       │   ├── income.js
+│       │   ├── app.js                # Nav compartida, fetch helpers, deploy widget
+│       │   ├── flats.js              # CRUD pisos
+│       │   ├── rooms.js              # CRUD habitaciones
+│       │   ├── photos.js             # Upload, drag-drop, edit modal
+│       │   ├── prospects.js
+│       │   ├── contracts.js
 │       │   └── ...
 │       └── css/
 │           └── custom.css            # Estilos extra (Tailwind via CDN)
@@ -576,10 +580,14 @@ casas-vigo/
 │   └── backups/                      # Para sync con Google Drive
 │
 ├── scripts/
-│   ├── sync-availability.js          # GET /api/rooms → availability.json
-│   ├── deploy-web.js                 # sync + git push → GitHub Pages
-│   ├── backup-db.js                  # Copia DB → backups/
-│   └── install-service.js            # Setup NSSM service
+│   ├── sync-availability.js          # /api/rooms → availability.json (overlay)
+│   ├── sync-web.js                   # /api/* → web/src/data/flats.ts (autogenerado)
+│   ├── sync-llms.js                  # /api → llms.txt + llms-full.txt (GEO)
+│   ├── import-photos.js              # web/public/images/ → tabla photos (legacy)
+│   ├── preview-web.js                # sync-* + astro build (vista previa local)
+│   ├── deploy-web.js                 # git commit + push → GitHub Pages
+│   ├── backup-db.js                  # Copia DB → backups/ (TODO)
+│   └── install-service.js            # Setup NSSM service (TODO)
 │
 └── docs/
     └── architecture.md               # Este documento

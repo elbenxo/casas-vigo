@@ -2,7 +2,7 @@
 
 const { describe, it, before, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { startServer, request } = require('./setup');
+const { startServer, request, multipart, TINY_PNG } = require('./setup');
 
 let baseUrl;
 let close;
@@ -107,6 +107,28 @@ describe('Flats CRUD', () => {
     assert.equal(body.data.name, 'Alfonso XIII 9 (Updated)');
     assert.equal(body.data.has_tourist_license, 1);
   });
+
+  it('PUT /api/flats/:id with i18n + coordinates + whole_flat_price → 200, persists JSON', async () => {
+    const { status, body } = await request(baseUrl, `/api/flats/${flatId}`, {
+      method: 'PUT',
+      body: {
+        web_slug: 'test-slug',
+        web_id_prefix: 'tx',
+        name_i18n: { es: 'Piso Test', en: 'Test Flat', gl: 'Piso Test', fr: 'Test', de: 'Test', ko: 'Test', pt: 'Test', pl: 'Test' },
+        neighborhood_i18n: { es: 'Centro', en: 'Center', gl: 'Centro', fr: 'Centre', de: 'Mitte', ko: '중심', pt: 'Centro', pl: 'Centrum' },
+        description_i18n: { es: 'desc', en: 'desc', gl: 'desc', fr: 'desc', de: 'desc', ko: 'desc', pt: 'desc', pl: 'desc' },
+        coordinates: { lat: 42.23, lng: -8.71 },
+        whole_flat_price: 1200,
+      },
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.web_slug, 'test-slug');
+    const name = JSON.parse(body.data.name_i18n);
+    assert.equal(name.en, 'Test Flat');
+    const coords = JSON.parse(body.data.coordinates);
+    assert.equal(coords.lat, 42.23);
+    assert.equal(body.data.whole_flat_price, 1200);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -187,6 +209,100 @@ describe('Rooms CRUD', () => {
     assert.equal(status, 200);
     assert.ok(body.data.length >= 1);
     assert.ok(body.data.some((r) => r.id === roomId));
+  });
+
+  it('DELETE /api/rooms/:id with active income/contracts → 409', async () => {
+    // Create an income record on this room to block deletion
+    await request(baseUrl, '/api/income', {
+      method: 'POST',
+      body: { room_id: roomId, amount: 350, month: 4, year: 2026 },
+    });
+    const { status, body } = await request(baseUrl, `/api/rooms/${roomId}`, { method: 'DELETE' });
+    assert.equal(status, 409);
+    assert.ok(body.error.includes('Cannot delete'));
+  });
+
+  it('DELETE /api/rooms/:id without references → 200', async () => {
+    // Create a fresh disposable room
+    const { body: created } = await request(baseUrl, '/api/rooms', {
+      method: 'POST',
+      body: { flat_id: flatId, slug: 'hab-disposable', name: 'Disposable', price_monthly: 100 },
+    });
+    const id = created.data.id;
+    const { status } = await request(baseUrl, `/api/rooms/${id}`, { method: 'DELETE' });
+    assert.equal(status, 200);
+    const { status: get } = await request(baseUrl, `/api/rooms/${id}`);
+    assert.equal(get, 404);
+  });
+
+  it('PUT /api/rooms/:id with web_id + name_i18n → 200, persists JSON', async () => {
+    const { status, body } = await request(baseUrl, `/api/rooms/${roomId}`, {
+      method: 'PUT',
+      body: {
+        web_id: 'tx-hab-1',
+        name_i18n: { es: 'Habitación 1', en: 'Room 1', gl: 'H1', fr: 'C1', de: 'Z1', ko: '1', pt: 'Q1', pl: 'P1' },
+      },
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.web_id, 'tx-hab-1');
+    const name = JSON.parse(body.data.name_i18n);
+    assert.equal(name.en, 'Room 1');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Reviews
+// ---------------------------------------------------------------------------
+describe('Reviews', () => {
+  let reviewId;
+  const sampleI18n = { es: 'Genial', en: 'Great', gl: 'Xenial', fr: 'Génial', de: 'Toll', ko: '좋아요', pt: 'Ótimo', pl: 'Świetne' };
+
+  it('POST /api/reviews → 201', async () => {
+    const { status, body } = await request(baseUrl, '/api/reviews', {
+      method: 'POST',
+      body: { flat_id: flatId, reviewer_name: 'Test Reviewer', text_i18n: sampleI18n },
+    });
+    assert.equal(status, 201);
+    assert.equal(body.data.flat_id, flatId);
+    assert.equal(body.data.reviewer_name, 'Test Reviewer');
+    reviewId = body.data.id;
+  });
+
+  it('POST /api/reviews missing fields → 400', async () => {
+    const { status } = await request(baseUrl, '/api/reviews', {
+      method: 'POST', body: { reviewer_name: 'X' },
+    });
+    assert.equal(status, 400);
+  });
+
+  it('POST /api/reviews with empty text_i18n → 400', async () => {
+    const { status } = await request(baseUrl, '/api/reviews', {
+      method: 'POST',
+      body: { flat_id: flatId, reviewer_name: 'X', text_i18n: { es: '', en: '' } },
+    });
+    assert.equal(status, 400);
+  });
+
+  it('GET /api/reviews?flat_id= → 200, filters', async () => {
+    const { status, body } = await request(baseUrl, `/api/reviews?flat_id=${flatId}`);
+    assert.equal(status, 200);
+    body.data.forEach(r => assert.equal(r.flat_id, flatId));
+  });
+
+  it('PUT /api/reviews/:id → 200, updates name + text_i18n', async () => {
+    const { status, body } = await request(baseUrl, `/api/reviews/${reviewId}`, {
+      method: 'PUT', body: { reviewer_name: 'Updated', text_i18n: { ...sampleI18n, es: 'Excelente' } },
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.reviewer_name, 'Updated');
+    assert.equal(JSON.parse(body.data.text_i18n).es, 'Excelente');
+  });
+
+  it('DELETE /api/reviews/:id → 200', async () => {
+    const { status } = await request(baseUrl, `/api/reviews/${reviewId}`, { method: 'DELETE' });
+    assert.equal(status, 200);
+    const { status: get } = await request(baseUrl, `/api/reviews/${reviewId}`);
+    assert.equal(get, 404);
   });
 });
 
@@ -532,14 +648,229 @@ describe('Stats', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Contracts
+// Contracts (full prospect → contract → tenant flow)
 // ---------------------------------------------------------------------------
 describe('Contracts', () => {
-  it('POST /api/contracts/draft → 501', async () => {
-    const { status } = await request(baseUrl, '/api/contracts/draft', {
+  let prospectId;
+  let contractId;
+
+  it('seed: POST /api/prospects → 201', async () => {
+    const { status, body } = await request(baseUrl, '/api/prospects', {
       method: 'POST',
-      body: { contact_id: contactId },
+      body: { name: 'Tester Prospect', phone: '34600111222', language: 'es' },
     });
-    assert.equal(status, 501);
+    assert.equal(status, 201);
+    prospectId = body.data.id;
+  });
+
+  it('POST /api/contracts/generate → 201, contract draft + prospect → contract_sent', async () => {
+    const { status, body } = await request(baseUrl, '/api/contracts/generate', {
+      method: 'POST',
+      body: {
+        prospect_id: prospectId,
+        room_id: roomId,
+        lang: 'es',
+        start_date: '2026-06-01',
+        end_date: '2027-05-31',
+        deposit: 700,
+      },
+    });
+    assert.equal(status, 201);
+    assert.equal(body.data.status, 'draft');
+    assert.equal(body.data.prospect_id, prospectId);
+    assert.equal(body.data.room_id, roomId);
+    assert.ok(body.data.file_path, 'file_path should be set');
+    contractId = body.data.id;
+
+    const { body: pBody } = await request(baseUrl, `/api/prospects/${prospectId}`);
+    assert.equal(pBody.data.status, 'contract_sent');
+  });
+
+  it('POST /api/contracts/generate missing fields → 400', async () => {
+    const { status } = await request(baseUrl, '/api/contracts/generate', {
+      method: 'POST',
+      body: { prospect_id: prospectId },
+    });
+    assert.equal(status, 400);
+  });
+
+  it('GET /api/contracts → 200, lists with prospect_name and room_name', async () => {
+    const { status, body } = await request(baseUrl, '/api/contracts');
+    assert.equal(status, 200);
+    assert.ok(body.data.length >= 1);
+    const c = body.data.find(x => x.id === contractId);
+    assert.ok(c);
+    assert.equal(c.prospect_name, 'Tester Prospect');
+    assert.ok(c.room_name);
+  });
+
+  it('GET /api/contracts/:id → 200', async () => {
+    const { status, body } = await request(baseUrl, `/api/contracts/${contractId}`);
+    assert.equal(status, 200);
+    assert.equal(body.data.id, contractId);
+  });
+
+  it('PUT /api/contracts/:id/status → 200, draft → terminated allowed', async () => {
+    // Generate a second draft we can terminate without breaking subsequent sign test
+    const { body: second } = await request(baseUrl, '/api/contracts/generate', {
+      method: 'POST',
+      body: { prospect_id: prospectId, room_id: roomId, lang: 'es' },
+    });
+    const { status, body } = await request(baseUrl, `/api/contracts/${second.data.id}/status`, {
+      method: 'PUT', body: { status: 'terminated' },
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.status, 'terminated');
+  });
+
+  it('PUT /api/contracts/:id/status with status=signed → 400 (use /sign)', async () => {
+    const { status } = await request(baseUrl, `/api/contracts/${contractId}/status`, {
+      method: 'PUT', body: { status: 'signed' },
+    });
+    assert.equal(status, 400);
+  });
+
+  it('PUT /api/contracts/:id/sign → signs + creates tenant + occupies room + prospect=signed', async () => {
+    const { status, body } = await request(baseUrl, `/api/contracts/${contractId}/sign`, {
+      method: 'PUT',
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.contract.status, 'signed');
+    assert.ok(body.data.contract.signed_at);
+    assert.equal(body.data.contact.role, 'tenant');
+    assert.equal(body.data.contact.room_id, roomId);
+
+    // Room is now unavailable
+    const { body: rBody } = await request(baseUrl, `/api/rooms/${roomId}`);
+    assert.equal(rBody.data.available, 0);
+
+    // Prospect is now signed
+    const { body: pBody } = await request(baseUrl, `/api/prospects/${prospectId}`);
+    assert.equal(pBody.data.status, 'signed');
+  });
+
+  it('PUT /api/contracts/:id/sign on already-signed → 409', async () => {
+    const { status } = await request(baseUrl, `/api/contracts/${contractId}/sign`, {
+      method: 'PUT',
+    });
+    assert.equal(status, 409);
+  });
+
+  it('GET /api/contracts/:id/download → 200, text/html', async () => {
+    const res = await fetch(`${baseUrl}/api/contracts/${contractId}/download`);
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get('content-type') || '', /text\/html/);
+    const text = await res.text();
+    assert.ok(text.length > 100);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Photos
+// ---------------------------------------------------------------------------
+describe('Photos', () => {
+  let photoId;
+  let secondPhotoId;
+
+  it('POST /api/photos → 201, uploads file to disk + DB row', async () => {
+    const { status, body } = await multipart(baseUrl, '/api/photos',
+      { flat_id: flatId, description: 'Salón principal' },
+      [{ buffer: TINY_PNG, name: 'salon.png', type: 'image/png' }]);
+    assert.equal(status, 201);
+    assert.equal(body.data.length, 1);
+    const p = body.data[0];
+    assert.equal(p.flat_id, flatId);
+    assert.equal(p.description, 'Salón principal');
+    assert.match(p.filename, /\.png$/);
+    photoId = p.id;
+  });
+
+  it('POST /api/photos with multiple files → 201', async () => {
+    const { status, body } = await multipart(baseUrl, '/api/photos',
+      { flat_id: flatId, room_id: roomId },
+      [
+        { buffer: TINY_PNG, name: 'a.png' },
+        { buffer: TINY_PNG, name: 'b.png' },
+      ]);
+    assert.equal(status, 201);
+    assert.equal(body.data.length, 2);
+    assert.equal(body.data[0].room_id, roomId);
+    secondPhotoId = body.data[0].id;
+  });
+
+  it('POST /api/photos rejects non-image extension → 400', async () => {
+    const { status } = await multipart(baseUrl, '/api/photos',
+      { flat_id: flatId },
+      [{ buffer: Buffer.from('hello'), name: 'note.txt', type: 'text/plain' }]);
+    assert.equal(status, 400);
+  });
+
+  it('POST /api/photos with invalid flat_id → 400', async () => {
+    const { status } = await multipart(baseUrl, '/api/photos',
+      { flat_id: 9999 },
+      [{ buffer: TINY_PNG, name: 'x.png' }]);
+    assert.equal(status, 400);
+  });
+
+  it('POST /api/photos with no files → 400', async () => {
+    const { status } = await multipart(baseUrl, '/api/photos', { flat_id: flatId }, []);
+    assert.equal(status, 400);
+  });
+
+  it('GET /api/photos?flat_id= → 200, returns flat photos', async () => {
+    const { status, body } = await request(baseUrl, `/api/photos?flat_id=${flatId}`);
+    assert.equal(status, 200);
+    assert.ok(body.data.length >= 3);
+    body.data.forEach(p => assert.equal(p.flat_id, flatId));
+  });
+
+  it('GET /api/photos?room_id= → 200, filters by room', async () => {
+    const { status, body } = await request(baseUrl, `/api/photos?room_id=${roomId}`);
+    assert.equal(status, 200);
+    body.data.forEach(p => assert.equal(p.room_id, roomId));
+  });
+
+  it('GET /api/photos?room_id=null → 200, only common photos', async () => {
+    const { status, body } = await request(baseUrl, `/api/photos?room_id=null&flat_id=${flatId}`);
+    assert.equal(status, 200);
+    body.data.forEach(p => assert.equal(p.room_id, null));
+  });
+
+  it('PUT /api/photos/:id → 200, updates description + active + cover', async () => {
+    const { status, body } = await request(baseUrl, `/api/photos/${photoId}`, {
+      method: 'PUT',
+      body: { description: 'Salón actualizado', is_cover: true, active: true },
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.description, 'Salón actualizado');
+    assert.equal(body.data.is_cover, 1);
+    assert.equal(body.data.active, 1);
+  });
+
+  it('PUT /api/photos/:id with mismatched room → 400', async () => {
+    // roomId belongs to flatId; photoId is on flatId but try to assign a non-existent room
+    const { status } = await request(baseUrl, `/api/photos/${photoId}`, {
+      method: 'PUT', body: { room_id: 99999 },
+    });
+    assert.equal(status, 400);
+  });
+
+  it('POST /api/photos/reorder → 200, updates sort_order', async () => {
+    const { body: list } = await request(baseUrl, `/api/photos?flat_id=${flatId}`);
+    const ids = list.data.slice(0, 3).map(p => p.id).reverse();
+    const { status, body } = await request(baseUrl, '/api/photos/reorder', {
+      method: 'POST', body: { ids },
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.reordered, 3);
+  });
+
+  it('DELETE /api/photos/:id → 200, removes row + file', async () => {
+    const { status, body } = await request(baseUrl, `/api/photos/${photoId}`, { method: 'DELETE' });
+    assert.equal(status, 200);
+    assert.equal(body.data.deleted, true);
+
+    const { status: getStatus } = await request(baseUrl, `/api/photos/${photoId}`);
+    assert.equal(getStatus, 404);
   });
 });

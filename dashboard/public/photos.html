@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fotos — Casas Vigo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/dashboard/css/custom.css">
+  <style>
+    .photo-card { transition: transform 0.15s, box-shadow 0.15s; }
+    .photo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .photo-card.dragging { opacity: 0.4; }
+    .photo-card.drop-target { outline: 2px dashed #6366f1; outline-offset: 2px; }
+    .photo-thumb { aspect-ratio: 4 / 3; object-fit: cover; }
+    .photo-card.inactive .photo-thumb { filter: grayscale(0.7) opacity(0.5); }
+    .dropzone { border: 2px dashed #cbd5e1; transition: background 0.15s, border-color 0.15s; }
+    .dropzone.active { border-color: #6366f1; background: #eef2ff; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div id="nav"></div>
+  <main class="lg:ml-56 p-6 pt-20 lg:pt-6">
+    <div class="mb-6 flex items-baseline justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Fotos</h2>
+        <p class="text-slate-500 text-sm mt-1">Gestiona la galería pública de cada piso y habitación</p>
+      </div>
+    </div>
+
+    <div id="content">
+      <div class="flex items-center justify-center h-64 text-slate-400">Cargando...</div>
+    </div>
+  </main>
+
+  <!-- Edit modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-edit')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg relative z-10 p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-semibold text-slate-800 mb-4">Editar foto</h3>
+      <div class="mb-4">
+        <img id="edit-thumb" class="w-full max-h-64 object-contain rounded-lg border border-slate-200" alt="">
+        <p id="edit-filename" class="text-xs text-slate-400 mt-1 font-mono break-all"></p>
+      </div>
+      <form id="form-edit" class="space-y-4">
+        <input type="hidden" id="edit-id">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Descripción / alt text (SEO)</label>
+          <textarea id="edit-description" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" placeholder="Habitación con cama doble y vistas a la ría"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Asignar a</label>
+          <select id="edit-room" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex items-center gap-2 text-sm text-slate-700">
+            <input type="checkbox" id="edit-active" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
+            Activa (visible en web)
+          </label>
+          <label class="flex items-center gap-2 text-sm text-slate-700">
+            <input type="checkbox" id="edit-cover" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
+            Portada
+          </label>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+          <button type="button" onclick="eliminar()" class="px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg font-medium">Eliminar</button>
+          <div class="flex gap-3">
+            <button type="button" onclick="cerrarModal('modal-edit')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+            <button type="submit" class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script src="/dashboard/js/app.js"></script>
+  <script src="/dashboard/js/photos.js"></script>
+</body>
+</html>

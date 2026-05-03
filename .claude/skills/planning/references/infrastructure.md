@@ -69,7 +69,7 @@ Repo setup, CI/CD, shared data, deployment.
 
 ### Data & Sync
 - [ ] Script backup-db.js (DB → Google Drive) — low
-- [ ] sync-web.js: reemplaza sync-availability.js, genera flats.ts completo desde API (ver Dashboard CMS) — high
+- [x] sync-web.js: genera flats.ts completo desde API (DB es la única fuente de verdad). sync-availability.js sigue existiendo solo para overlay disponibilidad rápida — 2026-05-03
 
 ### Dominio & DNS
 - [ ] Buscar proveedor DNS gratis o muy barato para dominio propio apuntando a GitHub Pages — high

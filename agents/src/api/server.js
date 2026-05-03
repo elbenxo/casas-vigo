@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { IMAGES_DIR } = require('./constants');
 
 function createApp() {
   const app = express();
@@ -17,6 +18,8 @@ function createApp() {
   app.use('/api/config', require('./routes/config'));
   app.use('/api/prospects', require('./routes/prospects'));
   app.use('/api/contracts', require('./routes/contracts'));
+  app.use('/api/photos', require('./routes/photos'));
+  app.use('/api/reviews', require('./routes/reviews'));
   app.use('/api/stats', require('./routes/stats'));
   app.use('/api/deploy-web', require('./routes/deploy'));
   app.use('/', require('./routes/health'));
@@ -28,6 +31,9 @@ function createApp() {
   // Web preview (serves built Astro site at same base path as production)
   const webDistPath = path.join(__dirname, '..', '..', '..', 'web', 'dist');
   app.use('/casas-vigo', express.static(webDistPath));
+
+  // Photo originals (served for dashboard preview before any web build)
+  app.use('/images', express.static(IMAGES_DIR));
 
   return app;
 }

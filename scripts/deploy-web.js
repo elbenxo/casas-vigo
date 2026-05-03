@@ -12,6 +12,7 @@ const { run } = require('./lib/run');
 
 const TRACKED_FILES = [
   path.join('web', 'src', 'data', 'availability.json'),
+  path.join('web', 'src', 'data', 'flats.ts'),
   path.join('web', 'public', 'llms.txt'),
   path.join('web', 'public', 'llms-full.txt'),
 ];

@@ -9,8 +9,10 @@ const { PRE_CONTRACT_STATUSES, DEFAULT_UTILITIES_PROVISION } = require('../const
 
 const router = Router();
 
-// Absolute path to the contracts output directory
-const CONTRACTS_OUTPUT_DIR = path.resolve(__dirname, '../../../../data/contracts');
+// Absolute path to the contracts output directory (overridable via env, useful in tests)
+const CONTRACTS_OUTPUT_DIR = process.env.CONTRACTS_DIR
+  ? path.resolve(process.env.CONTRACTS_DIR)
+  : path.resolve(__dirname, '../../../../data/contracts');
 
 /**
  * GET /api/contracts

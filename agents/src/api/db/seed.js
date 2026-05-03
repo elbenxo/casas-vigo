@@ -1,4 +1,5 @@
-const { initDb, closeDb } = require('./connection');
+const { initDb, closeDb, getDb } = require('./connection');
+const { applyContent } = require('./content');
 
 const FLATS = [
   {
@@ -98,7 +99,9 @@ function seed() {
 
   const { count } = db.prepare('SELECT COUNT(*) AS count FROM flats').get();
   if (count > 0) {
-    console.log('Database already seeded');
+    // Already has rows: only refresh multilang content + reviews (idempotent).
+    applyContent(db);
+    console.log('Database already seeded; multilang content refreshed.');
     closeDb();
     return;
   }
@@ -154,7 +157,11 @@ function seed() {
 
   const roomCount = run();
 
-  console.log(`Seeded ${FLATS.length} flats, ${roomCount} rooms, 1 contact, ${CONFIG.length} config entries`);
+  // Apply multilingual content + reviews on top of the freshly inserted rows.
+  applyContent(db);
+
+  const reviewsCount = db.prepare('SELECT COUNT(*) AS c FROM reviews').get().c;
+  console.log(`Seeded ${FLATS.length} flats, ${roomCount} rooms, ${reviewsCount} reviews, 1 contact, ${CONFIG.length} config entries`);
   closeDb();
 }
 
