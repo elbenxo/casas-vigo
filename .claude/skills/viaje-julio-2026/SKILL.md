@@ -65,14 +65,40 @@ vive aquí solo para consolidar el proceso de búsqueda y la decisión.
 
 - [x] **Fase 0 — Preparación**: skill creado, geografía y criterios fijados,
       recursos de búsqueda guardados (`references/recursos-busqueda.md`).
-- [ ] **Fase 1 — Zona y clima**: elegir 2-3 comarcas finalistas.
-- [ ] **Fase 2 — Búsqueda de alojamientos**: villas/casas concretas con piscina ≥9 plazas.
-- [ ] **Fase 3 — Evaluación y shortlist**: comparar y recomendar.
-- [ ] **Fase 4 — Consolidación**: decisión final + enlaces aquí.
+- [x] **Fase 1 — Zona y clima**: comarcas evaluadas (Ruidera, Cazorla/Tranco,
+      Despeñaperros/Santa Elena, Valle de Alcudia, Pozo Alcón).
+- [x] **Fase 2 — Búsqueda de alojamientos**: 12 alojamientos localizados/fichados.
+- [x] **Fase 3 — Evaluación y shortlist**: ver `references/candidatos.md`.
+- [x] **Fase 4 — Consolidación**: decisión tomada (abajo).
+
+## Prioridades reveladas por el usuario (en orden)
+
+1. **Muy orientado a niños** (parque infantil, cama elástica, juegos, agua) — lo decisivo.
+2. **Piscina** (obligatoria).
+3. **Plan de agua para peques** (lago/río/embalse cerca).
+4. Equidistancia: **relajada** — el usuario acepta el sur más cálido a cambio de
+   mejor oferta infantil (le encaja Pozo Alcón aunque tire hacia Málaga).
 
 ## Decisión final
 
-> _Pendiente (se rellena en Fase 4)._
+**Elección principal: Villa Vega — Pozo Alcón (Jaén, Sierra de Cazorla).**
+- 2 casas (9 hab dobles + 4 de matrimonio; alquilar 1 casa para los 9).
+- **Piscina privada + lago artificial + parque infantil con cama elástica.**
+- A 5 min del Embalse de la Bolera (kayak/barranquismo), ríos Peralta y cascada
+  de Guazalamanco. Sierra de Cazorla (entorno fresco-ish pese a julio).
+- **Reserva: WhatsApp 617 793 281** · villavegapozoalcon.wixsite.com/villavega
+
+**Backups del mismo perfil** (por si Villa Vega no tiene disponibilidad
+10-12 jul 2026): El Molino de César (Cúllar, Granada), Cortijo Celdrán
+(Vélez-Rubio, Almería), Casa Rural Tobarejos (Ciudad Real, con tobogán acuático).
+
+### Checklist al reservar (yo no puedo reservar; hay que llamar/escribir)
+- [ ] Confirmar **disponibilidad exacta 10-12 jul 2026** (2 noches) para 9 pax.
+- [ ] Confirmar **1 casa para 9** y nº de dormitorios asignados (3 familias).
+- [ ] Precio total 2 noches + **fianza** + política de cancelación.
+- [ ] Piscina operativa en julio y **vallada/segura** para niños (4, 8, 9 años).
+- [ ] Aire acondicionado (julio en Pozo Alcón puede apretar de día).
+- [ ] Cama elástica/parque infantil operativos; cuna/trona si hace falta para la de 4.
 
 ## Referencias
 - `references/recursos-busqueda.md` — portales y método de búsqueda.

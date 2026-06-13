@@ -107,14 +107,7 @@ El usuario señala que El Nido es más "de adultos". Aquí, alojamientos con
 animales, juegos, animación) + admite **hotelitos familiares**.
 
 ## ⭐⭐⭐ 7. El Enebrillo de Despeñaperros — Santa Elena/Despeñaperros (Jaén)
-- **Equidistancia PERFECTA**: junto al **km 250 de la N-IV** → Madrid ≈ 250 km · Málaga ≈ 250 km.
-- **Plazas / dorms**: 16 pax · 8 dormitorios en-suite (alquiler de finca completa; sobra sitio para 9).
-- **Piscina**: infinity grande.
-- **Para niños**: **sala de juegos infantil**, **campo de fútbol**, putting green, juegos de mesa, agroturismo (observación de fauna), terrazas y jardín para correr.
-- **Agua niños**: piscina + excursión a Cascada de la Cimbarra (~30 min).
-- **Precio**: consultar (finca de lujo; al ser 16 plazas, pedir tarifa fin de semana para uso de 9).
-- **Reserva**: elenebrillo.com/reservas · chat en web.
-- **Veredicto**: **mejor combinación equidistancia + orientación a niños + piscina**. Top pick reenfocado.
+- ❌ **NO DISPONIBLE para esas fechas (10-12 jul 2026)** — confirmado por el usuario. Descartada.
 
 ## ⭐⭐ 8. Villa Vega — Pozo Alcón (Jaén, Sierra de Cazorla)
 - **Plazas / dorms**: 2 casas con 9 dobles + 4 de matrimonio (capacidad alta; alquilar 1 casa para 9).
@@ -132,6 +125,29 @@ animales, juegos, animación) + admite **hotelitos familiares**.
 - **Precio**: ~70 € (baja) / ~85 € (alta) por habitación/noche con desayuno → ~3 hab ≈ 255 €/noche.
 - **Veredicto**: cómodo y orientado a familias (todo resuelto, restaurante), pero menos privacidad e independencia que una villa; más al sur.
 
+## ⭐ Más "paraísos para niños" del perfil Villa Vega (acepta sur más cálido)
+
+> El usuario acepta más calor a cambio de más opciones MUY orientadas a niños
+> (parque infantil + piscina + agua/juegos). Estas son del mismo estilo:
+
+### 10. El Molino de César — Cúllar (Granada, altiplano)
+- **Plazas**: flexible **6-14** (ideal para 9) · piscina.
+- **Niños**: **zona de juegos con cama elástica**, porterías, futbolín, videoconsola.
+- **Distancia**: Madrid ≈ 390 km · Málaga ≈ 180 km (hacia Málaga; altiplano = noches frescas).
+- **Veredicto**: muy buen perfil Villa Vega, talla flexible perfecta para 9.
+
+### 11. Cortijo Celdrán — Vélez-Rubio (Almería, Sierra de María)
+- **Plazas**: **8 / 10 / 12** (configurable) · piscina vallada.
+- **Niños**: **zona de juegos con columpios y tobogán**, **sala de juegos** con ping-pong, jardín.
+- **Distancia**: Madrid ≈ 400 km · Málaga ≈ 230 km (hacia Málaga/Levante; Sierra de María fresca).
+- **Veredicto**: piscina vallada (seguridad peques) + tobogán/columpios; talla configurable a 10.
+
+### 12. Casa Rural Tobarejos — cerca P.N. Cabañeros (Ciudad Real)
+- **Plazas**: 13 · **piscina vallada CON TOBOGÁN ACUÁTICO**.
+- **Niños**: minigolf, ping-pong, sala de juegos, barbacoa.
+- **Distancia**: Madrid ≈ 180-200 km · Málaga ≈ 420 km (**hacia Madrid**; opción "norte/fresca").
+- **Veredicto**: la del **tobogán acuático** (planazo niños); equilibra hacia Madrid si alguna familia lo prefiere.
+
 ## Otras pistas orientadas a niños (sin verificar a fondo)
 - **La Aldeílla** (Aldeaquemada, junto a Despeñaperros): complejo de 6 chalets, acoge familias con niños. Equidistante.
 - **Casas Puerta de Andalucía** (Santa Elena): junto al P.N. Despeñaperros, equidistante.
@@ -145,21 +161,22 @@ animales, juegos, animación) + admite **hotelitos familiares**.
 | **Villa Vega** ⭐⭐ | Pozo Alcón (Cazorla) | Villa | Cama elástica, lago, parque | Privada + lago | ~350 km | ~220 km |
 | Hotel Coto del Valle 4★ | Arroyo Frío (Cazorla) | Hotel | Menú infantil, piscina grande, spa | Grande exterior | ~335 km | ~290 km |
 
-## Recomendación FINAL (equidistante + orientado a niños)
+## Recomendación FINAL (orientado a niños — perfil elegido por el usuario)
 
-1. **El Enebrillo de Despeñaperros** (Santa Elena) — la mejor combinación:
-   **equidistancia perfecta** (km 250, ~250/250 km), **piscina infinity** y
-   zonas para niños (sala de juegos, campo de fútbol, agroturismo). Finca de 16
-   plazas → sobra espacio para 9. Pedir tarifa de fin de semana.
-2. **Villa Vega** (Pozo Alcón, Cazorla) — la **más divertida para los peques**
-   (cama elástica, lago, parque, piscina), pero tira hacia Málaga (~350/220 km).
-3. **Hotel Coto del Valle de Cazorla 4★** — si se prefiere **hotel familiar**
-   (habitaciones cuádruples, menú infantil, piscina grande, restaurante);
-   también algo más al sur.
+El usuario prioriza **alojamiento muy orientado a niños** (parque infantil +
+piscina + agua/juegos) y acepta el **sur más cálido** a cambio de más opciones.
+El Enebrillo queda descartada (no disponible) y el Hotel Coto del Valle (poco
+infantil) también.
 
-Alternativas según prioridad puntual:
-- **Baño fácil para peques sobre todo**: La Torca (Ruidera, lagunas a 900 m).
-- **Equidistante pero más "de adultos"**: El Nido de Despeñaperros (Santa Elena).
+1. **★ Villa Vega (Pozo Alcón, Jaén)** — ELECCIÓN PRINCIPAL: piscina privada +
+   **lago** + **parque infantil con cama elástica**; a 5 min del Embalse de la
+   Bolera (kayak), ríos y cascada. Reserva: **WhatsApp 617 793 281**.
+2. **El Molino de César (Cúllar, Granada)** — alternativa misma línea: cama
+   elástica, porterías, futbolín; capacidad flexible 6-14 (perfecta para 9).
+3. **Cortijo Celdrán (Vélez-Rubio, Almería)** — piscina vallada + columpios +
+   tobogán + sala de juegos; configurable a 10.
+4. **Casa Rural Tobarejos (Ciudad Real)** — opción más al norte/fresca con
+   **piscina y tobogán acuático** si alguna familia quiere acortar desde Madrid.
 
 ## Pendiente de confirmar al reservar (cualquiera)
 - Disponibilidad EXACTA 10-12 jul 2026 y tarifa de 2 noches.
