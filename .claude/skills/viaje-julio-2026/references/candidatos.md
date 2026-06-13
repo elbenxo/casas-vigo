@@ -163,7 +163,55 @@ animales, juegos, animación) + admite **hotelitos familiares**.
 
 ---
 
-# MENOS CONOCIDOS (ampliación — "está todo reservado")
+# HOTELES CON ORIENTACIÓN INFANTIL (a petición del usuario)
+
+**Realidad geográfica:** los hoteles "resort" para niños (club infantil con
+monitores, toboganes acuáticos, animación día/noche) están casi todos en la
+**costa** (Costa Tropical de Granada y Costa del Sol de Málaga) → **extremo
+Málaga**, no a mitad de camino. En el interior del corredor apenas hay uno
+genuino (Lanjarón). Tres niveles según cuánto se quiera bajar al sur:
+
+## ⭐⭐⭐ 18. Balneario de Lanjarón — Lanjarón (Granada, Alpujarra) — INTERIOR
+- **El único hotel infantil de interior** del corredor. A los pies de Sierra
+  Nevada (pueblo de montaña, ~660 m → **fresco**).
+- **Para niños**: **toboganes acuáticos, club infantil, parque infantil,
+  piscina de bolas**, gimnasio; **spa** termal (6 manantiales) para adultos.
+- **Habitaciones familiares**; balneario gestionado por Relais Termal.
+- **Distancia**: Lanjarón ≈ Madrid 440 km (~4h15) · Málaga 140 km (~1h45). Tira al sur, pero es **interior y fresco**.
+- **Veredicto**: mejor equilibrio "hotel infantil + algo de frescor + no-playa".
+
+## ⭐⭐ 19. Playacálida Spa Hotel — Almuñécar (Granada, Costa Tropical) — PLAYA
+- **Resort infantil de verdad** + playa a 100 m.
+- **Para niños**: **4 piscinas** (río con toboganes, piscina con toboganes,
+  infinity panorámica, jacuzzi); **Delfi Club Mini (4-6) y Junior (7-11)** →
+  encaja con los 4, 8 y 9 años; animación día/noche, espectáculos.
+- **Habitaciones familiares**; desde ~81 €/hab/noche (consultar julio).
+- **Distancia**: Almuñécar ≈ Madrid 480 km (~4h45) · Málaga 85 km (~1h). **Extremo Málaga**, pero es el plan niños más redondo (clubs por edades exactas).
+- **Veredicto**: el más "vacaciones de niños" si se acepta playa + extremo sur.
+
+## 20. Hotel & Spa Sierra de Cazorla 4★ — La Iruela (Jaén) — MIDWAY (suave)
+- Más equidistante que los anteriores (Cazorla ~335 Madrid / 290 Málaga).
+- **Habitaciones familiares**, piscina exterior de temporada, **spa**, sala de
+  juegos/dardos, restaurante. Acceso directo al P.N. de Cazorla.
+- **Pero**: NO es resort infantil (sin toboganes/animación confirmados). Familiar pero tranquilo.
+- **Precio**: desde ~84 €/hab/noche.
+- **Veredicto**: la opción "hotel familiar a mitad de camino" si se prioriza distancia sobre animación.
+
+> Si se abre del todo a la **Costa del Sol** (extremo Málaga, ~530 km Madrid):
+> Los Patos Park (Benalmádena, parque acuático), Benalmádena Palace (DinoWorld,
+> piscina niños, animación), Occidental Torremolinos (toboganes, miniclub).
+
+## Tabla — HOTELES INFANTILES
+
+| Hotel | Dónde | Tipo | Niños | Madrid | Málaga |
+|---|---|---|---|---|---|
+| **Balneario de Lanjarón** ⭐⭐⭐ | Lanjarón (Granada) | Interior/spa | Toboganes, club, parque, bolas | ~440 km | ~140 km |
+| **Playacálida** ⭐⭐ | Almuñécar (Granada) | Playa/resort | 4 piscinas+toboganes, 2 clubs por edad, animación | ~480 km | ~85 km |
+| Hotel & Spa Sierra de Cazorla | La Iruela (Jaén) | Midway | Hab. familiares, piscina, spa | ~335 km | ~290 km |
+
+---
+
+
 
 Alojamientos independientes/poco masificados, contactables directamente, perfil
 niños + piscina. Verificar disponibilidad 10-12 jul 2026 llamando.
