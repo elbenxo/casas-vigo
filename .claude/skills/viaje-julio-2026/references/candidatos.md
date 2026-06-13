@@ -307,3 +307,48 @@ Opciones del perfil "villa" si reaparece disponibilidad:
 - Piscina operativa en julio.
 - Fianza y política de cancelación.
 - Equipamiento para niña de 4 (cuna/trona si hace falta).
+
+---
+
+# CASAS RURALES EN CAZORLA — talla justa para 9, CONTACTABLES (Fase 5, 13 jun)
+
+> A petición del usuario: volver a la vía de **casa rural completa en la Sierra
+> de Cazorla** (no hotel), priorizando talla ~9-10, piscina, A/A y **teléfono
+> directo** para poder confirmar 10-12 jul 2026. Estas dos son las mejores:
+> capacidad ajustada al grupo, dentro/junto a Cazorla y con contacto verificado.
+
+## ⭐⭐⭐ 23. Casa El Rincón — La Iruela (Jaén, entrada del P.N. de Cazorla)
+- **Plazas / dorms**: 8-10 pax · **4 dormitorios** (cama doble) · 2 baños · salón con sofá-cama y chimenea.
+- **Piscina**: privada **con césped, de uso exclusivo** de los huéspedes; finca vallada de 2.000 m² con jardines, zonas de descanso, frutales y parking.
+- **Clima/equip.**: **A/A**, calefacción, cocina equipada, lavadora, barbacoa exterior.
+- **Entorno niños**: a 7 km de Cazorla, **en la entrada misma del Parque Natural** → naturaleza, espacio para correr, sombra. Sierra fresca.
+- **Equidistancia**: Cazorla ≈ Madrid 335 km / Málaga 290 km (algo hacia Málaga; midway aceptable).
+- **Precio**: **168 €/noche** (temporada baja) · **195 €/noche** (temporada alta) → julio ≈ **390 € / 2 noches**. Muy buen precio para 9.
+- **Contacto**: **699 941 866 / 606 937 778** · alojamientosmartinez@hotmail.com · web alojamientosruralescazorla.com.
+- **A confirmar**: si la **piscina está vallada/segura** para la peque de 4 (no especificado); con 2 baños para 3 familias puede quedarse algo justo.
+- **Veredicto**: **la mejor casa rural "Cazorla" contactable**: talla exacta, piscina exclusiva, A/A, precio bajo y dentro del parque.
+
+## ⭐⭐ 24. Casa Fuente la Noguera — Cazorla pueblo (a 800 m del casco)
+- **Plazas / dorms**: 8-9 pax · **4 dormitorios** (2 de matrimonio + 2 con dos camas) · 2 baños completos.
+- **Piscina**: exterior **con vistas a la Sierra**, en finca privada de 3.000 m² rodeada de arbolado; fuente, barbacoa y horno de leña, amplias terrazas.
+- **Clima/equip.**: **A/A + calefacción**, parking. **No admite mascotas.**
+- **Entorno niños**: a 800 m de Cazorla (servicios a mano), finca grande y arbolada para correr; base ideal para excursiones del parque.
+- **Equidistancia**: igual que Cazorla (~335 Madrid / ~290 Málaga).
+- **Precio**: orientativo no publicado → consultar tarifa de 2 noches.
+- **Contacto**: **676 24 60 13** · Camino Viejo de Tramaya s/n, Cazorla · fichas en sensacionrural.es y escapadarural.com.
+- **A confirmar**: precio, seguridad de la piscina para la peque, y que 9 entren cómodos (capacidad tope 9, sin holgura).
+- **Veredicto**: muy buena alternativa **pegada al pueblo de Cazorla** con A/A y finca grande; talla más ajustada (tope 9) y solo 2 baños.
+
+## Tabla — CASAS RURALES CAZORLA (talla 9)
+
+| Casa | Dónde | Plazas | Dorm | Baños | Piscina | A/A | Madrid | Málaga | Precio 2 noches | Tel |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **El Rincón** ⭐⭐⭐ | La Iruela (entrada P.N.) | 8-10 | 4 | 2 | Exclusiva, césped | Sí | ~335 km | ~290 km | **~390 €** | 699 941 866 / 606 937 778 |
+| **Fuente la Noguera** ⭐⭐ | Cazorla (800 m pueblo) | 8-9 | 4 | 2 | Vistas Sierra | Sí | ~335 km | ~290 km | consultar | 676 24 60 13 |
+
+> Otras de la zona (talla mayor, por si se quiere holgura o más baños):
+> **La Casa de La Piscina** (Cazorla, 12-15 pax, 6 dorms, ~22 €/pax/noche),
+> **Casa La Torrilla** (Cazorla, 12 pax, 5 dorms, ~25 €/pax), **La Alquería de
+> Cazorla** (12-13 pax, 4 dorms, ~20 €/pax), **Cortijo el Monjero** (divisible
+> a 10). En Pozo Alcón hay varios chalets 10-18 pax con piscina vía Holidu
+> (desde ~227-242 €/noche para 10).

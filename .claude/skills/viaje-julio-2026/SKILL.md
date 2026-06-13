@@ -96,6 +96,20 @@ hoteles familiares **con toboganes y piscina infantil** (no hace falta la costa)
 Pendiente (no puedo hacerlo yo): confirmar **disponibilidad 10-12 jul 2026**,
 nº de habitaciones familiares para 3 familias (6+3), precio y régimen.
 
+### Casas rurales EN CAZORLA (vía retomada 13 jun — contactables, talla 9)
+> El usuario pide centrarse en **casa rural completa en la Sierra de Cazorla**
+> (no hotel). Dos encajan justas para 9, con piscina, A/A y teléfono directo:
+1. **★ Casa El Rincón** — La Iruela, entrada del P.N. de Cazorla. 8-10 pax · 4
+   dorms · piscina exclusiva con césped · A/A. **~390 €/2 noches** (alta).
+   ☎ **699 941 866 / 606 937 778** · alojamientosruralescazorla.com.
+2. **Casa Fuente la Noguera** — Cazorla, a 800 m del pueblo. 8-9 pax · 4 dorms
+   (2 matrimonio + 2 dobles) · piscina con vistas · A/A + calefacción · finca
+   3.000 m². ☎ **676 24 60 13** · Camino Viejo de Tramaya s/n.
+
+A confirmar en ambas: disponibilidad 10-12 jul 2026, precio 2 noches, fianza,
+**si la piscina está vallada/segura** para la peque de 4 (solo 2 baños cada una).
+Más fichas y opciones de mayor talla en `references/candidatos.md` (#23-24).
+
 ### Lista a contactar (casas, si se retoma esa vía)
 1. **Casa Los Pedroches** — Alcaracejos (Córdoba). Piscina **vallada** + zona
    infantil (columpios, cabaña) + sala de juegos, A/A, 10-14 pax, equidistante.
