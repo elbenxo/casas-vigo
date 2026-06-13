@@ -81,7 +81,24 @@ vive aquí solo para consolidar el proceso de búsqueda y la decisión.
 
 ## Decisión final
 
-**Elección principal: Villa Vega — Pozo Alcón (Jaén, Sierra de Cazorla).**
+> **Actualización (13 jun): las opciones populares aparecen reservadas para las
+> fechas.** Se abre la búsqueda a alojamientos MENOS CONOCIDOS y contactables.
+
+### Lista a contactar AHORA (disponibilidad = cuello de botella)
+1. **Casa Los Pedroches** — Alcaracejos (Córdoba). Piscina **vallada** + zona
+   infantil (columpios, cabaña) + sala de juegos, A/A, 10-14 pax, equidistante.
+   ☎ **647 698 905** (Juan Antonio) · casalospedroches.es.
+2. **Clúster Yeste / Sierra del Segura (Albacete)** — El Tejo (eltejoyeste.es),
+   Los Ahijaderos de Tus (losahijaderosdetus.com), Las Tapias (Letur), La
+   Tejera/El Pinico. Cerca del **Nacimiento del Río Mundo** (agua para niños).
+3. **La Aldea** — Sierra de Alcaraz (Albacete): piscina + parque infantil.
+4. **Villa Vega** — Pozo Alcón (Jaén): WhatsApp 617 793 281 (si reaparece hueco).
+
+Ver fichas completas y más opciones (12-17) en `references/candidatos.md`.
+
+---
+
+**Perfil de referencia (lo que el usuario llamó "top top"): Villa Vega.**
 - 2 casas (9 hab dobles + 4 de matrimonio; alquilar 1 casa para los 9).
 - **Piscina privada + lago artificial + parque infantil con cama elástica.**
 - A 5 min del Embalse de la Bolera (kayak/barranquismo), ríos Peralta y cascada

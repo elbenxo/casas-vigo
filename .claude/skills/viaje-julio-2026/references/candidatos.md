@@ -161,12 +161,72 @@ animales, juegos, animación) + admite **hotelitos familiares**.
 | **Villa Vega** ⭐⭐ | Pozo Alcón (Cazorla) | Villa | Cama elástica, lago, parque | Privada + lago | ~350 km | ~220 km |
 | Hotel Coto del Valle 4★ | Arroyo Frío (Cazorla) | Hotel | Menú infantil, piscina grande, spa | Grande exterior | ~335 km | ~290 km |
 
+---
+
+# MENOS CONOCIDOS (ampliación — "está todo reservado")
+
+Alojamientos independientes/poco masificados, contactables directamente, perfil
+niños + piscina. Verificar disponibilidad 10-12 jul 2026 llamando.
+
+## ⭐⭐⭐ 13. Casa Los Pedroches — Alcaracejos (Córdoba, Valle de los Pedroches)
+- **VERIFICADA.** 10-14 pax · 5 dormitorios (7 camas + 2 supletorias) · 3 baños.
+- **Piscina VALLADA** con sol y sombra (seguridad para la peque de 4).
+- **Niños**: zona infantil con **columpios y cabaña de madera**; sala de juegos con billar y futbolín.
+- **Clima**: A/A + calefacción. Barbacoa con horno de leña.
+- **Equidistancia**: Alcaracejos ≈ Madrid 330 km / Málaga 290 km (equilibrado; Sierra Morena, dehesa).
+- **Precio**: ~31 €/pax/noche → ~280-310 €/noche para 9-10.
+- **Contacto**: Juan Antonio · **647 698 905** · casalospedroches.es · VTAR/CO/00313.
+- **Veredicto**: **nueva favorita entre las menos conocidas** (piscina vallada + zona infantil + equidistante + A/A).
+
+## 14. Zona Yeste / Sierra del Segura (Albacete) — clúster con AGUA para niños
+Cerca del **Nacimiento del Río Mundo** (cascada espectacular, planazo con peques)
+y P.N. Calares del Mundo y de la Sima. Sierra fresca, varios independientes:
+- **Casas Rurales El Tejo** (Yeste, Mirador del Segura) — piscina · eltejoyeste.es.
+- **Los Ahijaderos de Tus** (Yeste) — centro de turismo rural, piscina y barbacoa · losahijaderosdetus.com.
+- **Las Tapias** (Dehesa del Letur) — 10 (opc. 12) pax, a 10 min de Letur.
+- **La Tejera / El Pinico** (Yeste, a 1 km del pueblo) — 8 y 12 plazas.
+- Casa en Yeste con **zona infantil privada (columpios y tobogán)**, A/A, 10 pax.
+- Equidistancia: Yeste ≈ Madrid 330 km / Málaga 340 km (bastante equilibrado).
+
+## 15. La Aldea — Sierra de Alcaraz (Albacete)
+- Finca con 5 casas independientes (mismo edificio) · **amplia piscina + zona de parque infantil** + merendero/barbacoas de uso exclusivo. Sierra fresca, Madrid-leaning (~270 km).
+
+## 16. Completo Rural Granja Abril — Cardiel de los Montes (Toledo, Montes de Toledo)
+- 5 cabañas (se alquilan juntas, 10-20 plazas), piscina, zonas de ocio, ambiente "granja". Muy hacia Madrid (~100 km) → solo si interesa acortar desde Madrid.
+
+## 17. Cabañas de Madera El Robledo (Serranía de Cuenca)
+- Cabañas (2×8 + 1×4 pax), cocina, **A/A**, chimenea, barbacoa, jardín y piscina. Fresco; tira al noreste.
+
+## Descartada (menos conocida)
+- **Granja Escuela Atalaya de Alcaraz** (Albacete): planazo niños (granja, tirolina,
+  talleres, pensión completa) pero **alquiler exclusivo mínimo 15 pax** → no encaja para 9.
+
+## Tabla — MENOS CONOCIDOS
+
+| Alojamiento | Zona | Plazas | Piscina | Niños | Madrid | Málaga | Contacto |
+|---|---|---|---|---|---|---|---|
+| **Casa Los Pedroches** ⭐⭐⭐ | Alcaracejos (Córdoba) | 10-14 | Vallada | Columpios+cabaña, sala juegos | ~330 km | ~290 km | 647 698 905 |
+| El Tejo / Ahijaderos / Las Tapias | Yeste-Letur (Albacete) | 8-12 | Sí | Zona infantil (varía) | ~330 km | ~340 km | webs propias |
+| La Aldea | Sierra de Alcaraz (AB) | finca | Amplia | Parque infantil | ~270 km | ~360 km | — |
+| Granja Abril | Montes de Toledo | 10-20 | Sí | Granja/ocio | ~100 km | ~530 km | — |
+
 ## Recomendación FINAL (orientado a niños — perfil elegido por el usuario)
 
 El usuario prioriza **alojamiento muy orientado a niños** (parque infantil +
 piscina + agua/juegos) y acepta el **sur más cálido** a cambio de más opciones.
 El Enebrillo queda descartada (no disponible) y el Hotel Coto del Valle (poco
-infantil) también.
+infantil) también. **Actualización: las opciones populares aparecen reservadas**
+→ priorizar los MENOS CONOCIDOS, contactables directamente:
+
+- **★ Casa Los Pedroches (Alcaracejos, Córdoba)** — la mejor de las menos
+  conocidas: **piscina vallada** (segura para la peque de 4) + zona infantil
+  (columpios, cabaña) + sala de juegos, equidistante y con A/A. ☎ 647 698 905.
+- **Clúster Yeste / Sierra del Segura (Albacete)** — varios independientes (El
+  Tejo, Los Ahijaderos de Tus, Las Tapias, La Tejera/El Pinico) cerca del
+  **Nacimiento del Río Mundo** (agua + cascada para niños), sierra fresca.
+- **La Aldea (Sierra de Alcaraz)** — piscina + parque infantil, finca de 5 casas.
+
+Opciones del perfil "villa" si reaparece disponibilidad:
 
 1. **★ Villa Vega (Pozo Alcón, Jaén)** — ELECCIÓN PRINCIPAL: piscina privada +
    **lago** + **parque infantil con cama elástica**; a 5 min del Embalse de la
