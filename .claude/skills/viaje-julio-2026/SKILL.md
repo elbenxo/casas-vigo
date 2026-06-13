@@ -84,7 +84,19 @@ vive aquí solo para consolidar el proceso de búsqueda y la decisión.
 > **Actualización (13 jun): las opciones populares aparecen reservadas para las
 > fechas.** Se abre la búsqueda a alojamientos MENOS CONOCIDOS y contactables.
 
-### Lista a contactar AHORA (disponibilidad = cuello de botella)
+### Dirección elegida: HOTEL FAMILIAR MIDWAY en Sierra de Cazorla
+El usuario prefiere hotel a mitad de camino y tranquilo. Bonus: en Cazorla hay
+hoteles familiares **con toboganes y piscina infantil** (no hace falta la costa):
+1. **Hotel Balneario Parque de Cazorla** (Cazorla) — toboganes + piscina infantil
+   + parque infantil + spa + hab. familiares. **Top de esta vía** · hotelparquedecazorla.com.
+2. **Hotel Coto del Valle de Cazorla 4★** (Arroyo Frío) — toboganes, club infantil,
+   piscina de bolas, cuádruples familiares, menú infantil · cotodelvalle.com.
+3. **Hotel & Spa Sierra de Cazorla 4★** (La Iruela) — familiar/tranquilo con spa.
+
+Pendiente (no puedo hacerlo yo): confirmar **disponibilidad 10-12 jul 2026**,
+nº de habitaciones familiares para 3 familias (6+3), precio y régimen.
+
+### Lista a contactar (casas, si se retoma esa vía)
 1. **Casa Los Pedroches** — Alcaracejos (Córdoba). Piscina **vallada** + zona
    infantil (columpios, cabaña) + sala de juegos, A/A, 10-14 pax, equidistante.
    ☎ **647 698 905** (Juan Antonio) · casalospedroches.es.

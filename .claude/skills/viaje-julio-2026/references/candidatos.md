@@ -189,13 +189,27 @@ genuino (Lanjarón). Tres niveles según cuánto se quiera bajar al sur:
 - **Distancia**: Almuñécar ≈ Madrid 480 km (~4h45) · Málaga 85 km (~1h). **Extremo Málaga**, pero es el plan niños más redondo (clubs por edades exactas).
 - **Veredicto**: el más "vacaciones de niños" si se acepta playa + extremo sur.
 
-## 20. Hotel & Spa Sierra de Cazorla 4★ — La Iruela (Jaén) — MIDWAY (suave)
-- Más equidistante que los anteriores (Cazorla ~335 Madrid / 290 Málaga).
+## ✅ DIRECCIÓN ELEGIDA POR EL USUARIO: MIDWAY TRANQUILO (Cazorla)
+Sorpresa buena: en Cazorla SÍ hay hoteles familiares **con toboganes y piscina
+infantil** (midway, ~3-3h30 por familia), no hace falta bajar a la costa.
+
+### ⭐⭐⭐ 20. Hotel Balneario Parque de Cazorla — Cazorla (Jaén)
+- **Habitaciones familiares** + **piscina exterior con toboganes** + **piscina
+  infantil** + **parque infantil**; balneario/spa para adultos. Restaurante.
+- En plena Sierra de Cazorla. Equidistante (~335 Madrid / ~290 Málaga).
+- **Veredicto**: el más completo para niños dentro del "midway". Top de esta vía.
+
+### ⭐⭐⭐ 21. Hotel Coto del Valle de Cazorla 4★ — Arroyo Frío (Jaén)
+- Spa resort con **piscinas exteriores con toboganes, CLUB INFANTIL, parques
+  infantiles y piscina de bolas**; **habitaciones cuádruples familiares (dos
+  estancias)**, **menú infantil**, restaurante, spa.
+- 3 familias = 3 cuádruples. Desde ~85 €/hab/noche. ~350 Madrid / ~300 Málaga.
+- **Web**: cotodelvalle.com. **Veredicto**: muy buen plan niños + midway (algo más al sur que Parque de Cazorla).
+
+### 22. Hotel & Spa Sierra de Cazorla 4★ — La Iruela (Jaén)
 - **Habitaciones familiares**, piscina exterior de temporada, **spa**, sala de
-  juegos/dardos, restaurante. Acceso directo al P.N. de Cazorla.
-- **Pero**: NO es resort infantil (sin toboganes/animación confirmados). Familiar pero tranquilo.
-- **Precio**: desde ~84 €/hab/noche.
-- **Veredicto**: la opción "hotel familiar a mitad de camino" si se prioriza distancia sobre animación.
+  juegos/dardos, restaurante; acceso directo al P.N. Más tranquilo (sin
+  toboganes confirmados). Desde ~84 €/hab/noche. El más equidistante (~335/290).
 
 > Si se abre del todo a la **Costa del Sol** (extremo Málaga, ~530 km Madrid):
 > Los Patos Park (Benalmádena, parque acuático), Benalmádena Palace (DinoWorld,
@@ -205,9 +219,11 @@ genuino (Lanjarón). Tres niveles según cuánto se quiera bajar al sur:
 
 | Hotel | Dónde | Tipo | Niños | Madrid | Málaga |
 |---|---|---|---|---|---|
-| **Balneario de Lanjarón** ⭐⭐⭐ | Lanjarón (Granada) | Interior/spa | Toboganes, club, parque, bolas | ~440 km | ~140 km |
-| **Playacálida** ⭐⭐ | Almuñécar (Granada) | Playa/resort | 4 piscinas+toboganes, 2 clubs por edad, animación | ~480 km | ~85 km |
-| Hotel & Spa Sierra de Cazorla | La Iruela (Jaén) | Midway | Hab. familiares, piscina, spa | ~335 km | ~290 km |
+| **Parque de Cazorla** ⭐⭐⭐ (ELEGIDO) | Cazorla (Jaén) | Midway familiar | Toboganes + piscina infantil + parque | ~335 km | ~290 km |
+| **Coto del Valle de Cazorla** ⭐⭐⭐ | Arroyo Frío (Jaén) | Midway familiar | Toboganes, club infantil, bolas, menú niños | ~350 km | ~300 km |
+| Hotel & Spa Sierra de Cazorla | La Iruela (Jaén) | Midway tranquilo | Hab. familiares, piscina, spa | ~335 km | ~290 km |
+| Balneario de Lanjarón | Lanjarón (Granada) | Interior/spa (sur) | Toboganes, club, parque, bolas | ~440 km | ~140 km |
+| Playacálida | Almuñécar (Granada) | Playa/resort (sur) | 4 piscinas+toboganes, 2 clubs por edad | ~480 km | ~85 km |
 
 ---
 
