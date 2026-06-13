@@ -98,20 +98,68 @@ de la casa. Menos "baño fácil" que Ruidera, pero mucho más equidistante.
 | El Collado de los Jardines | Santa Elena | 2-26 | 8 | Jardín | ~250 km | ~250 km | ~560 € (9 pax) |
 | Villa Pablo (corta) | Santa Elena | 8 | 4 | Privada | ~255 km | ~245 km | ~440 € |
 
-## Recomendación
+---
 
-Para **distancia media real** (las 3 familias conducen parecido):
-- **1ª opción: El Nido de Despeñaperros** (Santa Elena) — el más equidistante
-  (~255/245 km), 4 hab/6 baños para ~10, piscina privada, sierra fresca. La
-  cascada de la Cimbarra para excursión con niños.
-- **2ª: Tres Ventas / El Villar** (Valle de Alcudia) — 10 pax, 4 hab, piscina;
-  cerca del AVE de Puertollano y de las cascadas de Fuencaliente.
-- **3ª: Cortijo La Besana** (Cazorla/Tranco) — talla perfecta y baño en el
-  embalse a 3 km, pero tira un poco más hacia Málaga en distancia.
+# Opciones ORIENTADAS A NIÑOS (a petición del usuario)
 
-Si en algún momento pesa más el **baño fácil para los más peques** que la
-equidistancia: **La Torca** (Ruidera, lagunas a 900 m) sigue siendo la mejor
-para eso, asumiendo que las familias del sur conducen ~4h.
+El usuario señala que El Nido es más "de adultos". Aquí, alojamientos con
+**instalaciones reales para peques** (parque infantil, piscina infantil/grande,
+animales, juegos, animación) + admite **hotelitos familiares**.
+
+## ⭐⭐⭐ 7. El Enebrillo de Despeñaperros — Santa Elena/Despeñaperros (Jaén)
+- **Equidistancia PERFECTA**: junto al **km 250 de la N-IV** → Madrid ≈ 250 km · Málaga ≈ 250 km.
+- **Plazas / dorms**: 16 pax · 8 dormitorios en-suite (alquiler de finca completa; sobra sitio para 9).
+- **Piscina**: infinity grande.
+- **Para niños**: **sala de juegos infantil**, **campo de fútbol**, putting green, juegos de mesa, agroturismo (observación de fauna), terrazas y jardín para correr.
+- **Agua niños**: piscina + excursión a Cascada de la Cimbarra (~30 min).
+- **Precio**: consultar (finca de lujo; al ser 16 plazas, pedir tarifa fin de semana para uso de 9).
+- **Reserva**: elenebrillo.com/reservas · chat en web.
+- **Veredicto**: **mejor combinación equidistancia + orientación a niños + piscina**. Top pick reenfocado.
+
+## ⭐⭐ 8. Villa Vega — Pozo Alcón (Jaén, Sierra de Cazorla)
+- **Plazas / dorms**: 2 casas con 9 dobles + 4 de matrimonio (capacidad alta; alquilar 1 casa para 9).
+- **Piscina + agua**: **piscina privada + LAGO artificial + parque infantil con CAMA ELÁSTICA** (planazo niños). A 5 min del Embalse de la Bolera (kayak), ríos Peralta y cascada de Guazalamanco.
+- **Para niños**: el más "parque de juegos" de todos (trampolín, lago, piscina, jardín).
+- **Equidistancia**: Pozo Alcón ≈ Madrid 350 km / Málaga 220 km → **tira hacia Málaga** (no equidistante).
+- **Precio**: consultar · web villavegapozoalcon.wixsite.com/villavega.
+- **Veredicto**: **el más divertido para niños 4-9**, pero desequilibra hacia el sur.
+
+## 9. Hotel Spa Rural Coto del Valle de Cazorla 4★ — Arroyo Frío (Jaén) — opción HOTEL
+- **Formato hotel** (sin cocinar): **habitaciones familiares cuádruples (dos estancias)** → 3 familias = 3 habitaciones.
+- **Piscina**: gran piscina exterior para adultos y niños; spa (piscina salada, jacuzzi).
+- **Para niños**: **menú infantil**, jardines, piscina grande; restaurante propio.
+- **Equidistancia**: Cazorla ≈ Madrid 335 km / Málaga 290 km (algo hacia Málaga).
+- **Precio**: ~70 € (baja) / ~85 € (alta) por habitación/noche con desayuno → ~3 hab ≈ 255 €/noche.
+- **Veredicto**: cómodo y orientado a familias (todo resuelto, restaurante), pero menos privacidad e independencia que una villa; más al sur.
+
+## Otras pistas orientadas a niños (sin verificar a fondo)
+- **La Aldeílla** (Aldeaquemada, junto a Despeñaperros): complejo de 6 chalets, acoge familias con niños. Equidistante.
+- **Casas Puerta de Andalucía** (Santa Elena): junto al P.N. Despeñaperros, equidistante.
+- Casas rurales de **Sierra Morena** con columpios, **granja de animales** y **piscina infantil** (escapadarural "con actividades para niños").
+
+## Tabla resumen — ORIENTADAS A NIÑOS
+
+| Alojamiento | Zona | Tipo | Niños | Piscina | Madrid | Málaga |
+|---|---|---|---|---|---|---|
+| **El Enebrillo** ⭐⭐⭐ | Santa Elena/Despeñaperros | Finca (16) | Sala juegos, fútbol, agroturismo | Infinity | ~250 km | ~250 km |
+| **Villa Vega** ⭐⭐ | Pozo Alcón (Cazorla) | Villa | Cama elástica, lago, parque | Privada + lago | ~350 km | ~220 km |
+| Hotel Coto del Valle 4★ | Arroyo Frío (Cazorla) | Hotel | Menú infantil, piscina grande, spa | Grande exterior | ~335 km | ~290 km |
+
+## Recomendación FINAL (equidistante + orientado a niños)
+
+1. **El Enebrillo de Despeñaperros** (Santa Elena) — la mejor combinación:
+   **equidistancia perfecta** (km 250, ~250/250 km), **piscina infinity** y
+   zonas para niños (sala de juegos, campo de fútbol, agroturismo). Finca de 16
+   plazas → sobra espacio para 9. Pedir tarifa de fin de semana.
+2. **Villa Vega** (Pozo Alcón, Cazorla) — la **más divertida para los peques**
+   (cama elástica, lago, parque, piscina), pero tira hacia Málaga (~350/220 km).
+3. **Hotel Coto del Valle de Cazorla 4★** — si se prefiere **hotel familiar**
+   (habitaciones cuádruples, menú infantil, piscina grande, restaurante);
+   también algo más al sur.
+
+Alternativas según prioridad puntual:
+- **Baño fácil para peques sobre todo**: La Torca (Ruidera, lagunas a 900 m).
+- **Equidistante pero más "de adultos"**: El Nido de Despeñaperros (Santa Elena).
 
 ## Pendiente de confirmar al reservar (cualquiera)
 - Disponibilidad EXACTA 10-12 jul 2026 y tarifa de 2 noches.
