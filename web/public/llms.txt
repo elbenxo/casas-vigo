@@ -42,6 +42,16 @@ Available in Spanish (ES), English (EN), and Galician (GL).
 - Central Vigo locations
 - Near public transport
 
+## Vigo Family Guide (Things to Do)
+
+Family travel guide for visitors staying in Vigo, especially near Samil beach. Available in 8 languages: [Vigo with kids](https://elbenxo.github.io/casas-vigo/vigo/familias/)
+
+- Samil beach with free seawater pools, playgrounds, Museo do Mar (sea museum + aquarium) and Verbum interactive museum
+- Cíes Islands — Atlantic Islands National Park, reached by ferry from Vigo (advance authorization + ticket required)
+- In the city: Monte do Castro fortress and views, Castrelos park, VigoNature nature/adventure centre, Marikiná Park treetop adventure, MARCO art museum
+- Day trips (<45 min): Baiona and the Pinta caravel replica, A Guarda and the Santa Trega Celtic hillfort, Pontevedra old town, Barosa waterfalls, wild Atlantic horses of Serra da Groba
+- Traditional Galician furanchos (seasonal home wineries): Almeriz, Reboraina, Fermín, Villa Preciosa
+
 ## Detailed Information
 
 For complete property data including all room specifications, amenities, and coordinates, see [llms-full.txt](https://elbenxo.github.io/casas-vigo/llms-full.txt)
