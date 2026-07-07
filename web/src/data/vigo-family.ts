@@ -22,10 +22,33 @@ export interface FamilyPlace {
 export interface FamilySection {
   id: string;
   emoji?: string;
+  /** Optional banner image (repo-hosted, licensed). */
+  image?: string;
   title: I18nText;
   intro: I18nText;
   places: FamilyPlace[];
 }
+
+/** Image credit for the attribution list (licensed reuse). */
+export interface ImageCredit {
+  title: string;
+  author: string;
+  license: string;
+  url: string;
+}
+
+/** Hero image at the top of the guide. */
+export const familyHero = '/casas-vigo/images/vigo/hero.jpg';
+
+/** Photo attributions (Wikimedia Commons, free licenses). */
+export const familyCredits: ImageCredit[] = [
+  { title: 'Praia de Rodas, Illas Cíes', author: 'Mario Sánchez', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Praia_de_Rodas,_Illas_C%C3%ADes,_Vigo,_Galiza.jpg' },
+  { title: 'Praia de Samil, Vigo', author: 'Alberto', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Praia_de_Samil,_Navia,_Vigo.jpg' },
+  { title: 'Vigo desde o Monte do Castro', author: 'kai670', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Vigo_dende_o_monte_do_castro.jpg' },
+  { title: 'Faro das Illas Cíes', author: 'Julesvernex2', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Pathway_to_the_Faro_lighthouse,_Ci%C3%A9s_Islands,_Spain_(PPL1-Corrected)_julesvernex2.jpg' },
+  { title: 'Parador de Baiona', author: 'Juan Mejuto', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Parador_de_Baiona,_Galiza.jpg' },
+  { title: 'Polbo á feira', author: 'Luis Miguel Bugallo Sánchez (Lmbuga)', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Polbo_%C3%A1_feira._Galiza.jpg' },
+];
 
 export interface ItineraryDay {
   day: number;
@@ -53,6 +76,7 @@ export const familySections: FamilySection[] = [
   {
     id: 'samil',
     emoji: '🏖️',
+    image: '/casas-vigo/images/vigo/samil.jpg',
     title: {
       es: 'En Samil y alrededores', en: 'In Samil and nearby', gl: 'En Samil e arredores',
       fr: 'À Samil et alentours', de: 'In Samil und Umgebung', ko: '사밀과 주변',
@@ -202,6 +226,7 @@ export const familySections: FamilySection[] = [
   {
     id: 'city',
     emoji: '🎡',
+    image: '/casas-vigo/images/vigo/city.jpg',
     title: {
       es: 'En la ciudad', en: 'In the city', gl: 'Na cidade', fr: 'En ville',
       de: 'In der Stadt', ko: '시내에서', pt: 'Na cidade', pl: 'W mieście',
@@ -399,6 +424,7 @@ export const familySections: FamilySection[] = [
   {
     id: 'cies',
     emoji: '⛴️',
+    image: '/casas-vigo/images/vigo/cies.jpg',
     title: {
       es: 'La excursión estrella: Islas Cíes', en: 'The star trip: Cíes Islands', gl: 'A excursión estrela: Illas Cíes',
       fr: 'L\'excursion star : les îles Cíes', de: 'Der Höhepunkt: die Cíes-Inseln', ko: '최고의 여행: 시에스 제도',
@@ -503,6 +529,7 @@ export const familySections: FamilySection[] = [
   {
     id: 'daytrips',
     emoji: '🚗',
+    image: '/casas-vigo/images/vigo/daytrips.jpg',
     title: {
       es: 'Excursiones de un día cerca', en: 'Nearby day trips', gl: 'Excursións dun día preto',
       fr: 'Excursions d\'une journée à proximité', de: 'Tagesausflüge in der Nähe', ko: '근처 당일 여행',
@@ -753,6 +780,7 @@ export const familySections: FamilySection[] = [
   {
     id: 'food',
     emoji: '🦪',
+    image: '/casas-vigo/images/vigo/food.jpg',
     title: {
       es: 'Comer en familia cerca de Samil', en: 'Family dining near Samil', gl: 'Comer en familia preto de Samil',
       fr: 'Manger en famille près de Samil', de: 'Familienessen nahe Samil', ko: '사밀 근처 가족 식사',

@@ -1,6 +1,6 @@
 ---
 import { t, type Lang } from '../i18n/translations';
-import { familyIntro, familySections, familyItinerary, familyFaq } from '../data/vigo-family';
+import { familyIntro, familySections, familyItinerary, familyFaq, familyHero, familyCredits } from '../data/vigo-family';
 
 interface Props {
   lang: Lang;
@@ -14,14 +14,23 @@ const tx = (o: Record<string, string> | undefined): string => (o ? o[lang] ?? o.
 
 <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
   <div class="reveal">
-    <h1 class="font-display text-4xl font-bold text-gray-900">{t(lang, 'family.title')}</h1>
-    <p class="mt-2 text-gray-600 text-lg">{t(lang, 'family.subtitle')}</p>
+    <div class="relative rounded-2xl overflow-hidden shadow-lift">
+      <img src={familyHero} alt={t(lang, 'family.title')} width="1200" height="600" loading="eager" class="w-full h-56 sm:h-80 object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 p-6 sm:p-8">
+        <h1 class="font-display text-3xl sm:text-4xl font-bold text-white drop-shadow">{t(lang, 'family.title')}</h1>
+        <p class="mt-1 text-white/90 text-base sm:text-lg drop-shadow max-w-2xl">{t(lang, 'family.subtitle')}</p>
+      </div>
+    </div>
     <p class="mt-6 text-gray-700 leading-relaxed max-w-3xl">{tx(familyIntro)}</p>
   </div>
 
   <div class="mt-12 space-y-16">
     {familySections.map(section => (
       <div class="reveal">
+        {section.image && (
+          <img src={section.image} alt={tx(section.title)} width="1200" height="400" loading="lazy" class="w-full h-40 sm:h-52 object-cover rounded-xl shadow-soft mb-5" />
+        )}
         <h2 class="font-display text-2xl font-bold text-gray-900 mb-2">
           {section.emoji && <span class="mr-2">{section.emoji}</span>}{tx(section.title)}
         </h2>
@@ -132,4 +141,18 @@ const tx = (o: Record<string, string> | undefined): string => (o ? o[lang] ?? o.
       </a>
     </div>
   </div>
+
+  {familyCredits.length > 0 && (
+    <div class="mt-12 pt-6 border-t border-gray-200 text-xs text-gray-400">
+      <p class="mb-1">Fotos:</p>
+      <ul class="flex flex-wrap gap-x-3 gap-y-1">
+        {familyCredits.map(c => (
+          <li>
+            <a href={c.url} target="_blank" rel="noopener noreferrer" class="hover:text-gray-600 underline">{c.title}</a>
+            {` — ${c.author} (${c.license})`}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
 </section>
