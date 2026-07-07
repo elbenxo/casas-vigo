@@ -40,9 +40,14 @@ const jsonLdArray = generateHomeJsonLd(lang);
       <div class="max-w-3xl mx-auto text-center reveal">
         <h2 class="font-display text-3xl font-bold text-gray-900 mb-4">{t(lang, 'home.why')}</h2>
         <p class="text-gray-600 text-lg leading-relaxed">{t(lang, 'home.why.text')}</p>
-        <a href={getLocalePath(lang, '/vigo/')} class="inline-block mt-6 text-primary-600 hover:text-primary-700 font-semibold transition-colors">
-          {t(lang, 'vigo.title')} &rarr;
-        </a>
+        <div class="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href={getLocalePath(lang, '/vigo/')} class="inline-block text-primary-600 hover:text-primary-700 font-semibold transition-colors">
+            {t(lang, 'vigo.title')} &rarr;
+          </a>
+          <a href={getLocalePath(lang, '/vigo/familias/')} class="inline-block text-accent-600 hover:text-accent-700 font-semibold transition-colors">
+            🧒 {t(lang, 'family.title')} &rarr;
+          </a>
+        </div>
       </div>
     </div>
   </section>

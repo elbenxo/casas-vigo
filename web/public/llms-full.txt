@@ -408,6 +408,39 @@ Vigo is the largest city in Galicia, located in northwestern Spain on the Atlant
 
 ---
 
+## Vigo Family & Tourism Guide
+
+A multilingual guide (8 languages) for families and visitors staying in Vigo, especially near Samil beach: https://elbenxo.github.io/casas-vigo/vigo/familias/
+
+### Near Samil (walking distance)
+- Samil beach (1.7 km promenade, playgrounds) and free municipal seawater pools (open ~late May–September)
+- Museo do Mar de Galicia (sea museum with aquarium)
+- Verbum – Casa das Palabras (interactive language museum)
+- O Vao and A Fontaíña beaches (Blue Flag, calm waters)
+
+### In the city (<20 min)
+- Monte do Castro (fortress, panoramic views over the Ría)
+- Parque de Castrelos and Pazo Quiñones de León (free museum)
+- VigoNature (former Vigozoo, now a nature and adventure centre with zip lines)
+- Marikiná Park (treetop adventure park, ages 7+)
+- MARCO (contemporary art museum, free entry)
+
+### Star day trip: Cíes Islands
+- Atlantic Islands National Park; ferry from Vigo (~45 min). Requires regional authorization plus ferry ticket (Mar de Ons / Nabia). Return ferry ~27.50 EUR adult, ~12 EUR child.
+
+### Day trips (<45 min)
+- Baiona and the sailable Pinta caravel replica
+- A Guarda and the Santa Trega Celtic hillfort
+- Cangas (by ferry across the Ría)
+- Pontevedra pedestrian old town and Illa das Esculturas
+- Barosa waterfalls (Barro)
+- Serra da Groba — wild Atlantic horses roaming free
+
+### Local tradition: Furanchos
+Seasonal Galician home wineries serving house wine and simple home-cooked food, typically open in spring: Almeriz, Reboraina, Fermín, Villa Preciosa. Opening depends on the season — check locally.
+
+---
+
 ## Contact & Booking
 
 **Website:** https://elbenxo.github.io/casas-vigo/
@@ -452,6 +485,7 @@ Vigo is the largest city in Galicia, located in northwestern Spain on the Atlant
 - Website: https://elbenxo.github.io/casas-vigo/
 - Property List: https://elbenxo.github.io/casas-vigo/en/pisos/
 - Contact: https://elbenxo.github.io/casas-vigo/en/contacto/
+- Vigo Family Guide (things to do): https://elbenxo.github.io/casas-vigo/vigo/familias/
 - Summary (short format): [llms.txt](https://elbenxo.github.io/casas-vigo/llms.txt)
 
 ---
