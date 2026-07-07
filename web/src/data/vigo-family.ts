@@ -1340,3 +1340,55 @@ export function generateFamilyJsonLd(lang: Lang): Array<Record<string, unknown>>
 
   return [faqPage, itemList];
 }
+
+// ── Interactive map ──────────────────────────────────────────
+
+export interface MapCategory {
+  key: string;
+  color: string;
+  label: I18nText;
+}
+
+export interface MapPoint {
+  name: string;
+  category: string;
+  lat: number;
+  lng: number;
+}
+
+export const familyMapCategories: MapCategory[] = [
+  { key: 'samil', color: '#f15a32', label: { es: 'Samil y playas', en: 'Samil & beaches', gl: 'Samil e praias', fr: 'Samil et plages', de: 'Samil & Strände', ko: '사밀과 해변', pt: 'Samil e praias', pl: 'Samil i plaże' } },
+  { key: 'city', color: '#1f7db0', label: { es: 'En la ciudad', en: 'In the city', gl: 'Na cidade', fr: 'En ville', de: 'In der Stadt', ko: '시내', pt: 'Na cidade', pl: 'W mieście' } },
+  { key: 'cies', color: '#0e9488', label: { es: 'Islas Cíes', en: 'Cíes Islands', gl: 'Illas Cíes', fr: 'Îles Cíes', de: 'Cíes-Inseln', ko: '시에스 제도', pt: 'Ilhas Cíes', pl: 'Wyspy Cíes' } },
+  { key: 'daytrip', color: '#d98a1a', label: { es: 'Excursiones', en: 'Day trips', gl: 'Excursións', fr: 'Excursions', de: 'Ausflüge', ko: '당일 여행', pt: 'Excursões', pl: 'Wycieczki' } },
+  { key: 'food', color: '#8b3a62', label: { es: 'Comer', en: 'Food', gl: 'Comer', fr: 'Manger', de: 'Essen', ko: '먹거리', pt: 'Comer', pl: 'Jedzenie' } },
+];
+
+export const familyMapPoints: MapPoint[] = [
+  // Samil & beaches
+  { name: 'Playa de Samil', category: 'samil', lat: 42.21053, lng: -8.77618 },
+  { name: 'Piscinas de Samil', category: 'samil', lat: 42.20690, lng: -8.77697 },
+  { name: 'Verbum – Casa das Palabras', category: 'samil', lat: 42.21294, lng: -8.77370 },
+  { name: 'Museo do Mar de Galicia', category: 'samil', lat: 42.21060, lng: -8.78500 },
+  { name: 'Praia do Vao', category: 'samil', lat: 42.19809, lng: -8.79309 },
+  { name: 'A Fontaíña', category: 'samil', lat: 42.19979, lng: -8.78666 },
+  // In the city
+  { name: 'Monte do Castro', category: 'city', lat: 42.23159, lng: -8.72634 },
+  { name: 'Parque de Castrelos', category: 'city', lat: 42.21332, lng: -8.72959 },
+  { name: 'VigoNature (A Madroa)', category: 'city', lat: 42.24322, lng: -8.67199 },
+  { name: 'MARCO', category: 'city', lat: 42.23580, lng: -8.72115 },
+  { name: 'Marikiná Park', category: 'city', lat: 42.17477, lng: -8.68724 },
+  { name: 'Centro comercial A Laxe', category: 'city', lat: 42.24068, lng: -8.72778 },
+  // Cíes
+  { name: 'Estación Marítima (ferry a Cíes)', category: 'cies', lat: 42.24061, lng: -8.72571 },
+  { name: 'Praia de Rodas (Illas Cíes)', category: 'cies', lat: 42.22460, lng: -8.90040 },
+  // Day trips
+  { name: 'Baiona (carabela Pinta)', category: 'daytrip', lat: 42.12005, lng: -8.85154 },
+  { name: 'Monte Santa Trega (A Guarda)', category: 'daytrip', lat: 41.88806, lng: -8.87149 },
+  { name: 'Cangas', category: 'daytrip', lat: 42.26152, lng: -8.78359 },
+  { name: 'Pontevedra', category: 'daytrip', lat: 42.43137, lng: -8.64422 },
+  { name: 'Cascadas del Barosa (Barro)', category: 'daytrip', lat: 42.49890, lng: -8.63860 },
+  { name: 'Serra da Groba', category: 'daytrip', lat: 42.08460, lng: -8.82860 },
+  // Food
+  { name: 'Parrillada Samil', category: 'food', lat: 42.20900, lng: -8.77500 },
+];
