@@ -1,0 +1,135 @@
+---
+import { t, type Lang } from '../i18n/translations';
+import { familyIntro, familySections, familyItinerary, familyFaq } from '../data/vigo-family';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+/** i18n getter with graceful fallback to Spanish */
+const tx = (o: Record<string, string> | undefined): string => (o ? o[lang] ?? o.es ?? '' : '');
+---
+
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+  <div class="reveal">
+    <h1 class="font-display text-4xl font-bold text-gray-900">{t(lang, 'family.title')}</h1>
+    <p class="mt-2 text-gray-600 text-lg">{t(lang, 'family.subtitle')}</p>
+    <p class="mt-6 text-gray-700 leading-relaxed max-w-3xl">{tx(familyIntro)}</p>
+  </div>
+
+  <div class="mt-12 space-y-16">
+    {familySections.map(section => (
+      <div class="reveal">
+        <h2 class="font-display text-2xl font-bold text-gray-900 mb-2">
+          {section.emoji && <span class="mr-2">{section.emoji}</span>}{tx(section.title)}
+        </h2>
+        <p class="text-gray-600 mb-6 max-w-3xl">{tx(section.intro)}</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {section.places.map(place => (
+            <div class="bg-white rounded-xl shadow-soft p-6 border border-gray-100/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 flex flex-col">
+              <h3 class="font-semibold text-gray-900 mb-2">{place.name}</h3>
+              <p class="text-sm text-gray-600 flex-1">{tx(place.description)}</p>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-xs">
+                {place.distance && (
+                  <span class="inline-flex items-center gap-1 bg-primary-50 text-primary-700 rounded-full px-2.5 py-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {t(lang, 'family.fromSamil')}: {tx(place.distance)}
+                  </span>
+                )}
+                {place.price && (
+                  <span class="inline-flex items-center gap-1 bg-sand-100 text-gray-700 rounded-full px-2.5 py-1">
+                    {t(lang, 'flat.price')}: {tx(place.price)}
+                  </span>
+                )}
+                {place.free && (
+                  <span class="inline-flex items-center gap-1 bg-green-50 text-green-700 rounded-full px-2.5 py-1">
+                    {t(lang, 'family.free')}
+                  </span>
+                )}
+                {place.booking && (
+                  <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 rounded-full px-2.5 py-1">
+                    {t(lang, 'family.booking')}
+                  </span>
+                )}
+              </div>
+
+              {place.tip && (
+                <p class="mt-3 text-xs text-gray-500 leading-relaxed">
+                  <span class="font-semibold text-accent-600">{t(lang, 'family.tip')}:</span> {tx(place.tip)}
+                </p>
+              )}
+
+              {place.url && (
+                <a href={place.url} target="_blank" rel="noopener noreferrer" class="mt-3 text-xs font-medium text-primary-600 hover:text-primary-800 inline-flex items-center gap-1">
+                  {t(lang, 'family.official')}
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {familyItinerary.length > 0 && (
+    <div class="mt-16 reveal">
+      <h2 class="font-display text-2xl font-bold text-gray-900 mb-6">{t(lang, 'family.itinerary')}</h2>
+      <ol class="space-y-4">
+        {familyItinerary.map(day => (
+          <li class="flex gap-4 bg-white rounded-xl shadow-soft p-5 border border-gray-100/80">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-600 text-white font-bold flex items-center justify-center">{day.day}</span>
+            <div>
+              <h3 class="font-semibold text-gray-900">{tx(day.title)}</h3>
+              <p class="text-sm text-gray-600 mt-1">{tx(day.plan)}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )}
+
+  {familyFaq.length > 0 && (
+    <div class="mt-16 reveal">
+      <h2 class="font-display text-2xl font-bold text-gray-900 mb-6">{t(lang, 'family.faq')}</h2>
+      <div class="space-y-3">
+        {familyFaq.map(item => (
+          <details class="group bg-white rounded-xl shadow-soft border border-gray-100/80 overflow-hidden">
+            <summary class="cursor-pointer list-none px-5 py-4 font-semibold text-gray-900 flex items-center justify-between">
+              {tx(item.q)}
+              <svg class="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <p class="px-5 pb-4 text-sm text-gray-600 leading-relaxed">{tx(item.a)}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <div class="mt-16 reveal">
+    <h2 class="font-display text-2xl font-bold text-gray-900 mb-4">{t(lang, 'flat.location')}</h2>
+    <div class="bg-white rounded-xl shadow-soft overflow-hidden border border-gray-100/80">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-8.83%2C42.19%2C-8.68%2C42.25&layer=mapnik&marker=42.2087%2C-8.7686"
+        width="100%"
+        height="400"
+        style="border:0"
+        loading="lazy"
+        title="Samil, Vigo"
+      ></iframe>
+    </div>
+  </div>
+
+  <div class="mt-16 reveal">
+    <div class="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl px-8 py-10 text-center text-white shadow-lift">
+      <h2 class="font-display text-2xl font-bold">{t(lang, 'family.cta.title')}</h2>
+      <p class="mt-2 text-primary-50">{t(lang, 'family.cta.text')}</p>
+      <a href={lang === 'es' ? '/casas-vigo/pisos/' : `/casas-vigo/${lang}/pisos/`} class="mt-6 inline-block bg-white text-primary-700 font-semibold px-6 py-3 rounded-full hover:bg-primary-50 transition-colors">
+        {t(lang, 'nav.flats')}
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import FamilyGuide from '../../../../components/FamilyGuide.astro';
+import { t } from '../../../../i18n/translations';
+import { generateFamilyJsonLd } from '../../../../data/vigo-family';
+
+const lang = 'pt';
+---
+
+<Layout
+  title={t(lang, 'family.title')}
+  description={t(lang, 'family.subtitle')}
+  lang={lang}
+  path="/vigo/familias/"
+  jsonLd={generateFamilyJsonLd(lang)}
+>
+  <FamilyGuide lang={lang} />
+</Layout>
