@@ -10,7 +10,10 @@ const Contracts = (() => {
   let _roomMap  = {};
   let _previewContractId = null;
   let _pendingSignId     = null;
+  let _pendingUnsignId   = null;
   let _pendingTermId     = null;
+  let _tplPlaceholders   = null;   // cached placeholder reference list
+  let _tplEdited         = false;  // current lang has a DB override?
 
   // ─── Status badge config ──────────────────────────────────────
   const STATUS_BADGE = {
@@ -76,6 +79,19 @@ const Contracts = (() => {
       });
 
       await loadContracts();
+
+      // If we arrived from a prospect already linked to a room (Prospects → "Generar contrato"),
+      // open the form pre-filled instead of asking for the same data again.
+      const params = new URLSearchParams(window.location.search);
+      const prospectId = params.get('prospect_id');
+      const roomId = params.get('room_id');
+      if (prospectId || roomId) {
+        await openGenerateForm(
+          prospectId ? parseInt(prospectId) : null,
+          roomId ? parseInt(roomId) : null
+        );
+        window.history.replaceState({}, '', window.location.pathname);
+      }
     } catch (err) {
       notify('Error al inicializar: ' + err.message, 'error');
     }
@@ -194,8 +210,11 @@ const Contracts = (() => {
         title="Firmar contrato">Firmar</button>`;
     }
 
-    // Signed only: terminate
+    // Signed only: undo signature (fix a mistaken click) or terminate
     if (c.status === 'signed') {
+      actions += `<button onclick="Contracts.unsignContract(${c.id}, '${esc(c.tenant_name || c.prospect_name || '')}' )"
+        class="${btnBase} bg-amber-100 text-amber-700 hover:bg-amber-200"
+        title="Deshacer firma (por error)">Deshacer firma</button>`;
       actions += `<button onclick="Contracts.terminateContract(${c.id}, '${esc(c.tenant_name || c.prospect_name || '')}' )"
         class="${btnBase} bg-red-100 text-red-600 hover:bg-red-200"
         title="Terminar contrato">Terminar</button>`;
@@ -205,11 +224,19 @@ const Contracts = (() => {
   }
 
   // ─── Open generate form ───────────────────────────────────────
-  function openGenerateForm() {
+  // prospectId/roomId let callers (e.g. a prospect already linked to a room)
+  // pre-fill the form instead of asking the user to pick them again.
+  async function openGenerateForm(prospectId, roomId) {
     el('form-generate').reset();
     el('gen-deposit').dataset.autoFilled = 'true';
-    _populateProspectSelect();
+    await _populateProspectSelect();
     abrirModal('modal-generate');
+
+    if (prospectId) el('gen-prospect').value = prospectId;
+    if (roomId) {
+      el('gen-room').value = roomId;
+      el('gen-room').dispatchEvent(new Event('change'));
+    }
   }
 
   // ─── Submit generate form ─────────────────────────────────────
@@ -230,6 +257,13 @@ const Contracts = (() => {
         deposit:            parseFloat(el('gen-deposit').value) || parseFloat(el('gen-rent').value),
         utilities_provision: el('gen-utilities')?.value || '25',
         sign_date:          el('gen-sign-date')?.value || null,
+        id_type:            el('gen-id-type')?.value || 'DNI',
+        owner_role:         el('gen-owner-role')?.value || 'propietario',
+        tenant_nationality: el('gen-nationality')?.value.trim() || null,
+        emergency_contact:  el('gen-emergency')?.value.trim() || null,
+        family_residence:   el('gen-family-residence')?.value.trim() || null,
+        extra_charge_note:  el('gen-extra-charge')?.value.trim() || null,
+        inventory:          el('gen-inventory')?.value.trim() || null,
       };
 
       const contract = await generateContract(body);
@@ -321,6 +355,35 @@ const Contracts = (() => {
     }
   }
 
+  function unsignContract(id, tenantName) {
+    _pendingUnsignId = id;
+    el('unsign-msg').textContent =
+      `Deshara la firma de "${tenantName || 'este contrato'}". El contrato volvera a borrador, el prospecto a "pendiente de firma" y la habitacion quedara disponible de nuevo.`;
+    el('btn-unsign-confirm').onclick = _confirmUnsign;
+    abrirModal('modal-unsign');
+  }
+
+  async function _confirmUnsign() {
+    const id = _pendingUnsignId;
+    if (!id) return;
+    el('btn-unsign-confirm').disabled = true;
+    try {
+      const result = await api(`/contracts/${id}/unsign`, { method: 'PUT' });
+      cerrarModal('modal-unsign');
+      if (result.contact_flagged) {
+        notify('Firma deshecha. Revisa el contacto en Contactos: no se elimino automaticamente.', 'info');
+      } else {
+        notify('Firma deshecha. El contrato vuelve a pendiente de firma.');
+      }
+      await loadContracts();
+    } catch (err) {
+      notify('Error al deshacer la firma: ' + err.message, 'error');
+    } finally {
+      el('btn-unsign-confirm').disabled = false;
+      _pendingUnsignId = null;
+    }
+  }
+
   function terminateContract(id, tenantName) {
     _pendingTermId = id;
     el('terminate-msg').textContent =
@@ -346,6 +409,111 @@ const Contracts = (() => {
     }
   }
 
+  // ─── Template editor ──────────────────────────────────────────
+  async function openTemplateEditor() {
+    abrirModal('modal-template');
+    if (!_tplPlaceholders) {
+      try {
+        _tplPlaceholders = await api('/contracts/placeholders');
+      } catch (err) {
+        _tplPlaceholders = [];
+      }
+      _renderPlaceholders();
+    }
+    await loadTemplateInto();
+  }
+
+  function _renderPlaceholders() {
+    const box = el('tpl-placeholders');
+    if (!box) return;
+    box.innerHTML = (_tplPlaceholders || []).map(p => `
+      <button type="button" onclick="Contracts.insertPlaceholder('${p.key}')"
+        class="block w-full text-left px-2 py-1 rounded hover:bg-slate-200 transition-colors"
+        title="Insertar">
+        <code class="text-indigo-600">{{${p.key}}}</code>
+        <span class="text-slate-400 block text-[11px] leading-tight">${esc(p.label)}</span>
+      </button>`).join('');
+  }
+
+  function insertPlaceholder(key) {
+    const ta = el('tpl-html');
+    const token = `{{${key}}}`;
+    const start = ta.selectionStart ?? ta.value.length;
+    const end   = ta.selectionEnd ?? ta.value.length;
+    ta.value = ta.value.slice(0, start) + token + ta.value.slice(end);
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = start + token.length;
+  }
+
+  async function loadTemplateInto() {
+    const lang = el('tpl-lang').value;
+    const ta = el('tpl-html');
+    ta.value = 'Cargando plantilla...';
+    ta.disabled = true;
+    try {
+      const data = await api(`/contracts/templates/${lang}`);
+      ta.value = data.html || '';
+      _tplEdited = !!data.edited;
+      _updateTplStatus(lang, data);
+    } catch (err) {
+      ta.value = '';
+      notify('Error cargando plantilla: ' + err.message, 'error');
+    } finally {
+      ta.disabled = false;
+    }
+  }
+
+  function _updateTplStatus(lang, data) {
+    const s = el('tpl-status');
+    if (!s) return;
+    if (data.edited) {
+      s.innerHTML = `<span class="text-amber-600">Editada</span> · guardada en la base de datos${data.updated_at ? ' · ' + fecha(data.updated_at) : ''}`;
+    } else {
+      s.innerHTML = `<span class="text-slate-500">Original</span> · plantilla por defecto del repositorio`;
+    }
+    const restoreBtn = el('btn-tpl-restore');
+    if (restoreBtn) restoreBtn.classList.toggle('hidden', !data.edited);
+  }
+
+  async function saveTemplate() {
+    const lang = el('tpl-lang').value;
+    const html = el('tpl-html').value;
+    if (!html || !html.trim()) {
+      notify('La plantilla no puede estar vacía', 'error');
+      return;
+    }
+    const btn = el('btn-tpl-save');
+    btn.disabled = true;
+    try {
+      await api(`/contracts/templates/${lang}`, { method: 'PUT', body: { html } });
+      notify('Plantilla guardada. Se usará en los próximos contratos.');
+      await loadTemplateInto();
+    } catch (err) {
+      notify('Error guardando plantilla: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function restoreTemplate() {
+    const lang = el('tpl-lang').value;
+    if (!confirm('¿Restaurar la plantilla original? Se perderán los cambios guardados para este idioma.')) return;
+    try {
+      await api(`/contracts/templates/${lang}`, { method: 'DELETE' });
+      notify('Plantilla restaurada al original.');
+      await loadTemplateInto();
+    } catch (err) {
+      notify('Error restaurando plantilla: ' + err.message, 'error');
+    }
+  }
+
+  function previewTemplateDraft() {
+    const html = el('tpl-html').value;
+    const iframe = el('preview-iframe');
+    iframe.srcdoc = html;
+    abrirModal('modal-preview');
+  }
+
   // ─── Public API ───────────────────────────────────────────────
   return {
     init,
@@ -357,7 +525,14 @@ const Contracts = (() => {
     printContract,
     printContractById,
     signContract,
+    unsignContract,
     terminateContract,
+    openTemplateEditor,
+    loadTemplateInto,
+    insertPlaceholder,
+    saveTemplate,
+    restoreTemplate,
+    previewTemplateDraft,
   };
 
 })();

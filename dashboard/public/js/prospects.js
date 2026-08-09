@@ -284,6 +284,11 @@ function _renderDetailModal(p, interactions) {
           class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-100 text-indigo-700 text-xs font-medium rounded-lg hover:bg-indigo-200 transition-colors">
           ✏️ Editar
       </button>
+      ${p.room_interest && p.status !== 'signed' && p.status !== 'lost' ? `
+      <a href="/dashboard/contracts.html?prospect_id=${p.id}&room_id=${p.room_interest}"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg hover:bg-emerald-200 transition-colors">
+          📄 Generar contrato
+      </a>` : ''}
     </div>`;
 
   // Interactions timeline
