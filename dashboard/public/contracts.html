@@ -183,6 +183,25 @@
     </div>
   </div>
 
+  <!-- ─── Modal: Unsign Confirmation ───────────────────────── -->
+  <div id="modal-unsign" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-unsign')"></div>
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-sm relative z-10 p-6">
+      <h3 class="text-lg font-semibold text-slate-800 mb-2">Deshacer firma</h3>
+      <p id="unsign-msg" class="text-sm text-slate-600 mb-5"></p>
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-5 text-xs text-amber-800">
+        Usa esto para corregir un error al pulsar "Firmar". El contrato vuelve a borrador y el prospecto a "pendiente de firma".
+      </div>
+      <div class="flex justify-end gap-3">
+        <button onclick="cerrarModal('modal-unsign')" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-800">Cancelar</button>
+        <button id="btn-unsign-confirm" class="flex items-center gap-2 px-4 py-2 text-sm bg-amber-600 text-white rounded-lg hover:bg-amber-700 font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+          Deshacer firma
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ─── Modal: Terminate Confirmation ────────────────────── -->
   <div id="modal-terminate" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="modal-backdrop absolute inset-0" onclick="cerrarModal('modal-terminate')"></div>

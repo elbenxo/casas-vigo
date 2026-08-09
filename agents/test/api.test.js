@@ -756,6 +756,40 @@ describe('Contracts', () => {
     assert.equal(status, 409);
   });
 
+  it('PUT /api/contracts/:id/unsign on a draft → 409', async () => {
+    const { body: draft } = await request(baseUrl, '/api/contracts/generate', {
+      method: 'POST', body: { prospect_id: prospectId, room_id: roomId, lang: 'es' },
+    });
+    const { status } = await request(baseUrl, `/api/contracts/${draft.data.id}/unsign`, {
+      method: 'PUT',
+    });
+    assert.equal(status, 409);
+  });
+
+  it('PUT /api/contracts/:id/unsign → reverts to draft, prospect back to contract_sent, room available, contact removed', async () => {
+    const { status, body } = await request(baseUrl, `/api/contracts/${contractId}/unsign`, {
+      method: 'PUT',
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.contract.status, 'draft');
+    assert.equal(body.data.contract.signed_at, null);
+    assert.equal(body.data.contact_removed, true);
+
+    const { body: pBody } = await request(baseUrl, `/api/prospects/${prospectId}`);
+    assert.equal(pBody.data.status, 'contract_sent');
+
+    const { body: rBody } = await request(baseUrl, `/api/rooms/${roomId}`);
+    assert.equal(rBody.data.available, 1);
+  });
+
+  it('PUT /api/contracts/:id/sign again after unsign → 200 (re-signable)', async () => {
+    const { status, body } = await request(baseUrl, `/api/contracts/${contractId}/sign`, {
+      method: 'PUT',
+    });
+    assert.equal(status, 200);
+    assert.equal(body.data.contract.status, 'signed');
+  });
+
   it('GET /api/contracts/:id/download → 200, text/html', async () => {
     const res = await fetch(`${baseUrl}/api/contracts/${contractId}/download`);
     assert.equal(res.status, 200);

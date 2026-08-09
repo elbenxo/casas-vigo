@@ -231,6 +231,80 @@ router.put('/:id/sign', asyncRoute((req, res) => {
 }));
 
 /**
+ * PUT /api/contracts/:id/unsign
+ * Undoes an accidental signature (fat-fingered "Firmar" click). Reverses the
+ * /sign transaction: contract → draft, prospect → contract_sent, room →
+ * available again. The tenant contact created by signing is only deleted
+ * automatically when it's safe to do so (see below); otherwise it's left in
+ * place and flagged in the response so the owner can review it manually.
+ */
+router.put('/:id/unsign', asyncRoute((req, res) => {
+  const db = getDb();
+
+  const contract = db.prepare('SELECT * FROM contracts WHERE id = ?').get(req.params.id);
+  if (!contract) return res.status(404).json({ error: 'Contract not found' });
+  if (contract.status !== 'signed') {
+    return res.status(409).json({ error: `Contract is "${contract.status}", can only unsign a signed contract` });
+  }
+
+  const prospect = db.prepare('SELECT * FROM prospects WHERE id = ?').get(contract.prospect_id);
+
+  const unsignTransaction = db.transaction(() => {
+    // 1. Revert the contract to draft
+    db.prepare(
+      `UPDATE contracts SET status = 'draft', signed_at = null WHERE id = ?`
+    ).run(contract.id);
+
+    // 2. Revert the prospect to "contract sent" (pending signature)
+    if (prospect && prospect.status === 'signed') {
+      db.prepare(
+        `UPDATE prospects SET status = 'contract_sent', updated_at = datetime('now') WHERE id = ?`
+      ).run(prospect.id);
+    }
+
+    // 3. Free up the room again
+    db.prepare(
+      `UPDATE rooms SET available = 1, available_from = null, updated_at = datetime('now') WHERE id = ?`
+    ).run(contract.room_id);
+
+    // 4. Best-effort cleanup of the tenant contact created by signing.
+    // Only delete it when we're confident it was created BY this sign (same
+    // room/dates, no billing/messages/appointments recorded against it yet) —
+    // otherwise we could destroy a real contact or orphan its records.
+    let contactRemoved = false;
+    let contactFlagged = null;
+    const contact = prospect && prospect.phone
+      ? db.prepare('SELECT * FROM contacts WHERE phone = ?').get(prospect.phone)
+      : null;
+
+    if (contact && contact.role === 'tenant' && contact.room_id === contract.room_id
+      && contact.contract_start === contract.start_date && contact.contract_end === contract.end_date) {
+      const refCounts = [
+        db.prepare('SELECT COUNT(*) AS n FROM income WHERE contact_id = ?').get(contact.id).n,
+        db.prepare('SELECT COUNT(*) AS n FROM receipts WHERE contact_id = ?').get(contact.id).n,
+        db.prepare('SELECT COUNT(*) AS n FROM messages WHERE contact_id = ?').get(contact.id).n,
+        db.prepare('SELECT COUNT(*) AS n FROM appointments WHERE contact_id = ?').get(contact.id).n,
+      ];
+      if (refCounts.every(n => n === 0)) {
+        db.prepare('DELETE FROM contacts WHERE id = ?').run(contact.id);
+        contactRemoved = true;
+      } else {
+        contactFlagged = contact.id;
+      }
+    }
+
+    return { contactRemoved, contactFlagged };
+  });
+
+  const { contactRemoved, contactFlagged } = unsignTransaction();
+
+  const revertedContract = db.prepare('SELECT * FROM contracts WHERE id = ?').get(contract.id);
+  res.json({
+    data: { contract: revertedContract, contact_removed: contactRemoved, contact_flagged: contactFlagged },
+  });
+}));
+
+/**
  * PUT /api/contracts/:id/status
  * Update contract status (e.g. draft → terminated).
  * Cannot use this route to sign — use PUT /:id/sign instead.
