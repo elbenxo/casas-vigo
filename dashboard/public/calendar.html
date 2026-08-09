@@ -13,6 +13,9 @@
     .tt { display: none; position: absolute; z-index: 20; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); pointer-events: none; }
     .grid-line { position: absolute; top: 0; bottom: 0; width: 1px; background: #e2e8f0; }
     .today-line { position: absolute; top: 0; bottom: 0; width: 2px; background: #f87171; z-index: 5; }
+    .lead-bar { background-image: repeating-linear-gradient(45deg, #38bdf8, #38bdf8 6px, #0ea5e9 6px, #0ea5e9 12px); }
+    .departure-tick { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #334155; z-index: 6; }
+    .departure-label { position: absolute; bottom: calc(100% + 2px); transform: translateX(-50%); font-size: 9px; font-weight: 600; line-height: 1.2; color: #334155; background: white; padding: 0 3px; border-radius: 2px; white-space: nowrap; z-index: 7; box-shadow: 0 0 0 1px #e2e8f0; }
     .view-btn { padding: 0.375rem 0.75rem; font-size: 0.875rem; border-radius: 0.5rem; transition: all 0.15s; }
     .view-btn.active { background: #4f46e5; color: white; }
     .view-btn:not(.active) { background: #f1f5f9; color: #475569; }
@@ -48,7 +51,9 @@
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-indigo-400 inline-block"></span> Contrato activo</span>
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span> Vence pronto</span>
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-red-400 inline-block"></span> Vencido</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded lead-bar inline-block"></span> Reservado (lead)</span>
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-emerald-100 border border-emerald-300 inline-block"></span> Libre</span>
+      <span class="flex items-center gap-1"><span class="w-0.5 h-3 bg-slate-700 inline-block"></span> Día de salida (vista mes)</span>
       <span class="flex items-center gap-1 ml-auto"><span class="w-6 border-t-2 border-red-400 inline-block"></span> Hoy</span>
     </div>
 
@@ -63,11 +68,11 @@
     let view = 'year'; // 'year' | 'month'
     let currentYear = ANO;
     let currentMonth = MES; // 1-12
-    let allPisos = [], allHabs = [], allContactos = [], roomsByFlat = {};
+    let allPisos = [], allHabs = [], allContactos = [], allLeads = [], roomsByFlat = {};
 
     async function init() {
-      [allPisos, allHabs, allContactos] = await Promise.all([
-        api('/flats'), api('/rooms'), api('/contacts?role=tenant')
+      [allPisos, allHabs, allContactos, allLeads] = await Promise.all([
+        api('/flats'), api('/rooms'), api('/contacts?role=tenant'), api('/contracts?status=draft')
       ]);
       roomsByFlat = groupByKey(allHabs, r => r.flat_id);
       render();
@@ -121,6 +126,13 @@
         <strong>${t.name}</strong><br>${fecha(t.contract_start)} \u2014 ${endLabel}${extra}</div>`;
     }
 
+    function leadTooltip(l) {
+      const endLabel = l.end_date ? fecha(l.end_date) : 'indefinido';
+      return `<div class="tt bg-slate-800 text-white text-xs rounded px-2 py-1.5 whitespace-nowrap shadow-lg">
+        <strong>${l.prospect_name}</strong><br>${fecha(l.start_date)} \u2014 ${endLabel}
+        <br><span class="text-sky-300">Reservado (borrador, sin firmar)</span></div>`;
+    }
+
     function render() {
       const tenantByRoom = {};
       allContactos.forEach(c => {
@@ -129,11 +141,18 @@
         tenantByRoom[c.room_id].push(c);
       });
 
-      if (view === 'year') renderYear(tenantByRoom);
-      else renderMonth(tenantByRoom);
+      const leadByRoom = {};
+      allLeads.forEach(l => {
+        if (!l.room_id) return;
+        if (!leadByRoom[l.room_id]) leadByRoom[l.room_id] = [];
+        leadByRoom[l.room_id].push(l);
+      });
+
+      if (view === 'year') renderYear(tenantByRoom, leadByRoom);
+      else renderMonth(tenantByRoom, leadByRoom);
     }
 
-    function renderYear(tenantByRoom) {
+    function renderYear(tenantByRoom, leadByRoom) {
       el('label-periodo').textContent = currentYear;
 
       const ys = new Date(currentYear, 0, 1);
@@ -156,12 +175,12 @@
 
       el('calendario').innerHTML = allPisos.map(f => {
         const rooms = roomsByFlat[f.id] || [];
-        const rows = rooms.map(r => buildRow(r, tenantByRoom, ys, ye, gridLines, todayLine)).join('');
+        const rows = rooms.map(r => buildRow(r, tenantByRoom, leadByRoom, ys, ye, gridLines, todayLine, false)).join('');
         return flatBlock(f, monthLabels, rows);
       }).join('');
     }
 
-    function renderMonth(tenantByRoom) {
+    function renderMonth(tenantByRoom, leadByRoom) {
       el('label-periodo').textContent = mesNombre(currentMonth) + ' ' + currentYear;
 
       const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
@@ -197,27 +216,50 @@
 
       el('calendario').innerHTML = allPisos.map(f => {
         const rooms = roomsByFlat[f.id] || [];
-        const rows = rooms.map(r => buildRow(r, tenantByRoom, ms, me, gridLines, todayLine)).join('');
+        const rows = rooms.map(r => buildRow(r, tenantByRoom, leadByRoom, ms, me, gridLines, todayLine, true)).join('');
         return flatBlock(f, dayLabels, rows);
       }).join('');
     }
 
-    function buildRow(r, tenantByRoom, rangeStart, rangeEnd, gridLines, todayLine) {
+    // Builds one absolutely-positioned bar (+ optional departure marker) for a
+    // tenancy/reservation period within [rangeStart, rangeEnd).
+    function buildPeriod(startVal, endVal, rangeStart, rangeEnd, colorClass, tooltipHtml, showDeparture) {
+      if (!startVal) return { bar: '', departure: '' };
+      const pStart = new Date(startVal);
+      const pEnd = endVal ? new Date(endVal) : rangeEnd;
+      if (pEnd < rangeStart || pStart >= rangeEnd) return { bar: '', departure: '' };
+
+      const left = pctInRange(pStart < rangeStart ? rangeStart : pStart, rangeStart, rangeEnd);
+      const right = pctInRange(pEnd > rangeEnd ? rangeEnd : pEnd, rangeStart, rangeEnd);
+      const width = right - left;
+      const bar = `<div class="timeline-bar ${colorClass}" style="left:${left}%;width:${Math.max(width, 0.5)}%">${tooltipHtml}</div>`;
+
+      let departure = '';
+      if (showDeparture && endVal) {
+        const realEnd = new Date(endVal);
+        if (realEnd >= rangeStart && realEnd < rangeEnd) {
+          const pct = pctInRange(realEnd, rangeStart, rangeEnd);
+          departure = `<div class="departure-tick" style="left:${pct}%"></div>
+            <div class="departure-label" style="left:${pct}%">Sale ${realEnd.getDate()}</div>`;
+        }
+      }
+      return { bar, departure };
+    }
+
+    function buildRow(r, tenantByRoom, leadByRoom, rangeStart, rangeEnd, gridLines, todayLine, showDeparture) {
       const tenants = tenantByRoom[r.id] || [];
+      const leads = leadByRoom[r.id] || [];
       const rowBg = r.available ? 'bg-emerald-50/50' : '';
 
-      const bars = tenants.map(t => {
-        if (!t.contract_start) return '';
-        const cStart = new Date(t.contract_start);
-        const cEnd = t.contract_end ? new Date(t.contract_end) : rangeEnd;
-        if (cEnd < rangeStart || cStart >= rangeEnd) return '';
-
-        const left = pctInRange(cStart < rangeStart ? rangeStart : cStart, rangeStart, rangeEnd);
-        const right = pctInRange(cEnd > rangeEnd ? rangeEnd : cEnd, rangeStart, rangeEnd);
-        const width = right - left;
-
-        return `<div class="timeline-bar ${contractBarColor(t)}" style="left:${left}%;width:${Math.max(width, 0.5)}%">${barTooltip(t)}</div>`;
-      }).join('');
+      const tenantPeriods = tenants.map(t =>
+        buildPeriod(t.contract_start, t.contract_end, rangeStart, rangeEnd, contractBarColor(t), barTooltip(t), showDeparture)
+      );
+      const leadPeriods = leads.map(l =>
+        buildPeriod(l.start_date, l.end_date, rangeStart, rangeEnd, 'lead-bar', leadTooltip(l), showDeparture)
+      );
+      const allPeriods = tenantPeriods.concat(leadPeriods);
+      const bars = allPeriods.map(p => p.bar).join('');
+      const departures = allPeriods.map(p => p.departure).join('');
 
       return `
         <div class="timeline-row border-b border-slate-50 hover:bg-slate-50/50">
@@ -227,6 +269,7 @@
           <div class="relative ${rowBg}" style="min-height:32px;">
             ${gridLines}
             ${bars}
+            ${departures}
             ${todayLine}
           </div>
         </div>`;
