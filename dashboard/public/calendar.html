@@ -68,11 +68,11 @@
     let view = 'year'; // 'year' | 'month'
     let currentYear = ANO;
     let currentMonth = MES; // 1-12
-    let allPisos = [], allHabs = [], allContactos = [], allLeads = [], roomsByFlat = {};
+    let allPisos = [], allHabs = [], allTenantContracts = [], allLeads = [], roomsByFlat = {};
 
     async function init() {
-      [allPisos, allHabs, allContactos, allLeads] = await Promise.all([
-        api('/flats'), api('/rooms'), api('/contacts?role=tenant'), api('/contracts?status=draft')
+      [allPisos, allHabs, allTenantContracts, allLeads] = await Promise.all([
+        api('/flats'), api('/rooms'), api('/contracts?status=signed'), api('/contracts?status=draft')
       ]);
       roomsByFlat = groupByKey(allHabs, r => r.flat_id);
       render();
@@ -108,22 +108,22 @@
     }
 
     function contractBarColor(t) {
-      if (!t.contract_end) return 'bg-indigo-400';
-      const dias = diasHasta(t.contract_end);
+      if (!t.end_date) return 'bg-indigo-400';
+      const dias = diasHasta(t.end_date);
       if (dias <= 0) return 'bg-red-400';
       if (dias <= 30) return 'bg-amber-400';
       return 'bg-indigo-400';
     }
 
     function barTooltip(t) {
-      const endLabel = t.contract_end ? fecha(t.contract_end) : 'indefinido';
-      const dias = t.contract_end ? diasHasta(t.contract_end) : null;
+      const endLabel = t.end_date ? fecha(t.end_date) : 'indefinido';
+      const dias = t.end_date ? diasHasta(t.end_date) : null;
       let extra = '';
       if (dias !== null && dias <= 0) extra = '<br><span class="text-red-300">Contrato vencido</span>';
       else if (dias !== null && dias <= 30) extra = '<br><span class="text-amber-300">Vence en ' + dias + ' dias</span>';
       else if (dias === null) extra = '<br><span class="text-slate-300">Contrato indefinido</span>';
       return `<div class="tt bg-slate-800 text-white text-xs rounded px-2 py-1.5 whitespace-nowrap shadow-lg">
-        <strong>${t.name}</strong><br>${fecha(t.contract_start)} \u2014 ${endLabel}${extra}</div>`;
+        <strong>${t.prospect_name}</strong><br>${fecha(t.start_date)} \u2014 ${endLabel}${extra}</div>`;
     }
 
     function leadTooltip(l) {
@@ -135,7 +135,7 @@
 
     function render() {
       const tenantByRoom = {};
-      allContactos.forEach(c => {
+      allTenantContracts.forEach(c => {
         if (!c.room_id) return;
         if (!tenantByRoom[c.room_id]) tenantByRoom[c.room_id] = [];
         tenantByRoom[c.room_id].push(c);
@@ -252,7 +252,7 @@
       const rowBg = r.available ? 'bg-emerald-50/50' : '';
 
       const tenantPeriods = tenants.map(t =>
-        buildPeriod(t.contract_start, t.contract_end, rangeStart, rangeEnd, contractBarColor(t), barTooltip(t), showDeparture)
+        buildPeriod(t.start_date, t.end_date, rangeStart, rangeEnd, contractBarColor(t), barTooltip(t), showDeparture)
       );
       const leadPeriods = leads.map(l =>
         buildPeriod(l.start_date, l.end_date, rangeStart, rangeEnd, 'lead-bar', leadTooltip(l), showDeparture)
