@@ -17,6 +17,14 @@ router.get('/', asyncRoute((req, res) => {
   const contactsByRole = db.prepare(
     'SELECT role, COUNT(*) AS count FROM contacts GROUP BY role'
   ).all();
+  const contacts = contactsByRole.reduce((acc, r) => { acc[r.role] = r.count; return acc; }, {});
+
+  // contacts.role='tenant' is only populated by the contract-signing flow and can
+  // lag behind reality; contracts.status='signed' is the authoritative tenant count.
+  const signedTenants = db.prepare(
+    "SELECT COUNT(*) AS count FROM contracts WHERE status = 'signed'"
+  ).get().count;
+  if (signedTenants > 0) contacts.tenant = signedTenants;
 
   const incomeThisMonth = db.prepare(
     'SELECT COALESCE(SUM(amount), 0) AS total FROM income WHERE month = ? AND year = ?'
@@ -30,7 +38,7 @@ router.get('/', asyncRoute((req, res) => {
     data: {
       flats: totalFlats,
       rooms: { total: totalRooms, available: availableRooms, occupied: totalRooms - availableRooms },
-      contacts: contactsByRole.reduce((acc, r) => { acc[r.role] = r.count; return acc; }, {}),
+      contacts,
       income_this_month: incomeThisMonth,
       costs_this_month: costsThisMonth,
       period: { month, year }
